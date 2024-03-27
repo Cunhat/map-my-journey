@@ -1,10 +1,10 @@
 import { View, Text, SafeAreaView } from "react-native";
-import { Slot } from "expo-router";
+import { Slot, Stack } from "expo-router";
 
 export default function RootLayout() {
   return (
-    <SafeAreaView className="bg-white h-full">
-      <Slot />
-    </SafeAreaView>
+    <Stack>
+      <Stack.Screen name="(home)" options={{ headerShown: false }} />
+    </Stack>
   );
 }
