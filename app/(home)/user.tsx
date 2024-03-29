@@ -7,7 +7,7 @@ import { HomeLayout } from "@/components/home-layout";
 const User = () => {
   return (
     <HomeLayout>
-      <View className="flex flex-row gap-2">
+      <View className="flex flex-row gap-2 items-center">
         <UserIcon
           strokeWidth={1.2}
           className="text-sky-500"

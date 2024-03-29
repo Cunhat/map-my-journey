@@ -6,13 +6,12 @@ import { HomeLayout } from "../../components/home-layout";
 const Home = () => {
   return (
     <HomeLayout>
-      <View className="flex-row gap-2">
+      <View className="flex-row gap-2 items-center">
         <Map
           strokeWidth={1.2}
           className="text-sky-500"
           height={32}
           width={32}
-          style={{ width: 400, height: 350 }}
         />
         <Text className="font-bold text-sky-500 text-2xl">Trips</Text>
       </View>
