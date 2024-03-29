@@ -6,7 +6,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 const Home = () => {
   return (
     <SafeAreaView className=" h-full">
-      <Text>HOMEEEEEEE</Text>
+      <Text>Trips</Text>
     </SafeAreaView>
   );
 };
