@@ -1,10 +1,7 @@
-import { View, Text, Pressable } from "react-native";
-import { Link, Slot } from "expo-router";
-import { Icons } from "@/components/ui/icons";
-import { Plus, Map, User } from "lucide-react-native";
-import { usePathname } from "expo-router";
 import { cva } from "class-variance-authority";
 import { Tabs } from "expo-router";
+import { Map, Plus, User } from "lucide-react-native";
+import { View } from "react-native";
 
 const IconsStyles = cva("mt-3", {
   variants: {
@@ -25,7 +22,12 @@ export default function HomeLayout() {
           headerShown: false,
           headerTitle: "",
           tabBarIcon: ({ focused }) => (
-            <Map className={IconsStyles({ focused })} height={32} width={32} />
+            <Map
+              strokeWidth={1.2}
+              className={IconsStyles({ focused })}
+              height={32}
+              width={32}
+            />
           ),
           tabBarLabelStyle: {},
         }}
@@ -56,7 +58,12 @@ export default function HomeLayout() {
           headerShown: false,
           headerTitleContainerStyle: {},
           tabBarIcon: ({ focused }) => (
-            <User className={IconsStyles({ focused })} height={32} width={32} />
+            <User
+              strokeWidth={1.2}
+              className={IconsStyles({ focused })}
+              height={32}
+              width={32}
+            />
           ),
         }}
       />
