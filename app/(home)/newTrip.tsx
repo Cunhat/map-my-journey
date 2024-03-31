@@ -5,7 +5,7 @@ import { View, Text, Pressable } from "react-native";
 const NewTrip = () => {
   return (
     <View>
-      <Text>USERRRRRR</Text>
+      <Text>NEW TRIP</Text>
     </View>
   );
 };
