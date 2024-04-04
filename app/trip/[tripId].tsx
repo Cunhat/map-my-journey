@@ -1,25 +1,15 @@
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useRef } from "react";
-import { View, Text, TextInput } from "react-native";
+import { View, Text, TextInput, ScrollView } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import { Search } from "lucide-react-native";
+import { Search, Plus, Home, UtensilsCrossed } from "lucide-react-native";
+import { Point } from "@/lib/types";
+import { Category } from "@/components/category";
 
 const Trip = () => {
-  const [tripPoints, setTripPoints] = React.useState<
-    {
-      latitude: number;
-      longitude: number;
-    }[]
-  >([
-    { latitude: 38.86124450717146, longitude: -9.068422347763722 },
-    { latitude: 38.83506147920597, longitude: -9.089607688955462 },
-    { latitude: 38.738104537272854, longitude: -9.135876346756614 },
-    { latitude: 38.73061238499506, longitude: -9.164889641914634 },
-    { latitude: 38.723530524210524, longitude: -9.129684102531302 },
-    { latitude: 38.73212833242504, longitude: -9.114989379236548 },
-  ]);
+  const [tripPoints, setTripPoints] = React.useState<Point[]>([]);
   const mapRef = useRef<MapView>(null);
   const { tripId } = useLocalSearchParams<{ tripId: string }>();
   const sheetRef = useRef<BottomSheet>(null);
@@ -57,7 +47,7 @@ const Trip = () => {
           width: 40,
         }}
       >
-        <View className="h-full p-2">
+        <View style={{ gap: 16 }} className="flex-1 p-2">
           <GooglePlacesAutocomplete
             placeholder="Search your point of interest..."
             textInputProps={{
@@ -67,6 +57,8 @@ const Trip = () => {
             }}
             onPress={(data, details = null) => {
               const { lat, lng } = details?.geometry.location;
+
+              console.log("data", data);
 
               mapRef.current?.animateCamera(
                 {
@@ -112,6 +104,44 @@ const Trip = () => {
               <Text className="text-gray-500">{data.description}</Text>
             )}
           />
+          <View className="flex flex-col gap-2">
+            <Text className="text-sky-500 text-xl">Categories</Text>
+            <ScrollView
+              horizontal
+              contentContainerStyle={{ gap: 10, paddingRight: 20 }}
+              showsHorizontalScrollIndicator={false}
+              className="h-auto p-3 bg-gray-100 rounded-xl flex flex-row "
+            >
+              <Category
+                icon={
+                  <Home height={"60%"} width={"60%"} className="text-white" />
+                }
+                name="Home"
+                backgroundColor="#eab308"
+              />
+              <Category
+                icon={
+                  <UtensilsCrossed
+                    height={"60%"}
+                    width={"60%"}
+                    className="text-white"
+                  />
+                }
+                name="Food"
+                backgroundColor="#16a34a"
+              />
+              <Category
+                icon={
+                  <Plus height={"60%"} width={"60%"} className="text-white" />
+                }
+                name="Add"
+                backgroundColor="#0ea5e9"
+              />
+            </ScrollView>
+          </View>
+          <View className="flex flex-col gap-2">
+            <Text className="text-sky-500 text-xl">Points</Text>
+          </View>
         </View>
       </BottomSheet>
     </View>
