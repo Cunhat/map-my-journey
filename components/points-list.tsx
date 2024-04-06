@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from "react";
 import { View, Text } from "react-native";
 import { Search, Plus, Home, UtensilsCrossed } from "lucide-react-native";
+import Calendar from "@/assets/svg/calendar";
 
 export const PointsList: React.FC<PropsWithChildren> = ({ children }) => {
   return (
@@ -19,6 +20,10 @@ export const PointsListItem = () => {
       <View className="flex-1">
         <Text className="text-gray-500 font-bold text-base">Vialonga</Text>
         <Text className="text-gray-500">Lisboa</Text>
+      </View>
+      <View style={{ gap: 0 }} className="w-14 items-center justify-center">
+        <Calendar height={32} width={32} />
+        <Text className="text-gray-500 font-bold text-xs">Day 1</Text>
       </View>
     </View>
   );
