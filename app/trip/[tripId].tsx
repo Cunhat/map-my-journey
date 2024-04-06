@@ -7,6 +7,11 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import { Search, Plus, Home, UtensilsCrossed } from "lucide-react-native";
 import { Point } from "@/lib/types";
 import { Category } from "@/components/category";
+import {
+  PointsList,
+  PointsListItem,
+  PointsListSeparator,
+} from "@/components/points-list";
 
 const Trip = () => {
   const [tripPoints, setTripPoints] = React.useState<Point[]>([]);
@@ -108,13 +113,13 @@ const Trip = () => {
             <Text className="text-sky-500 text-xl">Categories</Text>
             <ScrollView
               horizontal
-              contentContainerStyle={{ gap: 10, paddingRight: 20 }}
+              contentContainerStyle={{ gap: 12, paddingRight: 20 }}
               showsHorizontalScrollIndicator={false}
               className="h-auto p-3 bg-gray-100 rounded-xl flex flex-row "
             >
               <Category
                 icon={
-                  <Home height={"60%"} width={"60%"} className="text-white" />
+                  <Home height={"50%"} width={"50%"} className="text-white" />
                 }
                 name="Home"
                 backgroundColor="#eab308"
@@ -122,8 +127,8 @@ const Trip = () => {
               <Category
                 icon={
                   <UtensilsCrossed
-                    height={"60%"}
-                    width={"60%"}
+                    height={"50%"}
+                    width={"50%"}
                     className="text-white"
                   />
                 }
@@ -132,15 +137,24 @@ const Trip = () => {
               />
               <Category
                 icon={
-                  <Plus height={"60%"} width={"60%"} className="text-white" />
+                  <Plus height={"50%"} width={"50%"} className="text-white" />
                 }
                 name="Add"
                 backgroundColor="#0ea5e9"
               />
             </ScrollView>
           </View>
-          <View className="flex flex-col gap-2">
+          <View style={{ gap: 12 }} className="flex flex-col">
             <Text className="text-sky-500 text-xl">Points</Text>
+            <PointsList>
+              <PointsListItem></PointsListItem>
+              <PointsListSeparator></PointsListSeparator>
+              <PointsListItem></PointsListItem>
+              <PointsListSeparator></PointsListSeparator>
+              <PointsListItem></PointsListItem>
+              <PointsListSeparator></PointsListSeparator>
+              <PointsListItem></PointsListItem>
+            </PointsList>
           </View>
         </View>
       </BottomSheet>
