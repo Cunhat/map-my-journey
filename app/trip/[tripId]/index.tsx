@@ -56,6 +56,7 @@ const Trip = () => {
           <GooglePlacesAutocomplete
             placeholder="Search your point of interest..."
             textInputProps={{
+              placeholderTextColor: "#d1d5db",
               onFocus: () => {
                 setIndex(2);
               },
@@ -91,7 +92,7 @@ const Trip = () => {
                 backgroundColor: "#f3f4f6",
                 borderRadius: 12,
                 paddingLeft: 35,
-                color: "#6b7280",
+                color: "#4b5563",
                 height: 40,
               },
               textInputContainer: {
@@ -118,6 +119,7 @@ const Trip = () => {
               className="h-auto p-3 bg-gray-100 rounded-xl flex flex-row "
             >
               <Category
+                url="/"
                 icon={
                   <Home height={"50%"} width={"50%"} className="text-white" />
                 }
@@ -125,6 +127,7 @@ const Trip = () => {
                 backgroundColor="#eab308"
               />
               <Category
+                url="/"
                 icon={
                   <UtensilsCrossed
                     height={"50%"}
@@ -136,6 +139,7 @@ const Trip = () => {
                 backgroundColor="#16a34a"
               />
               <Category
+                url={`/trip/${tripId}/createCategory`}
                 icon={
                   <Plus height={"50%"} width={"50%"} className="text-white" />
                 }

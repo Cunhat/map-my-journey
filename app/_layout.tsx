@@ -8,9 +8,16 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="(home)" options={{ headerShown: false }} />
         <Stack.Screen
-          name="trip/[tripId]"
+          name="trip/[tripId]/index"
           options={{
             headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="trip/[tripId]/createCategory"
+          options={{
+            headerShown: false,
+            presentation: "modal",
           }}
         />
       </Stack>
