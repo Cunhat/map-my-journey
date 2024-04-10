@@ -2,7 +2,7 @@ import { Button } from "@/components/button";
 import { Tabs, TabItem } from "@/components/tabs";
 import { CustomTextInput } from "@/components/text-input";
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import ColorPicker, {
   Panel1,
   Swatches,
@@ -11,10 +11,12 @@ import ColorPicker, {
   HueCircular,
   returnedResults,
 } from "reanimated-color-picker";
+import { icons } from "lucide-react-native";
 
 const CreateCategory = () => {
   const [color, setColor] = React.useState("blue");
   const [tab, setTab] = React.useState<number>(0);
+  const [icon, setIcon] = React.useState<string>("Home");
 
   const onSelectColor = (color: returnedResults) => {
     setColor(color.hex);
@@ -23,6 +25,8 @@ const CreateCategory = () => {
   const onTabChange = (index: number) => {
     setTab(index);
   };
+
+  const SelectedIcon = icons[icon];
 
   return (
     <View
@@ -36,8 +40,15 @@ const CreateCategory = () => {
           <View className="justify-center items-center">
             <View
               style={{ backgroundColor: color }}
-              className="h-32 w-32 rounded-full"
-            ></View>
+              className="h-32 w-32 rounded-full justify-center items-center"
+            >
+              <SelectedIcon
+                strokeWidth={2.7}
+                className="text-white"
+                height={"50%"}
+                width={"50%"}
+              />
+            </View>
           </View>
           <View className="items-center justify-center">
             <Tabs>
@@ -58,7 +69,7 @@ const CreateCategory = () => {
           <View className="flex-1 items-center">
             {tab === 0 && (
               <ColorPicker
-                value={"blue"}
+                value={color}
                 style={{ width: "75%", height: "75%" }}
                 sliderThickness={20}
                 thumbSize={24}
@@ -80,7 +91,34 @@ const CreateCategory = () => {
                 </HueCircular>
               </ColorPicker>
             )}
-            {tab === 1 && <View className="h-full w-full bg-pink-300"></View>}
+            {tab === 1 && (
+              <ScrollView
+                contentContainerStyle={{
+                  gap: 24,
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  flex: 1,
+                  justifyContent: "center",
+                }}
+                horizontal={false}
+                showsVerticalScrollIndicator={false}
+                // showsHorizontalScrollIndicator={false}
+                className="h-full w-full flex-row flex-wrap"
+              >
+                {Object.keys(icons).map((name) => {
+                  const LucideIcon = icons[name];
+
+                  return (
+                    <TouchableOpacity key={name} onPress={() => setIcon(name)}>
+                      <LucideIcon
+                        color={icon === name ? "#0ea5e9" : "black"}
+                        size={40}
+                      />
+                    </TouchableOpacity>
+                  );
+                })}
+              </ScrollView>
+            )}
           </View>
         </View>
       </View>
