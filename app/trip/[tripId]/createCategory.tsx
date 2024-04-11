@@ -12,6 +12,7 @@ import ColorPicker, {
   returnedResults,
 } from "reanimated-color-picker";
 import { icons } from "lucide-react-native";
+import { CategoryIcons } from "@/components/category-icons";
 
 const CreateCategory = () => {
   const [color, setColor] = React.useState("blue");
@@ -92,32 +93,7 @@ const CreateCategory = () => {
               </ColorPicker>
             )}
             {tab === 1 && (
-              <ScrollView
-                contentContainerStyle={{
-                  gap: 24,
-                  flexDirection: "row",
-                  flexWrap: "wrap",
-                  flex: 1,
-                  justifyContent: "center",
-                }}
-                horizontal={false}
-                showsVerticalScrollIndicator={false}
-                // showsHorizontalScrollIndicator={false}
-                className="h-full w-full flex-row flex-wrap"
-              >
-                {Object.keys(icons).map((name) => {
-                  const LucideIcon = icons[name];
-
-                  return (
-                    <TouchableOpacity key={name} onPress={() => setIcon(name)}>
-                      <LucideIcon
-                        color={icon === name ? "#0ea5e9" : "black"}
-                        size={40}
-                      />
-                    </TouchableOpacity>
-                  );
-                })}
-              </ScrollView>
+              <CategoryIcons selectedIcon={icon} setSelectedIcon={setIcon} />
             )}
           </View>
         </View>
