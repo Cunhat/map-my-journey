@@ -1,6 +1,6 @@
-import React, { memo } from "react";
-import { ScrollView, TouchableOpacity, View, Text } from "react-native";
 import { icons } from "lucide-react-native";
+import React from "react";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 const travelIcons = [
   "AlarmSmoke",
@@ -73,36 +73,41 @@ const CategoryIconsMemo: React.FC<CategoryIconsProps> = ({
       className="h-full w-full flex-row flex-wrap"
     >
       <Text className="text-base text-gray-500">Most Popular</Text>
-      <View style={{ gap: 24 }} className="flex-row flex-wrap">
-        {mostPopularIcons.map((name) => {
-          const LucideIcon = icons[name];
-
-          return (
-            <TouchableOpacity key={name} onPress={() => setSelectedIcon(name)}>
-              <LucideIcon
-                color={selectedIcon === name ? "#0ea5e9" : "black"}
-                size={40}
-              />
-            </TouchableOpacity>
-          );
-        })}
-      </View>
+      <Icons
+        selectedIcon={selectedIcon}
+        setSelectedIcon={setSelectedIcon}
+        arrayOfIcons={mostPopularIcons}
+      />
       <Text className="text-base text-gray-500">Travel</Text>
-      <View style={{ gap: 24 }} className="flex-row flex-wrap">
-        {travelIcons.map((name) => {
-          const LucideIcon = icons[name];
-
-          return (
-            <TouchableOpacity key={name} onPress={() => setSelectedIcon(name)}>
-              <LucideIcon
-                color={selectedIcon === name ? "#0ea5e9" : "black"}
-                size={40}
-              />
-            </TouchableOpacity>
-          );
-        })}
-      </View>
+      <Icons
+        selectedIcon={selectedIcon}
+        setSelectedIcon={setSelectedIcon}
+        arrayOfIcons={travelIcons}
+      />
     </ScrollView>
+  );
+};
+
+const Icons: React.FC<{
+  selectedIcon: string;
+  setSelectedIcon: (icon: string) => void;
+  arrayOfIcons: Array<string>;
+}> = ({ selectedIcon, setSelectedIcon, arrayOfIcons }) => {
+  return (
+    <View style={{ gap: 24 }} className="flex-row flex-wrap">
+      {arrayOfIcons.map((name) => {
+        const LucideIcon = icons[name as keyof typeof icons];
+
+        return (
+          <TouchableOpacity key={name} onPress={() => setSelectedIcon(name)}>
+            <LucideIcon
+              color={selectedIcon === name ? "#0ea5e9" : "black"}
+              size={40}
+            />
+          </TouchableOpacity>
+        );
+      })}
+    </View>
   );
 };
 

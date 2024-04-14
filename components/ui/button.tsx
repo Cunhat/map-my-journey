@@ -6,6 +6,7 @@ type ButtonProps = {
   title: string;
   type?: "primary" | "secondary";
   fullWidth?: boolean;
+  onPress?: () => void;
 };
 
 const buttonStyle = cva(
@@ -40,9 +41,17 @@ const textStyles = cva("text-lg font-medium", {
   },
 });
 
-export const Button: React.FC<ButtonProps> = ({ title, type, fullWidth }) => {
+export const Button: React.FC<ButtonProps> = ({
+  title,
+  type,
+  fullWidth,
+  onPress,
+}) => {
   return (
-    <TouchableOpacity className={buttonStyle({ type, fullWidth })}>
+    <TouchableOpacity
+      onPress={onPress}
+      className={buttonStyle({ type, fullWidth })}
+    >
       <Text className={textStyles({ type })}>{title}</Text>
     </TouchableOpacity>
   );

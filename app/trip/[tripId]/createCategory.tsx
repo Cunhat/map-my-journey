@@ -1,5 +1,5 @@
-import { Button } from "@/components/button";
-import { Tabs, TabItem } from "@/components/tabs";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabItem } from "@/components/ui/tabs";
 import { CustomTextInput } from "@/components/text-input";
 import React from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
@@ -13,11 +13,14 @@ import ColorPicker, {
 } from "reanimated-color-picker";
 import { icons } from "lucide-react-native";
 import { CategoryIcons } from "@/components/category-icons";
+import { useLocalSearchParams, router } from "expo-router";
 
 const CreateCategory = () => {
   const [color, setColor] = React.useState("blue");
   const [tab, setTab] = React.useState<number>(0);
   const [icon, setIcon] = React.useState<string>("Home");
+
+  const { tripId } = useLocalSearchParams<{ tripId: string }>();
 
   const onSelectColor = (color: returnedResults) => {
     setColor(color.hex);
@@ -27,7 +30,7 @@ const CreateCategory = () => {
     setTab(index);
   };
 
-  const SelectedIcon = icons[icon];
+  const SelectedIcon = icons[icon as keyof typeof icons];
 
   return (
     <View
@@ -100,7 +103,12 @@ const CreateCategory = () => {
       </View>
       <View style={{ gap: 12 }} className="h-auto pb-4">
         <Button title="Create" fullWidth />
-        <Button title="Cancel" type="secondary" fullWidth />
+        <Button
+          title="Cancel"
+          type="secondary"
+          fullWidth
+          onPress={() => router.back()}
+        />
       </View>
     </View>
   );
