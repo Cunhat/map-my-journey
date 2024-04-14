@@ -20,6 +20,7 @@ export default function RootLayout() {
             presentation: "modal",
           }}
         />
+        <Stack.Screen name="(auth)/signIn" options={{ headerShown: false }} />
       </Stack>
     </GestureHandlerRootView>
   );

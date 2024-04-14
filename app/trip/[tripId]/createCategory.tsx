@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Tabs, TabItem } from "@/components/ui/tabs";
-import { CustomTextInput } from "@/components/text-input";
+import { CustomTextInput } from "@/components/ui/text-input";
 import React from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import ColorPicker, {
