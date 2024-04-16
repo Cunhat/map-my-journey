@@ -1,5 +1,5 @@
 import { Map } from "lucide-react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   ImageBackground,
   SafeAreaView,
@@ -12,13 +12,23 @@ import { HomeLayout } from "../../components/home-layout";
 import { Link } from "expo-router";
 import { supabase } from "@/lib/supabase";
 import { err } from "react-native-svg";
+import { useQuery } from "@tanstack/react-query";
 
 const Home = () => {
-  const call = async () => {
-    let { data: category, error } = await supabase.from("user").select("*");
-    console.log("user", category);
-    console.log("error", error);
-  };
+  const { isPending, error, data, isSuccess, isFetching } = useQuery({
+    queryKey: ["user"],
+    queryFn: async () => {
+      return await supabase.from("user").select("*");
+    },
+  });
+
+  useEffect(() => {
+    if (isSuccess) {
+      console.log("data", data);
+    }
+  }, [isSuccess]);
+
+  if (isFetching) return <Text>Loading...</Text>;
 
   return (
     <HomeLayout>
@@ -36,7 +46,7 @@ const Home = () => {
           <Text style={{ fontSize: 22, fontWeight: "500" }}>Sign up</Text>
         </TouchableOpacity>
       </Link>
-      <TouchableOpacity onPress={call}>
+      <TouchableOpacity>
         <Text>Call</Text>
       </TouchableOpacity>
     </HomeLayout>
