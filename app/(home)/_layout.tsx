@@ -1,5 +1,5 @@
 import { cva } from "class-variance-authority";
-import { Tabs } from "expo-router";
+import { Tabs, router } from "expo-router";
 import { Map, Plus, User } from "lucide-react-native";
 import { View } from "react-native";
 import NewTrip from "./newTrip";

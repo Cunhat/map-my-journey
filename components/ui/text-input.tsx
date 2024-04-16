@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TextInput } from "react-native";
+import { View, Text, TextInput, KeyboardTypeOptions } from "react-native";
 
 type TextInputProps = {
   placeholder: string;
@@ -8,6 +8,7 @@ type TextInputProps = {
   label: string;
   secureTextEntry?: boolean;
   autoCapitalize?: "none" | "sentences" | "words" | "characters" | undefined;
+  keyboardType: KeyboardTypeOptions;
 };
 
 export const CustomTextInput: React.FC<TextInputProps> = ({
@@ -17,6 +18,7 @@ export const CustomTextInput: React.FC<TextInputProps> = ({
   label,
   secureTextEntry,
   autoCapitalize,
+  keyboardType,
 }) => {
   return (
     <View style={{ gap: 4 }}>
@@ -25,6 +27,7 @@ export const CustomTextInput: React.FC<TextInputProps> = ({
         placeholder={placeholder}
         placeholderTextColor={"#d1d5db"}
         value={value}
+        keyboardType={keyboardType}
         secureTextEntry={secureTextEntry}
         onChangeText={(text) => onChangeText(text)}
         className="h-10 w-full p-2 bg-gray-100 rounded-xl text-gray-600"

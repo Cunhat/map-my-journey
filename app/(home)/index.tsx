@@ -31,7 +31,7 @@ const Home = () => {
         />
         <Text className="font-bold text-sky-500 text-2xl">Trips</Text>
       </View>
-      <Link href={"/signIn"} asChild>
+      <Link href={"/trip/32424dadasd"} asChild>
         <TouchableOpacity>
           <Text style={{ fontSize: 22, fontWeight: "500" }}>Sign up</Text>
         </TouchableOpacity>
