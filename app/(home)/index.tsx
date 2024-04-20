@@ -15,21 +15,6 @@ import { err } from "react-native-svg";
 import { useQuery } from "@tanstack/react-query";
 
 const Home = () => {
-  const { isPending, error, data, isSuccess, isFetching } = useQuery({
-    queryKey: ["user"],
-    queryFn: async () => {
-      return await supabase.from("user").select("*");
-    },
-  });
-
-  useEffect(() => {
-    if (isSuccess) {
-      console.log("data", data);
-    }
-  }, [isSuccess]);
-
-  if (isFetching) return <Text>Loading...</Text>;
-
   return (
     <HomeLayout>
       <View className="flex-row gap-2 items-center">
@@ -41,7 +26,7 @@ const Home = () => {
         />
         <Text className="font-bold text-sky-500 text-2xl">Trips</Text>
       </View>
-      <Link href={"/trip/32424dadasd"} asChild>
+      <Link href={"/signIn"} asChild>
         <TouchableOpacity>
           <Text style={{ fontSize: 22, fontWeight: "500" }}>Sign up</Text>
         </TouchableOpacity>

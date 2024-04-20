@@ -7,6 +7,7 @@ type ButtonProps = {
   type?: "primary" | "secondary";
   fullWidth?: boolean;
   onPress?: () => void;
+  disabled?: boolean;
 };
 
 const buttonStyle = cva(
@@ -20,6 +21,9 @@ const buttonStyle = cva(
       fullWidth: {
         true: "w-full",
         false: "w-fit-content",
+      },
+      disabled: {
+        true: "opacity-50",
       },
     },
     defaultVariants: {
@@ -46,11 +50,13 @@ export const Button: React.FC<ButtonProps> = ({
   type,
   fullWidth,
   onPress,
+  disabled,
 }) => {
   return (
     <TouchableOpacity
+      disabled={disabled}
       onPress={onPress}
-      className={buttonStyle({ type, fullWidth })}
+      className={buttonStyle({ type, fullWidth, disabled })}
     >
       <Text className={textStyles({ type })}>{title}</Text>
     </TouchableOpacity>
