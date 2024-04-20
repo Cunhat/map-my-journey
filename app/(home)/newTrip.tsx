@@ -1,8 +1,9 @@
 import { HomeLayout } from "@/components/home-layout";
 import { Button } from "@/components/ui/button";
 import { CustomTextInput } from "@/components/ui/text-input";
-import { useAuth } from "@/hooks/useAuth";
+
 import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/provider/authProvider";
 import { useMutation } from "@tanstack/react-query";
 import { router, useNavigation } from "expo-router";
 import { CalendarDays, MapPin, Plane, X } from "lucide-react-native";
@@ -26,7 +27,7 @@ const NewTrip = () => {
     | undefined
   >();
   const ref = useRef<GooglePlacesAutocompleteRef>(null);
-  const { data, isPending, error } = useAuth();
+  const { session } = useAuth();
 
   const createTripMutation = useMutation({
     mutationFn: async (newTrip: any) => {
@@ -36,7 +37,7 @@ const NewTrip = () => {
           {
             name: newTrip.name,
             days: parseInt(newTrip.days),
-            userId: data?.data.session?.user.id,
+            userId: session?.user.id,
             city: newTrip.city.name,
             latitude: newTrip.city.latitude,
             longitude: newTrip.city.longitude,

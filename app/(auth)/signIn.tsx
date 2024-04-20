@@ -1,9 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { CustomTextInput } from "@/components/ui/text-input";
 import React, { useState } from "react";
-import { Alert, StyleSheet, View, AppState, SafeAreaView } from "react-native";
+import {
+  Alert,
+  StyleSheet,
+  View,
+  AppState,
+  SafeAreaView,
+  Text,
+} from "react-native";
 import { supabase } from "@/lib/supabase";
-import { router } from "expo-router";
+import { Redirect, router } from "expo-router";
+import { useAuth } from "@/provider/authProvider";
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
@@ -21,6 +29,9 @@ const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const { session, isLoading } = useAuth();
+
+  if (session) return <Redirect href={"/"} />;
 
   async function signInWithEmail() {
     setLoading(true);
@@ -76,7 +87,7 @@ const SignIn = () => {
         <View>
           <Button
             title="Sign in"
-            //   disabled={loading}
+            disabled={loading}
             onPress={() => signInWithEmail()}
           />
         </View>

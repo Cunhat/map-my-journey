@@ -5,7 +5,7 @@ import MapView, { Marker } from "react-native-maps";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Search, Plus, Home, UtensilsCrossed } from "lucide-react-native";
-import { Point } from "@/lib/types";
+import { Point } from "@/lib/types/types";
 import { Category } from "@/components/category";
 import {
   PointsList,

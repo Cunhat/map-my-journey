@@ -8,7 +8,7 @@ type TextInputProps = {
   label: string;
   secureTextEntry?: boolean;
   autoCapitalize?: "none" | "sentences" | "words" | "characters" | undefined;
-  keyboardType: KeyboardTypeOptions;
+  keyboardType?: KeyboardTypeOptions;
 };
 
 export const CustomTextInput: React.FC<TextInputProps> = ({

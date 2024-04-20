@@ -1,4 +1,4 @@
-import AuthProvider from "@/components/wrapper/auth";
+import AuthProvider from "@/provider/authProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
