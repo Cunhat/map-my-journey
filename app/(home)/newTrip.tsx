@@ -194,7 +194,9 @@ const NewTrip = () => {
       </ScrollView>
       <View style={{ gap: 12 }} className="mt-auto pb-6">
         <Button
-          disabled={!name || !days || createTripMutation.isPending || !city}
+          disabled={
+            !name || !days || createTripMutation.isPending || !city || !photo
+          }
           title="Create"
           fullWidth
           onPress={onSubmit}
