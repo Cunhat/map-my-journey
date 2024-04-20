@@ -37,15 +37,12 @@ const Home = () => {
       const resp = await supabase
         .from("trip")
         .select("*")
-        .eq("userId", user?.id);
+        .eq("userId", user?.id)
+        .order("created_at", { ascending: false });
 
       return resp.data as TripSchema[];
     },
   });
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   if (isPending) return <FullPageLoading />;
 

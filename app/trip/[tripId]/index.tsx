@@ -64,8 +64,6 @@ const Trip = () => {
             onPress={(data, details = null) => {
               const { lat, lng } = details?.geometry.location;
 
-              console.log("data", data);
-
               mapRef.current?.animateCamera(
                 {
                   center: {

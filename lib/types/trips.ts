@@ -17,4 +17,5 @@ export type TripSchema = {
   name: string
   points: Array<any> | null
   userId: string
+  photo_url: string
 }

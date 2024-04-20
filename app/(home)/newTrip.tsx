@@ -1,10 +1,11 @@
 import { HomeLayout } from "@/components/home-layout";
+import { PlacePhoto } from "@/components/place-photo";
 import { Button } from "@/components/ui/button";
 import { CustomTextInput } from "@/components/ui/text-input";
 
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/provider/authProvider";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { router, useNavigation } from "expo-router";
 import { CalendarDays, MapPin, Plane, X } from "lucide-react-native";
 import React, { useRef } from "react";
@@ -23,11 +24,15 @@ const NewTrip = () => {
         name: string;
         latitude: number;
         longitude: number;
+        photos: Array<string>;
       }
     | undefined
   >();
+  const [photo, setPhoto] = React.useState<string>();
   const ref = useRef<GooglePlacesAutocompleteRef>(null);
   const { session } = useAuth();
+
+  const queryClient = useQueryClient();
 
   const createTripMutation = useMutation({
     mutationFn: async (newTrip: any) => {
@@ -41,6 +46,7 @@ const NewTrip = () => {
             city: newTrip.city.name,
             latitude: newTrip.city.latitude,
             longitude: newTrip.city.longitude,
+            photo_url: newTrip.photo,
           },
         ])
         .select();
@@ -52,6 +58,8 @@ const NewTrip = () => {
         setDays("");
         setName("");
         ref.current?.clear();
+        setPhoto(undefined);
+        queryClient.invalidateQueries({ queryKey: ["getTrips"] });
         router.navigate("/trip/" + data[0].id);
       }
     },
@@ -65,6 +73,7 @@ const NewTrip = () => {
       name,
       days,
       city,
+      photo,
     });
   };
 
@@ -130,6 +139,7 @@ const NewTrip = () => {
               name: data?.description,
               latitude: details?.geometry?.location?.lat ?? 0,
               longitude: details?.geometry?.location?.lng ?? 0,
+              photos: details?.photos,
             });
           }}
           renderLeftButton={() => (
@@ -165,6 +175,23 @@ const NewTrip = () => {
           )}
         />
       </View>
+      <ScrollView
+        contentContainerStyle={{ gap: 12 }}
+        showsHorizontalScrollIndicator={false}
+        style={{ gap: 12 }}
+        horizontal
+        // className="flex-row flex-wrap justify-center h-full"
+      >
+        {city?.photos?.length &&
+          city.photos.map((item) => (
+            <PlacePhoto
+              key={item.photo_reference}
+              url={item.photo_reference}
+              selected={photo === item.photo_reference}
+              selectPhoto={setPhoto}
+            />
+          ))}
+      </ScrollView>
       <View style={{ gap: 12 }} className="mt-auto pb-6">
         <Button
           disabled={!name || !days || createTripMutation.isPending || !city}
