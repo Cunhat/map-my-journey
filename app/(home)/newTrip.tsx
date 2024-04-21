@@ -12,9 +12,17 @@ import React, { useRef } from "react";
 import { Text, View, Image, TextInput, TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import {
+  GooglePlaceDetail,
   GooglePlacesAutocomplete,
   GooglePlacesAutocompleteRef,
 } from "react-native-google-places-autocomplete";
+
+type Photos = {
+  height: number;
+  html_attributions: Array<string>;
+  photo_reference: string;
+  width: number;
+};
 
 const NewTrip = () => {
   const [name, setName] = React.useState("");
@@ -24,7 +32,7 @@ const NewTrip = () => {
         name: string;
         latitude: number;
         longitude: number;
-        photos: Array<string>;
+        photos: Array<Photos>;
       }
     | undefined
   >();
@@ -139,6 +147,7 @@ const NewTrip = () => {
               name: data?.description,
               latitude: details?.geometry?.location?.lat ?? 0,
               longitude: details?.geometry?.location?.lng ?? 0,
+              // @ts-ignore
               photos: details?.photos,
             });
           }}
@@ -180,7 +189,6 @@ const NewTrip = () => {
         showsHorizontalScrollIndicator={false}
         style={{ gap: 12 }}
         horizontal
-        // className="flex-row flex-wrap justify-center h-full"
       >
         {city?.photos?.length &&
           city.photos.map((item) => (

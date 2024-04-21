@@ -4,7 +4,13 @@ import { View, Text, TextInput, ScrollView } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import { Search, Plus, Home, UtensilsCrossed } from "lucide-react-native";
+import {
+  Search,
+  Plus,
+  Home,
+  UtensilsCrossed,
+  icons,
+} from "lucide-react-native";
 import { Point } from "@/lib/types/types";
 import { Category } from "@/components/category";
 import {
@@ -12,6 +18,10 @@ import {
   PointsListItem,
   PointsListSeparator,
 } from "@/components/points-list";
+import { useQuery } from "@tanstack/react-query";
+import { useGetUser } from "@/hooks/useGetUser";
+import { supabase } from "@/lib/supabase";
+import { FullPageLoading } from "@/components/ui/loading";
 
 const Trip = () => {
   const [tripPoints, setTripPoints] = React.useState<Point[]>([]);
@@ -19,8 +29,26 @@ const Trip = () => {
   const { tripId } = useLocalSearchParams<{ tripId: string }>();
   const sheetRef = useRef<BottomSheet>(null);
   const [index, setIndex] = React.useState(0);
+  const { getUser } = useGetUser();
 
   const snapPoints = React.useMemo(() => ["25%", "50%", "90%"], []);
+
+  const categories = useQuery({
+    queryKey: ["getTripCategories", tripId],
+    queryFn: async () => {
+      const user = await getUser();
+
+      const resp = await supabase
+        .from("category")
+        .select("*")
+        .eq("tripId", tripId)
+        .order("created_at", { ascending: false });
+
+      return resp.data;
+    },
+  });
+
+  if (categories.isPending) return <FullPageLoading />;
 
   return (
     <View className="flex-1">
@@ -117,26 +145,6 @@ const Trip = () => {
               className="h-auto p-3 bg-gray-100 rounded-xl flex flex-row "
             >
               <Category
-                url="/"
-                icon={
-                  <Home height={"50%"} width={"50%"} className="text-white" />
-                }
-                name="Home"
-                backgroundColor="#eab308"
-              />
-              <Category
-                url="/"
-                icon={
-                  <UtensilsCrossed
-                    height={"50%"}
-                    width={"50%"}
-                    className="text-white"
-                  />
-                }
-                name="Food"
-                backgroundColor="#16a34a"
-              />
-              <Category
                 url={`/trip/${tripId}/createCategory`}
                 icon={
                   <Plus height={"50%"} width={"50%"} className="text-white" />
@@ -144,6 +152,23 @@ const Trip = () => {
                 name="Add"
                 backgroundColor="#0ea5e9"
               />
+              {categories?.data?.map((category) => {
+                const SelectedIcon = icons[category.icon as keyof typeof icons];
+                return (
+                  <Category
+                    url="/"
+                    icon={
+                      <SelectedIcon
+                        height={"50%"}
+                        width={"50%"}
+                        className="text-white"
+                      />
+                    }
+                    name={category.name}
+                    backgroundColor={category.color}
+                  />
+                );
+              })}
             </ScrollView>
           </View>
           <View style={{ gap: 12 }} className="flex flex-col">
