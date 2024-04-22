@@ -1,3 +1,4 @@
+import { Tables } from "@/lib/types/supabase";
 import { TripSchema } from "@/lib/types/trips";
 import { router } from "expo-router";
 import { CalendarDays, MapPin } from "lucide-react-native";
@@ -5,7 +6,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, ImageBackground } from "react-native";
 
 type TripCardProps = {
-  tripInfo: TripSchema;
+  tripInfo: Tables<"trip">;
 };
 
 export const TripCard: React.FC<TripCardProps> = ({ tripInfo }) => {

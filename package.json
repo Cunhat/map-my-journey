@@ -7,7 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "update-types": "npx supabase gen types typescript --project-id vdpwbhouavsizhorslco > lib/types/supabase.ts"
   },
   "jest": {
     "preset": "jest-expo"
@@ -21,6 +22,7 @@
     "@tanstack/react-query": "^5.29.2",
     "class-variance-authority": "^0.7.0",
     "expo": "~50.0.14",
+    "expo-device": "^5.9.4",
     "expo-font": "~11.10.3",
     "expo-linking": "~6.2.2",
     "expo-router": "~3.4.8",

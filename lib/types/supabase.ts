@@ -11,28 +11,28 @@ export type Database = {
     Tables: {
       category: {
         Row: {
-          color: string | null
+          color: string
           created_at: string | null
-          icon: string | null
+          icon: string
           id: number
           name: string
-          tripId: number | null
+          tripId: number
         }
         Insert: {
-          color?: string | null
+          color: string
           created_at?: string | null
-          icon?: string | null
+          icon: string
           id?: number
           name: string
-          tripId?: number | null
+          tripId: number
         }
         Update: {
-          color?: string | null
+          color?: string
           created_at?: string | null
-          icon?: string | null
+          icon?: string
           id?: number
           name?: string
-          tripId?: number | null
+          tripId?: number
         }
         Relationships: [
           {
@@ -48,24 +48,24 @@ export type Database = {
         Row: {
           categoryId: number | null
           id: number
-          latitude: string | null
-          longitude: string | null
+          latitude: string
+          longitude: string
           name: number
           tripId: number | null
         }
         Insert: {
           categoryId?: number | null
           id?: number
-          latitude?: string | null
-          longitude?: string | null
+          latitude: string
+          longitude: string
           name: number
           tripId?: number | null
         }
         Update: {
           categoryId?: number | null
           id?: number
-          latitude?: string | null
-          longitude?: string | null
+          latitude?: string
+          longitude?: string
           name?: number
           tripId?: number | null
         }
@@ -125,36 +125,36 @@ export type Database = {
         Row: {
           city: string | null
           created_at: string
-          days: number | null
+          days: number
           id: number
-          latitude: number | null
-          longitude: number | null
-          name: string | null
-          photo_url: string | null
+          latitude: number
+          longitude: number
+          name: string
+          photo_url: string
           points: number[] | null
           userId: string | null
         }
         Insert: {
           city?: string | null
           created_at?: string
-          days?: number | null
+          days: number
           id?: number
-          latitude?: number | null
-          longitude?: number | null
-          name?: string | null
-          photo_url?: string | null
+          latitude: number
+          longitude: number
+          name: string
+          photo_url: string
           points?: number[] | null
           userId?: string | null
         }
         Update: {
           city?: string | null
           created_at?: string
-          days?: number | null
+          days?: number
           id?: number
-          latitude?: number | null
-          longitude?: number | null
-          name?: string | null
-          photo_url?: string | null
+          latitude?: number
+          longitude?: number
+          name?: string
+          photo_url?: string
           points?: number[] | null
           userId?: string | null
         }

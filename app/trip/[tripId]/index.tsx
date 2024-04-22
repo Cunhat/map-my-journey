@@ -1,6 +1,12 @@
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useRef } from "react";
-import { View, Text, TextInput, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
@@ -10,6 +16,8 @@ import {
   Home,
   UtensilsCrossed,
   icons,
+  ChevronLeft,
+  X,
 } from "lucide-react-native";
 import { Point } from "@/lib/types/types";
 import { Category } from "@/components/category";
@@ -22,6 +30,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useGetUser } from "@/hooks/useGetUser";
 import { supabase } from "@/lib/supabase";
 import { FullPageLoading } from "@/components/ui/loading";
+import { useHeaderHeight } from "@react-navigation/elements";
+import { getDeviceHeaderHeight } from "@/lib/utils";
 
 const Trip = () => {
   const [tripPoints, setTripPoints] = React.useState<Point[]>([]);
@@ -30,8 +40,26 @@ const Trip = () => {
   const sheetRef = useRef<BottomSheet>(null);
   const [index, setIndex] = React.useState(0);
   const { getUser } = useGetUser();
+  const [currentMarker, setCurrentMarker] = React.useState<{
+    latitude: number;
+    longitude: number;
+  }>();
+  const headerHeight = getDeviceHeaderHeight() as number;
 
   const snapPoints = React.useMemo(() => ["25%", "50%", "90%"], []);
+
+  const trip = useQuery({
+    queryKey: ["getTrip", tripId],
+    queryFn: async () => {
+      const user = await getUser();
+
+      const resp = await supabase.from("trip").select("*").eq("id", tripId);
+
+      return resp.data;
+    },
+  });
+
+  console.log(headerHeight);
 
   const categories = useQuery({
     queryKey: ["getTripCategories", tripId],
@@ -48,10 +76,33 @@ const Trip = () => {
     },
   });
 
-  if (categories.isPending) return <FullPageLoading />;
+  const points = useQuery({
+    queryKey: ["getTripPoints", tripId],
+    queryFn: async () => {
+      const user = await getUser();
+
+      const resp = await supabase
+        .from("point")
+        .select("*")
+        .eq("tripId", tripId)
+        .order("created_at", { ascending: false });
+
+      return resp.data;
+    },
+  });
+
+  if (categories.isPending || trip.isPending || points.isPending)
+    return <FullPageLoading />;
 
   return (
     <View className="flex-1">
+      <TouchableOpacity
+        style={{ top: headerHeight, left: 10 }}
+        className="absolute z-10 rounded-full p-1 bg-white border border-gray-200 flex items-center justify-center"
+        onPress={() => router.push("/")}
+      >
+        <X className="text-gray-500" height={24} width={24}></X>
+      </TouchableOpacity>
       <MapView
         className="h-[90%]"
         showsUserLocation
@@ -62,13 +113,22 @@ const Trip = () => {
       >
         {tripPoints.map((marker, index) => (
           <Marker
-            key={index}
+            key={marker.id}
             coordinate={{
               latitude: marker.latitude,
               longitude: marker.longitude,
             }}
           />
         ))}
+        {currentMarker && (
+          <Marker
+            key={"curentMarker"}
+            coordinate={{
+              latitude: currentMarker.latitude,
+              longitude: currentMarker.longitude,
+            }}
+          />
+        )}
       </MapView>
       <BottomSheet
         animateOnMount
@@ -89,9 +149,15 @@ const Trip = () => {
                 setIndex(2);
               },
             }}
-            onPress={(data, details = null) => {
+            onPress={(data, details) => {
               const { lat, lng } = details?.geometry.location;
 
+              console.log(data, details);
+
+              setCurrentMarker({
+                latitude: lat,
+                longitude: lng,
+              });
               mapRef.current?.animateCamera(
                 {
                   center: {
@@ -166,6 +232,7 @@ const Trip = () => {
                     }
                     name={category.name}
                     backgroundColor={category.color}
+                    key={category.id}
                   />
                 );
               })}
@@ -174,13 +241,19 @@ const Trip = () => {
           <View style={{ gap: 12 }} className="flex flex-col">
             <Text className="text-sky-500 text-xl">Points</Text>
             <PointsList>
-              <PointsListItem></PointsListItem>
+              {points?.data?.map((point) => (
+                <>
+                  <PointsListItem></PointsListItem>
+                  <PointsListSeparator></PointsListSeparator>
+                </>
+              ))}
+              {/* <PointsListItem></PointsListItem>
               <PointsListSeparator></PointsListSeparator>
               <PointsListItem></PointsListItem>
               <PointsListSeparator></PointsListSeparator>
               <PointsListItem></PointsListItem>
               <PointsListSeparator></PointsListSeparator>
-              <PointsListItem></PointsListItem>
+              <PointsListItem></PointsListItem> */}
             </PointsList>
           </View>
         </View>

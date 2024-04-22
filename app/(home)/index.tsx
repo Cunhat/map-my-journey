@@ -40,7 +40,7 @@ const Home = () => {
         .eq("userId", user?.id)
         .order("created_at", { ascending: false });
 
-      return resp.data as TripSchema[];
+      return resp.data;
     },
   });
 
