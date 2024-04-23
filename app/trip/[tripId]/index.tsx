@@ -41,6 +41,7 @@ import { useHeaderHeight } from "@react-navigation/elements";
 import { createDecrementArray, getDeviceHeaderHeight } from "@/lib/utils";
 import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { CreatePoint } from "@/components/Trip/create-point";
 
 const Trip = () => {
   const [tripPoints, setTripPoints] = React.useState<Point[]>([]);
@@ -123,7 +124,6 @@ const Trip = () => {
         className="h-[90%]"
         showsUserLocation
         zoomEnabled
-        // showsMyLocationButton
         // provider="google"
         ref={mapRef}
       >
@@ -274,63 +274,13 @@ const Trip = () => {
           </View>
         </BottomSheet>
       )}
-      {addPointBottomSheet && (
-        <BottomSheet
-          animateOnMount
-          ref={addPointRef}
-          index={index}
-          snapPoints={snapPointsBottom}
-          // onAnimate={(fromIndex: number, toIndex: number) => {
-          //   setBottomSheetIndex(toIndex);
-          // }}
-          handleIndicatorStyle={{
-            backgroundColor: "#6b7280",
-            width: 40,
-          }}
-        >
-          <View style={{ gap: 24 }} className="flex-1 p-3">
-            <View className="flex-row items-center justify-between">
-              <Text className="text-xl text-gray-500 ">
-                {currentMarker?.data?.description}
-              </Text>
-              <TouchableOpacity
-                className=" rounded-full p-1 bg-gray-100 items-center justify-center"
-                onPress={() => setAddPointBottomSheet(!addPointBottomSheet)}
-              >
-                <X className="text-gray-500" height={24} width={24}></X>
-              </TouchableOpacity>
-            </View>
-            <Select
-              placeholder="Select category..."
-              decorationIcon={
-                <Tag className="text-gray-500" height={20} width={20} />
-              }
-              data={categories?.data?.map((item) => {
-                return {
-                  title: item.name,
-                  icon: {
-                    color: item.color,
-                    icon: item.icon,
-                    isCategory: true,
-                  },
-                };
-              })}
-            />
-            <Select
-              decorationIcon={
-                <CalendarDays
-                  className="text-gray-500"
-                  height={20}
-                  width={20}
-                />
-              }
-              placeholder="Select the day you want to visit..."
-              data={createDecrementArray(trip?.data.days)}
-            />
-            <Button title="Add Point" type="primary" fullWidth />
-          </View>
-        </BottomSheet>
-      )}
+      <CreatePoint
+        addPointBottomSheet={addPointBottomSheet}
+        setAddPointBottomSheet={setAddPointBottomSheet}
+        title={currentMarker?.data?.description ?? ""}
+        categories={categories?.data ?? []}
+        numberOfDays={trip?.data?.days ?? 0}
+      />
     </View>
   );
 };
