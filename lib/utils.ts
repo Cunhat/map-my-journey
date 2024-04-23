@@ -10,3 +10,7 @@ export const getDeviceHeaderHeight = () => {
   else return 0; 
   
 };
+
+export const createDecrementArray = (number: number) => {
+  return [...Array(number).keys()].map(i => ({ title: (number - i ).toString() }));
+};

@@ -105,7 +105,6 @@ const CreateCategory = () => {
             className="h-11 w-full text-base p-2 bg-gray-100 rounded-xl text-gray-600  "
           />
         </View>
-        {/* <CustomTextInput onChange={() => {}} placeholder="Category name..." /> */}
         <View style={{ gap: 16 }} className="flex-1">
           <View className="justify-center items-center">
             <View
