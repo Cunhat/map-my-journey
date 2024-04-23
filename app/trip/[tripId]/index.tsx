@@ -24,6 +24,7 @@ import {
   X,
   Tag,
   CalendarDays,
+  Beer,
 } from "lucide-react-native";
 import { Point } from "@/lib/types/types";
 import { Category } from "@/components/category";
@@ -39,6 +40,7 @@ import { FullPageLoading } from "@/components/ui/loading";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { createDecrementArray, getDeviceHeaderHeight } from "@/lib/utils";
 import { Select } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 const Trip = () => {
   const [tripPoints, setTripPoints] = React.useState<Point[]>([]);
@@ -58,11 +60,12 @@ const Trip = () => {
   const headerHeight = getDeviceHeaderHeight() as number;
 
   const snapPoints = React.useMemo(() => ["25%", "50%", "90%"], []);
+  const snapPointsBottom = React.useMemo(() => ["35%"], []);
 
   const trip = useQuery({
     queryKey: ["getTrip", tripId],
     queryFn: async () => {
-      const user = await getUser();
+      // const user = await getUser();
 
       const resp = await supabase
         .from("trip")
@@ -77,7 +80,7 @@ const Trip = () => {
   const categories = useQuery({
     queryKey: ["getTripCategories", tripId],
     queryFn: async () => {
-      const user = await getUser();
+      // const user = await getUser();
 
       const resp = await supabase
         .from("category")
@@ -135,6 +138,7 @@ const Trip = () => {
         ))}
         {currentMarker && (
           <Marker
+            icon={34}
             key={"curentMarker"}
             coordinate={{
               latitude: currentMarker.latitude,
@@ -265,13 +269,6 @@ const Trip = () => {
                     <PointsListSeparator></PointsListSeparator>
                   </>
                 ))}
-                {/* <PointsListItem></PointsListItem>
-              <PointsListSeparator></PointsListSeparator>
-              <PointsListItem></PointsListItem>
-              <PointsListSeparator></PointsListSeparator>
-              <PointsListItem></PointsListItem>
-              <PointsListSeparator></PointsListSeparator>
-              <PointsListItem></PointsListItem> */}
               </PointsList>
             </View>
           </View>
@@ -282,13 +279,16 @@ const Trip = () => {
           animateOnMount
           ref={addPointRef}
           index={index}
-          snapPoints={snapPoints}
+          snapPoints={snapPointsBottom}
+          // onAnimate={(fromIndex: number, toIndex: number) => {
+          //   setBottomSheetIndex(toIndex);
+          // }}
           handleIndicatorStyle={{
             backgroundColor: "#6b7280",
             width: 40,
           }}
         >
-          <View className="flex-1 p-3" style={{ gap: 24 }}>
+          <View style={{ gap: 24 }} className="flex-1 p-3">
             <View className="flex-row items-center justify-between">
               <Text className="text-xl text-gray-500 ">
                 {currentMarker?.data?.description}
@@ -327,6 +327,7 @@ const Trip = () => {
               placeholder="Select the day you want to visit..."
               data={createDecrementArray(trip?.data.days)}
             />
+            <Button title="Add Point" type="primary" fullWidth />
           </View>
         </BottomSheet>
       )}
