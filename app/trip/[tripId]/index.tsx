@@ -100,7 +100,7 @@ const Trip = () => {
 
       const resp = await supabase
         .from("point")
-        .select("*")
+        .select(`*, category("*")`)
         .eq("trip_id", tripId);
 
       console.log("POINTSSSS", resp.data);
@@ -267,7 +267,7 @@ const Trip = () => {
                 {points.data &&
                   points?.data?.map((point, index) => (
                     <>
-                      <PointsListItem></PointsListItem>
+                      <PointsListItem point={point}></PointsListItem>
                       {index < points?.data?.length! - 1 && (
                         <PointsListSeparator></PointsListSeparator>
                       )}
