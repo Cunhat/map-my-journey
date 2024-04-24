@@ -46,40 +46,53 @@ export type Database = {
       }
       point: {
         Row: {
-          categoryId: number | null
+          category_id: number
+          day: number
           id: number
-          latitude: string
-          longitude: string
-          name: number
-          tripId: number | null
+          latitude: number
+          longitude: number
+          name: string
+          trip_id: number
+          user_id: string
         }
         Insert: {
-          categoryId?: number | null
+          category_id: number
+          day: number
           id?: number
-          latitude: string
-          longitude: string
-          name: number
-          tripId?: number | null
+          latitude: number
+          longitude: number
+          name: string
+          trip_id: number
+          user_id: string
         }
         Update: {
-          categoryId?: number | null
+          category_id?: number
+          day?: number
           id?: number
-          latitude?: string
-          longitude?: string
-          name?: number
-          tripId?: number | null
+          latitude?: number
+          longitude?: number
+          name?: string
+          trip_id?: number
+          user_id?: string
         }
         Relationships: [
           {
+            foreignKeyName: "point_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "public_point_categoryId_fkey"
-            columns: ["categoryId"]
+            columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "category"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "public_point_tripId_fkey"
-            columns: ["tripId"]
+            columns: ["trip_id"]
             isOneToOne: false
             referencedRelation: "trip"
             referencedColumns: ["id"]

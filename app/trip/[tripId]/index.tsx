@@ -101,8 +101,9 @@ const Trip = () => {
       const resp = await supabase
         .from("point")
         .select("*")
-        .eq("tripId", tripId)
-        .order("created_at", { ascending: false });
+        .eq("trip_id", tripId);
+
+      console.log("POINTSSSS", resp.data);
 
       return resp.data;
     },
@@ -263,12 +264,15 @@ const Trip = () => {
             <View style={{ gap: 12 }} className="flex flex-col">
               <Text className="text-sky-500 text-xl">Points</Text>
               <PointsList>
-                {points?.data?.map((point) => (
-                  <>
-                    <PointsListItem></PointsListItem>
-                    <PointsListSeparator></PointsListSeparator>
-                  </>
-                ))}
+                {points.data &&
+                  points?.data?.map((point, index) => (
+                    <>
+                      <PointsListItem></PointsListItem>
+                      {index < points?.data?.length! - 1 && (
+                        <PointsListSeparator></PointsListSeparator>
+                      )}
+                    </>
+                  ))}
               </PointsList>
             </View>
           </View>
@@ -277,7 +281,12 @@ const Trip = () => {
       <CreatePoint
         addPointBottomSheet={addPointBottomSheet}
         setAddPointBottomSheet={setAddPointBottomSheet}
-        title={currentMarker?.data?.description ?? ""}
+        point={{
+          name: currentMarker?.data?.description ?? "",
+          latitude: currentMarker?.latitude ?? 0,
+          longitude: currentMarker?.longitude ?? 0,
+        }}
+        tripId={tripId}
         categories={categories?.data ?? []}
         numberOfDays={trip?.data?.days ?? 0}
       />

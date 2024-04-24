@@ -10,6 +10,7 @@ type SelectProps = {
   }>;
   placeholder: string;
   decorationIcon: React.ReactNode;
+  onSelect: (value: any) => void;
 };
 
 const CategoryIcon: React.FC<{ category: { icon: string; color: string } }> = ({
@@ -43,12 +44,14 @@ export const Select: React.FC<SelectProps> = ({
   data,
   placeholder,
   decorationIcon,
+  onSelect,
 }) => {
   return (
     <SelectDropdown
       data={data}
-      onSelect={(selectedItem, index) => {
-        console.log(selectedItem, index);
+      onSelect={(selectedItem) => {
+        console.log(selectedItem);
+        onSelect(selectedItem);
       }}
       renderButton={(selectedItem, isOpened) => {
         return (
