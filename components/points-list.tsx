@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from "react";
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import {
   Search,
   Plus,
@@ -12,9 +12,13 @@ import { Tables } from "@/lib/types/supabase";
 
 export const PointsList: React.FC<PropsWithChildren> = ({ children }) => {
   return (
-    <View style={{ gap: 12 }} className="h-auto bg-gray-100 rounded-xl p-2">
+    <ScrollView
+      contentContainerStyle={{ gap: 12 }}
+      showsVerticalScrollIndicator={false}
+      className="h-auto bg-gray-100 rounded-xl p-2"
+    >
       {children}
-    </View>
+    </ScrollView>
   );
 };
 

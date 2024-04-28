@@ -103,8 +103,6 @@ const Trip = () => {
         .select(`*, category("*")`)
         .eq("trip_id", tripId);
 
-      console.log("POINTSSSS", resp.data);
-
       return resp.data;
     },
   });
@@ -128,15 +126,26 @@ const Trip = () => {
         // provider="google"
         ref={mapRef}
       >
-        {tripPoints.map((marker, index) => (
-          <Marker
-            key={marker.id}
-            coordinate={{
-              latitude: marker.latitude,
-              longitude: marker.longitude,
-            }}
-          />
-        ))}
+        {points?.data?.map((marker, index) => {
+          const Icon = icons[marker?.category?.icon as keyof typeof icons];
+
+          return (
+            <Marker
+              key={marker.id}
+              style={{
+                backgroundColor: marker?.category?.color,
+                borderRadius: 20,
+              }}
+              className="h-10 w-10 items-center justify-center"
+              coordinate={{
+                latitude: marker.latitude,
+                longitude: marker.longitude,
+              }}
+            >
+              <Icon className="text-white" />
+            </Marker>
+          );
+        })}
         {currentMarker && (
           <Marker
             icon={34}
@@ -269,7 +278,7 @@ const Trip = () => {
                     <>
                       <PointsListItem point={point}></PointsListItem>
                       {index < points?.data?.length! - 1 && (
-                        <PointsListSeparator></PointsListSeparator>
+                        <PointsListSeparator key={index} />
                       )}
                     </>
                   ))}
