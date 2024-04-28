@@ -21,6 +21,7 @@ type CreatePointProps = {
     longitude: number;
   };
   tripId: string;
+  closeModelAndClearCurrentMarker: () => void;
 };
 
 export const CreatePoint: React.FC<CreatePointProps> = ({
@@ -30,6 +31,7 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
   categories,
   numberOfDays,
   tripId,
+  closeModelAndClearCurrentMarker,
 }) => {
   const addPointRef = useRef<BottomSheet>(null);
   const [selectedCategory, setSelectedCategory] =
@@ -46,7 +48,7 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
     ) => {
       const user = await getUser();
 
-      const resp = await supabase
+      return await supabase
         .from("point")
         .insert({
           name: point.name,
@@ -58,16 +60,13 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
           category_id: point.category_id,
         })
         .select();
-
-      console.log(resp);
-      return resp;
     },
 
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["getTripPoints", tripId],
       });
-      setAddPointBottomSheet(false);
+      closeModelAndClearCurrentMarker();
     },
     onError: (err) => {
       console.log("err", err);

@@ -1,57 +1,34 @@
-import { router, useLocalSearchParams } from "expo-router";
-import React, { useEffect, useRef } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
-import MapView, { Marker } from "react-native-maps";
-import BottomSheet from "@gorhom/bottom-sheet";
-import {
-  GooglePlaceData,
-  GooglePlaceDetail,
-  GooglePlacesAutocomplete,
-} from "react-native-google-places-autocomplete";
-import {
-  Search,
-  Plus,
-  Home,
-  UtensilsCrossed,
-  icons,
-  ChevronLeft,
-  X,
-  Tag,
-  CalendarDays,
-  Beer,
-} from "lucide-react-native";
-import { Point } from "@/lib/types/types";
+import { CreatePoint } from "@/components/Trip/create-point";
 import { Category } from "@/components/category";
 import {
   PointsList,
   PointsListItem,
   PointsListSeparator,
 } from "@/components/points-list";
-import { useQuery } from "@tanstack/react-query";
-import { useGetUser } from "@/hooks/useGetUser";
-import { supabase } from "@/lib/supabase";
 import { FullPageLoading } from "@/components/ui/loading";
-import { useHeaderHeight } from "@react-navigation/elements";
-import { createDecrementArray, getDeviceHeaderHeight } from "@/lib/utils";
-import { Select } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { CreatePoint } from "@/components/Trip/create-point";
+import { supabase } from "@/lib/supabase";
+import { getDeviceHeaderHeight } from "@/lib/utils";
+import BottomSheet from "@gorhom/bottom-sheet";
+import { useQuery } from "@tanstack/react-query";
+import { router, useLocalSearchParams } from "expo-router";
+import { Plus, Search, X, icons } from "lucide-react-native";
+import React, { useRef } from "react";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  GooglePlaceData,
+  GooglePlaceDetail,
+  GooglePlacesAutocomplete,
+} from "react-native-google-places-autocomplete";
+import MapView, { Marker } from "react-native-maps";
 
 const Trip = () => {
-  const [tripPoints, setTripPoints] = React.useState<Point[]>([]);
   const mapRef = useRef<MapView>(null);
   const { tripId } = useLocalSearchParams<{ tripId: string }>();
   const sheetRef = useRef<BottomSheet>(null);
-  const addPointRef = useRef<BottomSheet>(null);
+
   const [addPointBottomSheet, setAddPointBottomSheet] = React.useState(false);
   const [index, setIndex] = React.useState(0);
-  const { getUser } = useGetUser();
+
   const [currentMarker, setCurrentMarker] = React.useState<{
     details: GooglePlaceDetail;
     data: GooglePlaceData;
@@ -61,13 +38,15 @@ const Trip = () => {
   const headerHeight = getDeviceHeaderHeight() as number;
 
   const snapPoints = React.useMemo(() => ["25%", "50%", "90%"], []);
-  const snapPointsBottom = React.useMemo(() => ["35%"], []);
+
+  const closeModelAndClearCurrentMarker = () => {
+    setAddPointBottomSheet(false);
+    setCurrentMarker(undefined);
+  };
 
   const trip = useQuery({
     queryKey: ["getTrip", tripId],
     queryFn: async () => {
-      // const user = await getUser();
-
       const resp = await supabase
         .from("trip")
         .select("*")
@@ -81,8 +60,6 @@ const Trip = () => {
   const categories = useQuery({
     queryKey: ["getTripCategories", tripId],
     queryFn: async () => {
-      // const user = await getUser();
-
       const resp = await supabase
         .from("category")
         .select("*")
@@ -96,8 +73,6 @@ const Trip = () => {
   const points = useQuery({
     queryKey: ["getTripPoints", tripId],
     queryFn: async () => {
-      const user = await getUser();
-
       const resp = await supabase
         .from("point")
         .select(`*, category("*")`)
@@ -298,6 +273,7 @@ const Trip = () => {
         tripId={tripId}
         categories={categories?.data ?? []}
         numberOfDays={trip?.data?.days ?? 0}
+        closeModelAndClearCurrentMarker={closeModelAndClearCurrentMarker}
       />
     </View>
   );
