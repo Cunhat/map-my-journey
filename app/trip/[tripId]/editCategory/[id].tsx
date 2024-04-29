@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  Modal,
 } from "react-native";
 import ColorPicker, {
   Panel1,
@@ -30,6 +31,7 @@ const EditCategory = () => {
   const [tab, setTab] = React.useState<number>(0);
   const [icon, setIcon] = React.useState<string>("Home");
   const [name, setName] = React.useState("");
+  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
 
   const { tripId, id } = useLocalSearchParams<{ tripId: string; id: string }>();
 
@@ -97,6 +99,25 @@ const EditCategory = () => {
         });
         router.navigate("/trip/" + tripId);
       }
+    },
+    onError: (err) => {
+      console.log("err", err);
+    },
+  });
+
+  const deleteCategory = useMutation({
+    mutationFn: async () => {
+      return await supabase.from("category").delete().eq("id", id).select();
+    },
+
+    onSuccess: ({ data }) => {
+      queryClient.invalidateQueries({
+        queryKey: ["getTripCategories", tripId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["getTripPoints", tripId],
+      });
+      router.navigate("/trip/" + tripId);
     },
     onError: (err) => {
       console.log("err", err);
@@ -205,12 +226,50 @@ const EditCategory = () => {
           disabled={!name || !color || !icon}
         />
         <Button
+          title="Delete"
+          type="danger"
+          fullWidth
+          onPress={() => setDeleteModalVisible(true)}
+        />
+        <Button
           title="Cancel"
           type="secondary"
           fullWidth
           onPress={() => router.back()}
         />
       </View>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={deleteModalVisible}
+      >
+        <View className="flex-1 bg-black/60 justify-center items-center">
+          <View
+            style={{ gap: 12 }}
+            className="bg-white rounded-xl p-3 flex flex-col h-auto w-[90%]"
+          >
+            <Text className="text-xl text-sky-500">Are you sure ?</Text>
+            <Text className="text-base text-gray-500">
+              The deletion of this category will result in the loss of all
+              points associated with it.
+            </Text>
+            <View style={{ gap: 12 }} className=" items-center justify-center">
+              <Button
+                title="Delete"
+                type="danger"
+                fullWidth
+                onPress={() => deleteCategory.mutate()}
+              />
+              <Button
+                title="Cancel"
+                type="secondary"
+                fullWidth
+                onPress={() => setDeleteModalVisible(false)}
+              />
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
