@@ -191,13 +191,14 @@ const Trip = () => {
                   }
                   name="Add"
                   backgroundColor="#0ea5e9"
+                  key="AddCategory"
                 />
                 {categories?.data?.map((category) => {
                   const SelectedIcon =
                     icons[category.icon as keyof typeof icons];
                   return (
                     <Category
-                      url="/"
+                      url={`/trip/${tripId}/editCategory/${category.id}`}
                       icon={
                         <SelectedIcon
                           height={"50%"}
@@ -218,12 +219,14 @@ const Trip = () => {
               <PointsList>
                 {points.data &&
                   points?.data?.map((point, index) => (
-                    <>
-                      <PointsListItem point={point} key={point.id} />
+                    <React.Fragment key={point.id}>
+                      <PointsListItem point={point} />
                       {index < points?.data?.length! - 1 && (
-                        <PointsListSeparator key={index} />
+                        <PointsListSeparator
+                        // key={"separator" + point.id + index}
+                        />
                       )}
-                    </>
+                    </React.Fragment>
                   ))}
               </PointsList>
             </View>
