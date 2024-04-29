@@ -7,6 +7,7 @@ import {
 } from "@/components/points-list";
 import { FullPageLoading } from "@/components/ui/loading";
 import { supabase } from "@/lib/supabase";
+import { Tables } from "@/lib/types/supabase";
 import { getDeviceHeaderHeight } from "@/lib/utils";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { useQuery } from "@tanstack/react-query";
@@ -76,7 +77,8 @@ const Trip = () => {
       const resp = await supabase
         .from("point")
         .select(`*, category("*")`)
-        .eq("trip_id", tripId);
+        .eq("trip_id", tripId)
+        .returns<Array<Tables<"point"> & { category: Tables<"category"> }>>();
 
       return resp.data;
     },
@@ -98,6 +100,12 @@ const Trip = () => {
         className="h-[90%]"
         showsUserLocation
         zoomEnabled
+        initialRegion={{
+          latitude: trip.data?.latitude ?? 0,
+          longitude: trip.data?.longitude ?? 0,
+          latitudeDelta: 0.1,
+          longitudeDelta: 0.1,
+        }}
         // provider="google"
         ref={mapRef}
       >
@@ -251,7 +259,7 @@ const Trip = () => {
                 {points.data &&
                   points?.data?.map((point, index) => (
                     <>
-                      <PointsListItem point={point}></PointsListItem>
+                      <PointsListItem point={point} key={point.id} />
                       {index < points?.data?.length! - 1 && (
                         <PointsListSeparator key={index} />
                       )}
