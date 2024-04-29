@@ -13,9 +13,9 @@ import { Tables } from "@/lib/types/supabase";
 export const PointsList: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <ScrollView
-      contentContainerStyle={{ gap: 12 }}
+      contentContainerStyle={{ gap: 12, paddingBottom: 50 }}
       showsVerticalScrollIndicator={false}
-      className="h-auto bg-gray-100 rounded-xl p-2"
+      className="bg-gray-100 rounded-xl p-2"
     >
       {children}
     </ScrollView>
@@ -23,7 +23,7 @@ export const PointsList: React.FC<PropsWithChildren> = ({ children }) => {
 };
 
 type PointsListItemProps = {
-  point: Tables<"point">;
+  point: Tables<"point"> & { category: Tables<"category"> };
 };
 
 export const PointsListItem: React.FC<PointsListItemProps> = ({ point }) => {

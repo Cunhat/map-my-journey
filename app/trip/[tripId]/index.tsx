@@ -163,8 +163,6 @@ const Trip = () => {
               onPress={(data, details) => {
                 const { lat, lng } = details?.geometry?.location;
 
-                console.log(data, details);
-
                 setCurrentMarker({
                   latitude: lat,
                   longitude: lng,
@@ -253,7 +251,7 @@ const Trip = () => {
                 })}
               </ScrollView>
             </View>
-            <View style={{ gap: 12 }} className="flex flex-col">
+            <View style={{ gap: 12 }} className="flex-1">
               <Text className="text-sky-500 text-xl">Points</Text>
               <PointsList>
                 {points.data &&

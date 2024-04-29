@@ -58,7 +58,6 @@ const Home = () => {
         <Text className="font-bold text-sky-500 text-2xl">Trips</Text>
       </View>
       <ScrollView
-        style={{ gap: 12 }}
         contentContainerStyle={{ gap: 12 }}
         showsVerticalScrollIndicator={false}
       >
