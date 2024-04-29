@@ -1,4 +1,5 @@
 import { CreatePoint } from "@/components/Trip/create-point";
+import { TripMap } from "@/components/Trip/trip-map";
 import { Category } from "@/components/category";
 import {
   PointsList,
@@ -8,6 +9,7 @@ import {
 import { FullPageLoading } from "@/components/ui/loading";
 import { supabase } from "@/lib/supabase";
 import { Tables } from "@/lib/types/supabase";
+import { CurrentMarker } from "@/lib/types/types";
 import { getDeviceHeaderHeight } from "@/lib/utils";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { useQuery } from "@tanstack/react-query";
@@ -30,12 +32,7 @@ const Trip = () => {
   const [addPointBottomSheet, setAddPointBottomSheet] = React.useState(false);
   const [index, setIndex] = React.useState(0);
 
-  const [currentMarker, setCurrentMarker] = React.useState<{
-    details: GooglePlaceDetail;
-    data: GooglePlaceData;
-    latitude: number;
-    longitude: number;
-  }>();
+  const [currentMarker, setCurrentMarker] = React.useState<CurrentMarker>();
   const headerHeight = getDeviceHeaderHeight() as number;
 
   const snapPoints = React.useMemo(() => ["25%", "50%", "90%"], []);
@@ -96,50 +93,15 @@ const Trip = () => {
       >
         <X className="text-gray-500" height={24} width={24}></X>
       </TouchableOpacity>
-      <MapView
-        className="h-[90%]"
-        showsUserLocation
-        zoomEnabled
-        initialRegion={{
-          latitude: trip.data?.latitude ?? 0,
-          longitude: trip.data?.longitude ?? 0,
-          latitudeDelta: 0.1,
-          longitudeDelta: 0.1,
-        }}
-        // provider="google"
+      <TripMap
         ref={mapRef}
-      >
-        {points?.data?.map((marker, index) => {
-          const Icon = icons[marker?.category?.icon as keyof typeof icons];
-
-          return (
-            <Marker
-              key={marker.id}
-              style={{
-                backgroundColor: marker?.category?.color,
-                borderRadius: 20,
-              }}
-              className="h-10 w-10 items-center justify-center"
-              coordinate={{
-                latitude: marker.latitude,
-                longitude: marker.longitude,
-              }}
-            >
-              <Icon className="text-white" />
-            </Marker>
-          );
-        })}
-        {currentMarker && (
-          <Marker
-            icon={34}
-            key={"curentMarker"}
-            coordinate={{
-              latitude: currentMarker.latitude,
-              longitude: currentMarker.longitude,
-            }}
-          />
-        )}
-      </MapView>
+        points={points?.data ?? []}
+        currentMarker={currentMarker}
+        tripLocation={{
+          latitude: trip?.data?.latitude ?? 0,
+          longitude: trip?.data?.longitude ?? 0,
+        }}
+      />
       {!addPointBottomSheet && (
         <BottomSheet
           animateOnMount

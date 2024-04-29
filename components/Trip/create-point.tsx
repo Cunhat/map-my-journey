@@ -98,11 +98,13 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
       }}
     >
       <View style={{ gap: 24 }} className="flex-1 p-3">
-        <View className="flex-row items-center justify-between">
-          <Text className="text-xl text-gray-500 ">{point.name}</Text>
+        <View className="flex-row items-center">
+          <View className="flex-1">
+            <Text className="text-xl text-gray-500 ">{point.name}</Text>
+          </View>
           <TouchableOpacity
             className=" rounded-full p-1 bg-gray-100 items-center justify-center"
-            onPress={() => setAddPointBottomSheet(!addPointBottomSheet)}
+            onPress={() => closeModelAndClearCurrentMarker()}
           >
             <X className="text-gray-500" height={24} width={24}></X>
           </TouchableOpacity>
