@@ -23,6 +23,7 @@ import {
   GooglePlacesAutocomplete,
 } from "react-native-google-places-autocomplete";
 import MapView, { Marker } from "react-native-maps";
+import Empty from "@/assets/svg/empty";
 
 const Trip = () => {
   const mapRef = useRef<MapView>(null);
@@ -215,20 +216,29 @@ const Trip = () => {
               </ScrollView>
             </View>
             <View style={{ gap: 12 }} className="flex-1">
-              <Text className="text-sky-500 text-xl">Points</Text>
-              <PointsList>
-                {points.data &&
-                  points?.data?.map((point, index) => (
-                    <React.Fragment key={point.id}>
-                      <PointsListItem point={point} />
-                      {index < points?.data?.length! - 1 && (
-                        <PointsListSeparator
-                        // key={"separator" + point.id + index}
-                        />
-                      )}
-                    </React.Fragment>
-                  ))}
-              </PointsList>
+              {points?.data?.length > 0 ? (
+                <React.Fragment>
+                  <Text className="text-sky-500 text-xl">Points</Text>
+                  <PointsList>
+                    {points.data &&
+                      points?.data?.map((point, index) => (
+                        <React.Fragment key={point.id}>
+                          <PointsListItem point={point} />
+                          {index < points?.data?.length! - 1 && (
+                            <PointsListSeparator
+                            // key={"separator" + point.id + index}
+                            />
+                          )}
+                        </React.Fragment>
+                      ))}
+                  </PointsList>
+                </React.Fragment>
+              ) : (
+                <View className="flex-1 justify-center items-center">
+                  <Empty height={"80%"} width={"80%"} />
+                  <Text className="text-gray-400 text-xl">No points...</Text>
+                </View>
+              )}
             </View>
           </View>
         </BottomSheet>
