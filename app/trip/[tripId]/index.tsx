@@ -1,11 +1,7 @@
 import { CreatePoint } from "@/components/Trip/create-point";
+import Points from "@/components/Trip/points";
 import { TripMap } from "@/components/Trip/trip-map";
 import { Category } from "@/components/category";
-import {
-  PointsList,
-  PointsListItem,
-  PointsListSeparator,
-} from "@/components/points-list";
 import { FullPageLoading } from "@/components/ui/loading";
 import { supabase } from "@/lib/supabase";
 import { Tables } from "@/lib/types/supabase";
@@ -15,15 +11,10 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import { useQuery } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
 import { Plus, Search, X, icons } from "lucide-react-native";
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
-import {
-  GooglePlaceData,
-  GooglePlaceDetail,
-  GooglePlacesAutocomplete,
-} from "react-native-google-places-autocomplete";
-import MapView, { Marker } from "react-native-maps";
-import Empty from "@/assets/svg/empty";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import MapView from "react-native-maps";
 
 const Trip = () => {
   const mapRef = useRef<MapView>(null);
@@ -215,31 +206,7 @@ const Trip = () => {
                 })}
               </ScrollView>
             </View>
-            <View style={{ gap: 12 }} className="flex-1">
-              {points?.data?.length > 0 ? (
-                <React.Fragment>
-                  <Text className="text-sky-500 text-xl">Points</Text>
-                  <PointsList>
-                    {points.data &&
-                      points?.data?.map((point, index) => (
-                        <React.Fragment key={point.id}>
-                          <PointsListItem point={point} />
-                          {index < points?.data?.length! - 1 && (
-                            <PointsListSeparator
-                            // key={"separator" + point.id + index}
-                            />
-                          )}
-                        </React.Fragment>
-                      ))}
-                  </PointsList>
-                </React.Fragment>
-              ) : (
-                <View className="flex-1 justify-center items-center">
-                  <Empty height={"80%"} width={"80%"} />
-                  <Text className="text-gray-400 text-xl">No points...</Text>
-                </View>
-              )}
-            </View>
+            <Points points={points?.data ?? []} />
           </View>
         </BottomSheet>
       )}
