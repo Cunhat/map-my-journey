@@ -15,7 +15,7 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import { useQuery } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
 import { Plus, Search, X, icons } from "lucide-react-native";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import {
   GooglePlaceData,
@@ -113,7 +113,7 @@ const Trip = () => {
             width: 40,
           }}
         >
-          <View style={{ gap: 16 }} className="flex-1 p-2">
+          <View style={{ gap: 16, height: "90%" }} className="flex-1 p-2">
             <GooglePlacesAutocomplete
               placeholder="Search your point of interest..."
               textInputProps={{
