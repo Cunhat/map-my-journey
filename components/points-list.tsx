@@ -10,7 +10,6 @@ import {
 import Calendar from "@/assets/svg/calendar";
 import { Tables } from "@/lib/types/supabase";
 import SwipeableRow from "./ui/swipeable-row";
-import DeletePointModal from "./Trip/delete-point-modal";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { router } from "expo-router";
@@ -70,7 +69,14 @@ export const PointsListItem: React.FC<PointsListItemProps> = ({ point }) => {
   return (
     <SwipeableRow
       onDelete={() => deletePointMutation.mutate(point.id)}
-      onEdit={() => console.log("edit")}
+      onEdit={() =>
+        router.navigate(
+          "/trip/" +
+            point.trip_id.toString() +
+            "/editPoint/" +
+            point.id.toString()
+        )
+      }
     >
       <View style={{ gap: 12 }} className="flex-row items-center p-2">
         <View

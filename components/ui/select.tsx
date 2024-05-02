@@ -11,6 +11,7 @@ type SelectProps = {
   placeholder: string;
   decorationIcon: React.ReactNode;
   onSelect: (value: any) => void;
+  defaultValue?: any;
 };
 
 const CategoryIcon: React.FC<{ category: { icon: string; color: string } }> = ({
@@ -45,12 +46,14 @@ export const Select: React.FC<SelectProps> = ({
   placeholder,
   decorationIcon,
   onSelect,
+  defaultValue,
 }) => {
   return (
     <SelectDropdown
       data={data}
+      defaultValue={defaultValue}
       onSelect={(selectedItem) => {
-        console.log(selectedItem);
+        console.log(selectedItem, "selectedItem");
         onSelect(selectedItem);
       }}
       renderButton={(selectedItem, isOpened) => {
