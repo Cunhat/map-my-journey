@@ -11,10 +11,13 @@ type TripMapProps = {
     latitude: number;
     longitude: number;
   };
+  onPointPress: (
+    point: Tables<"point"> & { category: Tables<"category"> }
+  ) => void;
 };
 
 export const TripMap = React.forwardRef<MapView, TripMapProps>(
-  ({ points, currentMarker, tripLocation }, ref) => {
+  ({ points, currentMarker, tripLocation, onPointPress }, ref) => {
     return (
       <MapView
         className="h-full"
@@ -44,6 +47,7 @@ export const TripMap = React.forwardRef<MapView, TripMapProps>(
                 latitude: marker.latitude,
                 longitude: marker.longitude,
               }}
+              onPress={() => onPointPress(marker)}
             >
               <Icon className="text-white" />
             </Marker>

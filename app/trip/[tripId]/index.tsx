@@ -125,6 +125,7 @@ const Trip = () => {
           latitude: trip?.data?.latitude ?? 0,
           longitude: trip?.data?.longitude ?? 0,
         }}
+        onPointPress={handleFocusPoint}
       />
       {
         <BottomSheet

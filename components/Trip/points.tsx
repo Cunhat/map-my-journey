@@ -73,7 +73,7 @@ const PointsByDay: React.FC<Omit<PointsProps, "tripDays">> = ({
     );
 
   return (
-    <View className="bg-gray-100 rounded-xl p-2">
+    <View style={{ gap: 6 }} className="bg-gray-100 rounded-xl p-2">
       {points.map((point, index) => (
         <React.Fragment key={point.id}>
           <PointsListItem point={point} focusPoint={focusPoint} />
