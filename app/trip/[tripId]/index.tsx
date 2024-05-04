@@ -1,5 +1,5 @@
 import { CreatePoint } from "@/components/Trip/create-point";
-import Points from "@/components/Trip/points";
+import { Points } from "@/components/Trip/points";
 import { TripMap } from "@/components/Trip/trip-map";
 import { Category } from "@/components/category";
 import { FullPageLoading } from "@/components/ui/loading";
@@ -75,6 +75,21 @@ const Trip = () => {
 
   if (categories.isPending || trip.isPending || points.isPending)
     return <FullPageLoading />;
+
+  const focusPoint = (lat: number, lng: number) => {
+    sheetRef.current?.snapToIndex(0);
+    mapRef.current?.animateCamera(
+      {
+        center: {
+          latitude: lat,
+          longitude: lng,
+        },
+        zoom: 15,
+        altitude: 3000,
+      },
+      { duration: 1000 }
+    );
+  };
 
   return (
     <View className="flex-1">
@@ -206,7 +221,11 @@ const Trip = () => {
                 })}
               </ScrollView>
             </View>
-            <Points points={points?.data ?? []} />
+            <Points
+              tripDays={trip?.data?.days ?? 0}
+              points={points?.data ?? []}
+              focusPoint={focusPoint}
+            />
           </View>
         </BottomSheet>
       )}

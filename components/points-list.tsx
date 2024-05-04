@@ -1,11 +1,12 @@
 import React, { PropsWithChildren, useEffect } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import {
   Search,
   Plus,
   Home,
   UtensilsCrossed,
   icons,
+  Crosshair,
 } from "lucide-react-native";
 import Calendar from "@/assets/svg/calendar";
 import { Tables } from "@/lib/types/supabase";
@@ -19,7 +20,6 @@ export const PointsList: React.FC<PropsWithChildren> = ({ children }) => {
     <ScrollView
       contentContainerStyle={{ gap: 12 }}
       showsVerticalScrollIndicator={false}
-      className="bg-gray-100 rounded-xl p-2"
     >
       {children}
     </ScrollView>
@@ -28,9 +28,13 @@ export const PointsList: React.FC<PropsWithChildren> = ({ children }) => {
 
 type PointsListItemProps = {
   point: Tables<"point"> & { category: Tables<"category"> };
+  focusPoint: (lat: number, lng: number) => void;
 };
 
-export const PointsListItem: React.FC<PointsListItemProps> = ({ point }) => {
+export const PointsListItem: React.FC<PointsListItemProps> = ({
+  point,
+  focusPoint,
+}) => {
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
   const Icon = icons[point.category.icon as keyof typeof icons];
 
@@ -91,9 +95,12 @@ export const PointsListItem: React.FC<PointsListItemProps> = ({ point }) => {
           </Text>
           <Text className="text-gray-500">{subLocation}</Text>
         </View>
-        <View style={{ gap: 0 }} className="w-14 items-center justify-center">
-          <Calendar height={32} width={32} />
-          <Text className="text-gray-500 font-bold text-xs">{point.day}</Text>
+        <View className="items-center justify-center">
+          <TouchableOpacity
+            onPress={() => focusPoint(point.latitude, point.longitude)}
+          >
+            <Crosshair height={24} width={24} className="text-gray-500" />
+          </TouchableOpacity>
         </View>
       </View>
     </SwipeableRow>
