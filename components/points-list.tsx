@@ -82,7 +82,10 @@ export const PointsListItem: React.FC<PointsListItemProps> = ({
         )
       }
     >
-      <View style={{ gap: 12 }} className="flex-row items-center p-2">
+      <View
+        style={{ gap: 12 }}
+        className="flex-row items-center p-2 bg-gray-100"
+      >
         <View
           style={{ backgroundColor: point.category.color }}
           className="rounded-full h-10 w-10 items-center justify-center"

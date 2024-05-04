@@ -1,3 +1,4 @@
+import { Pencil, Trash2 } from "lucide-react-native";
 import React, { Component, PropsWithChildren } from "react";
 import { Animated, StyleSheet, Text, View, I18nManager } from "react-native";
 
@@ -35,7 +36,11 @@ export default class SwipeableRow extends Component<
           style={[styles.rightAction, { backgroundColor: color }]}
           onPress={pressHandler}
         >
-          <Text style={styles.actionText}>{text}</Text>
+          {text === "delete" ? (
+            <Trash2 height={24} width={24} className="text-white" />
+          ) : (
+            <Pencil height={24} width={24} className="text-white" />
+          )}
         </RectButton>
       </Animated.View>
     );
@@ -53,8 +58,8 @@ export default class SwipeableRow extends Component<
         flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
       }}
     >
-      {this.renderRightAction("Edit", "#ffab00", 150, progress, onEdit)}
-      {this.renderRightAction("Delete", "#dd2c00", 150, progress, onDelete)}
+      {this.renderRightAction("edit", "#ffab00", 100, progress, onEdit)}
+      {this.renderRightAction("delete", "#dd2c00", 100, progress, onDelete)}
     </View>
   );
 
