@@ -28,7 +28,9 @@ export const PointsList: React.FC<PropsWithChildren> = ({ children }) => {
 
 type PointsListItemProps = {
   point: Tables<"point"> & { category: Tables<"category"> };
-  focusPoint: (lat: number, lng: number) => void;
+  focusPoint: (
+    point: Tables<"point"> & { category: Tables<"category"> }
+  ) => void;
 };
 
 export const PointsListItem: React.FC<PointsListItemProps> = ({
@@ -99,9 +101,7 @@ export const PointsListItem: React.FC<PointsListItemProps> = ({
           <Text className="text-gray-500">{subLocation}</Text>
         </View>
         <View className="items-center justify-center">
-          <TouchableOpacity
-            onPress={() => focusPoint(point.latitude, point.longitude)}
-          >
+          <TouchableOpacity onPress={() => focusPoint(point)}>
             <Crosshair height={24} width={24} className="text-gray-500" />
           </TouchableOpacity>
         </View>

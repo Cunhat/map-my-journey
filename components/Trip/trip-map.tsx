@@ -17,7 +17,7 @@ export const TripMap = React.forwardRef<MapView, TripMapProps>(
   ({ points, currentMarker, tripLocation }, ref) => {
     return (
       <MapView
-        className="h-[90%]"
+        className="h-full"
         showsUserLocation
         zoomEnabled
         initialRegion={{

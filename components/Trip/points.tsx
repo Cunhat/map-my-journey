@@ -12,7 +12,9 @@ import Calendar from "@/assets/svg/calendar";
 type PointsProps = {
   points: Array<Tables<"point"> & { category: Tables<"category"> }>;
   tripDays: number;
-  focusPoint: (lat: number, lng: number) => void;
+  focusPoint: (
+    point: Tables<"point"> & { category: Tables<"category"> }
+  ) => void;
 };
 
 export const Points: React.FC<PointsProps> = ({

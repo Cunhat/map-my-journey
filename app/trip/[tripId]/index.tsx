@@ -1,4 +1,5 @@
 import { CreatePoint } from "@/components/Trip/create-point";
+import { FocusPoint } from "@/components/Trip/focus-point";
 import { Points } from "@/components/Trip/points";
 import { TripMap } from "@/components/Trip/trip-map";
 import { Category } from "@/components/category";
@@ -7,7 +8,7 @@ import { supabase } from "@/lib/supabase";
 import { Tables } from "@/lib/types/supabase";
 import { CurrentMarker } from "@/lib/types/types";
 import { getDeviceHeaderHeight } from "@/lib/utils";
-import BottomSheet from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useQuery } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
 import { Plus, Search, X, icons } from "lucide-react-native";
@@ -20,6 +21,10 @@ const Trip = () => {
   const mapRef = useRef<MapView>(null);
   const { tripId } = useLocalSearchParams<{ tripId: string }>();
   const sheetRef = useRef<BottomSheet>(null);
+  const focusPointRef = useRef<BottomSheetModal>(null);
+  const [focusPoint, setFocusPoint] = React.useState<
+    Tables<"point"> & { category: Tables<"category"> }
+  >();
 
   const [addPointBottomSheet, setAddPointBottomSheet] = React.useState(false);
   const [index, setIndex] = React.useState(0);
@@ -31,6 +36,7 @@ const Trip = () => {
 
   const closeModelAndClearCurrentMarker = () => {
     setAddPointBottomSheet(false);
+    sheetRef.current?.expand();
     setCurrentMarker(undefined);
   };
 
@@ -76,19 +82,27 @@ const Trip = () => {
   if (categories.isPending || trip.isPending || points.isPending)
     return <FullPageLoading />;
 
-  const focusPoint = (lat: number, lng: number) => {
-    sheetRef.current?.snapToIndex(0);
+  const handleFocusPoint = (
+    point: Tables<"point"> & { category: Tables<"category"> }
+  ) => {
+    sheetRef.current?.close();
+    setFocusPoint(point);
     mapRef.current?.animateCamera(
       {
         center: {
-          latitude: lat,
-          longitude: lng,
+          latitude: point.latitude,
+          longitude: point.longitude,
         },
         zoom: 15,
         altitude: 3000,
       },
       { duration: 1000 }
     );
+    focusPointRef.current?.present();
+  };
+
+  const onModelClose = () => {
+    sheetRef.current?.expand();
   };
 
   return (
@@ -96,7 +110,10 @@ const Trip = () => {
       <TouchableOpacity
         style={{ top: headerHeight, left: 10 }}
         className="absolute z-10 rounded-full p-1 bg-white border border-gray-200 flex items-center justify-center"
-        onPress={() => router.push("/")}
+        onPress={() => {
+          router.push("/");
+          focusPointRef.current?.dismiss();
+        }}
       >
         <X className="text-gray-500" height={24} width={24}></X>
       </TouchableOpacity>
@@ -109,7 +126,7 @@ const Trip = () => {
           longitude: trip?.data?.longitude ?? 0,
         }}
       />
-      {!addPointBottomSheet && (
+      {
         <BottomSheet
           animateOnMount
           ref={sheetRef}
@@ -149,7 +166,8 @@ const Trip = () => {
                   },
                   { duration: 1000 }
                 );
-                setIndex(0);
+                // setIndex(0);
+                sheetRef.current?.collapse();
                 setAddPointBottomSheet(!addPointBottomSheet);
               }}
               renderLeftButton={() => (
@@ -224,11 +242,11 @@ const Trip = () => {
             <Points
               tripDays={trip?.data?.days ?? 0}
               points={points?.data ?? []}
-              focusPoint={focusPoint}
+              focusPoint={handleFocusPoint}
             />
           </View>
         </BottomSheet>
-      )}
+      }
       <CreatePoint
         addPointBottomSheet={addPointBottomSheet}
         setAddPointBottomSheet={setAddPointBottomSheet}
@@ -241,6 +259,11 @@ const Trip = () => {
         categories={categories?.data ?? []}
         numberOfDays={trip?.data?.days ?? 0}
         closeModelAndClearCurrentMarker={closeModelAndClearCurrentMarker}
+      />
+      <FocusPoint
+        ref={focusPointRef}
+        point={focusPoint}
+        onModelClose={onModelClose}
       />
     </View>
   );
