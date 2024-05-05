@@ -263,7 +263,7 @@ const Trip = () => {
       />
       <FocusPoint
         ref={focusPointRef}
-        point={focusPoint}
+        point={focusPoint!}
         onModelClose={onModelClose}
       />
     </View>
