@@ -16,7 +16,7 @@ export default function RootLayout() {
             <Stack>
               <Stack.Screen name="(home)" options={{ headerShown: false }} />
               <Stack.Screen
-                name="trip/[tripId]/index"
+                name="trip/[tripId]"
                 options={{
                   headerShown: false,
                 }}
@@ -28,7 +28,7 @@ export default function RootLayout() {
                   presentation: "modal",
                 }}
               />
-              <Stack.Screen
+              {/* <Stack.Screen
                 name="trip/[tripId]/editCategory/[id]"
                 options={{
                   headerShown: false,
@@ -41,7 +41,7 @@ export default function RootLayout() {
                   headerShown: false,
                   presentation: "modal",
                 }}
-              />
+              /> */}
               <Stack.Screen
                 name="(auth)/signIn"
                 options={{ headerShown: false }}

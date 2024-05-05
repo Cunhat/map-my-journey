@@ -19,7 +19,7 @@ import ColorPicker, {
 } from "reanimated-color-picker";
 import { Tag, icons } from "lucide-react-native";
 import { CategoryIcons } from "@/components/category-icons";
-import { useLocalSearchParams, router } from "expo-router";
+import { useLocalSearchParams, router, Stack } from "expo-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { Tables } from "@/lib/types/supabase";
