@@ -19,16 +19,21 @@ import ColorPicker, {
 } from "reanimated-color-picker";
 import { Tag, icons } from "lucide-react-native";
 import { CategoryIcons } from "@/components/category-icons";
-import { useLocalSearchParams, router } from "expo-router";
+import {
+  useLocalSearchParams,
+  router,
+  useGlobalSearchParams,
+} from "expo-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { Tables } from "@/lib/types/supabase";
 
-const CreateCategory = () => {
+const Create = () => {
   const [color, setColor] = React.useState("blue");
   const [tab, setTab] = React.useState<number>(0);
   const [icon, setIcon] = React.useState<string>("Home");
   const [name, setName] = React.useState("");
+  const test = useGlobalSearchParams();
 
   const { tripId } = useLocalSearchParams<{ tripId: string }>();
 
@@ -184,4 +189,4 @@ const CreateCategory = () => {
   );
 };
 
-export default CreateCategory;
+export default Create;

@@ -211,7 +211,7 @@ const Trip = () => {
                 className="h-auto p-3 bg-gray-100 rounded-xl flex flex-row "
               >
                 <Category
-                  url={`/trip/${tripId}/createCategory`}
+                  url={`category/create?tripId=${tripId}`}
                   icon={
                     <Plus height={"50%"} width={"50%"} className="text-white" />
                   }
@@ -224,7 +224,7 @@ const Trip = () => {
                     icons[category.icon as keyof typeof icons];
                   return (
                     <Category
-                      url={`/trip/${tripId}/editCategory/${category.id}`}
+                      url={`category/edit/${category.id}?tripId=${tripId}`}
                       icon={
                         <SelectedIcon
                           height={"50%"}

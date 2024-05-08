@@ -22,7 +22,14 @@ export default function RootLayout() {
                 }}
               />
               <Stack.Screen
-                name="trip/[tripId]/createCategory"
+                name="category/create"
+                options={{
+                  headerShown: false,
+                  presentation: "modal",
+                }}
+              />
+              <Stack.Screen
+                name="category/edit/[id]"
                 options={{
                   headerShown: false,
                   presentation: "modal",

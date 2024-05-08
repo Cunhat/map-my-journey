@@ -42,6 +42,7 @@ const EditCategory = () => {
         .from("category")
         .select("*")
         .eq("id", id)
+        .eq("tripId", tripId)
         .single();
 
       return resp.data;

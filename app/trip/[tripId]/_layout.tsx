@@ -32,15 +32,6 @@ export default function TripLayout() {
           header: () => null,
         }}
       />
-      <Tabs.Screen
-        name="createCategory"
-        options={{
-          tabBarShowLabel: false,
-          headerShown: false,
-          headerTitle: "",
-          href: null,
-        }}
-      />
     </Tabs>
   );
 }
