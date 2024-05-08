@@ -77,10 +77,7 @@ export const PointsListItem: React.FC<PointsListItemProps> = ({
       onDelete={() => deletePointMutation.mutate(point.id)}
       onEdit={() =>
         router.navigate(
-          "/trip/" +
-            point.trip_id.toString() +
-            "/editPoint/" +
-            point.id.toString()
+          `point/edit/${point.id}?tripId=${point.trip_id.toString()}`
         )
       }
     >

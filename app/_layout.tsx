@@ -35,6 +35,14 @@ export default function RootLayout() {
                   presentation: "modal",
                 }}
               />
+              <Stack.Screen
+                name="point/edit/[id]"
+                options={{
+                  headerShown: false,
+                  presentation: "modal",
+                }}
+              />
+
               {/* <Stack.Screen
                 name="trip/[tripId]/editCategory/[id]"
                 options={{

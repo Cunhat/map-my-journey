@@ -1,15 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { FullPageLoading } from "@/components/ui/loading";
 import { Select } from "@/components/ui/select";
-import { useGetUser } from "@/hooks/useGetUser";
 import { supabase } from "@/lib/supabase";
 import { Database, Tables } from "@/lib/types/supabase";
 import { createDecrementArray } from "@/lib/utils";
-import BottomSheet from "@gorhom/bottom-sheet";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
 import { CalendarDays, Tag, X } from "lucide-react-native";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
 const EditPoint: React.FC = () => {
@@ -19,7 +17,6 @@ const EditPoint: React.FC = () => {
     id: number;
   }>();
   const [selectedDay, setSelectedDay] = React.useState<{ title: string }>();
-  const { getUser } = useGetUser();
   const { tripId, id } = useLocalSearchParams<{ tripId: string; id: string }>();
 
   const queryClient = useQueryClient();
