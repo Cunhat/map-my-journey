@@ -53,7 +53,6 @@ export const Select: React.FC<SelectProps> = ({
       data={data}
       defaultValue={defaultValue}
       onSelect={(selectedItem) => {
-        console.log(selectedItem, "selectedItem");
         onSelect(selectedItem);
       }}
       renderButton={(selectedItem, isOpened) => {

@@ -32,7 +32,7 @@ const Trip = () => {
   const [currentMarker, setCurrentMarker] = React.useState<CurrentMarker>();
   const headerHeight = getDeviceHeaderHeight() as number;
 
-  const snapPoints = React.useMemo(() => ["25%", "50%", "90%"], []);
+  const snapPoints = React.useMemo(() => ["25%", "50%", "88%"], []);
 
   const closeModelAndClearCurrentMarker = () => {
     setAddPointBottomSheet(false);

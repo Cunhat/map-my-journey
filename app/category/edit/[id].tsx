@@ -85,12 +85,10 @@ const EditCategory = () => {
         })
         .eq("id", id)
         .select();
-      console.log(resp);
       return resp;
     },
 
     onSuccess: ({ data }) => {
-      console.log(data);
       if (data && data[0]?.id) {
         queryClient.invalidateQueries({
           queryKey: ["getTripCategories", tripId],

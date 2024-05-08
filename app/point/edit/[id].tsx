@@ -61,7 +61,6 @@ const EditPoint: React.FC = () => {
 
   useEffect(() => {
     if (point.isSuccess && point.data) {
-      console.log(point.data);
       setSelectedCategory({
         title: point?.data[0]?.category?.name,
         id: point?.data[0]?.category?.id,
@@ -82,7 +81,7 @@ const EditPoint: React.FC = () => {
         "user_id" | "id" | "trip_id"
       >
     ) => {
-      const resp = await supabase
+      return await supabase
         .from("point")
         .update({
           day: point.day,
@@ -90,9 +89,6 @@ const EditPoint: React.FC = () => {
         })
         .eq("id", id)
         .select();
-
-      console.log(resp);
-      return resp;
     },
 
     onSuccess: () => {

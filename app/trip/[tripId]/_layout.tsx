@@ -1,6 +1,6 @@
 import { cva } from "class-variance-authority";
 import { Tabs } from "expo-router";
-import { Map, Plus, User, View } from "lucide-react-native";
+import { Map, MapPin, Menu, Plus, User, View } from "lucide-react-native";
 
 const IconsStyles = cva("mt-3", {
   variants: {
@@ -21,7 +21,25 @@ export default function TripLayout() {
           headerShown: false,
           headerTitle: "",
           tabBarIcon: ({ focused }) => (
-            <Map
+            <MapPin
+              strokeWidth={1.2}
+              className={IconsStyles({ focused })}
+              height={32}
+              width={32}
+            />
+          ),
+          tabBarLabelStyle: {},
+          header: () => null,
+        }}
+      />
+      <Tabs.Screen
+        name="info"
+        options={{
+          tabBarShowLabel: false,
+          headerShown: false,
+          headerTitle: "",
+          tabBarIcon: ({ focused }) => (
+            <Menu
               strokeWidth={1.2}
               className={IconsStyles({ focused })}
               height={32}
