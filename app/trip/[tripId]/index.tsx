@@ -10,8 +10,8 @@ import { CurrentMarker } from "@/lib/types/types";
 import { getDeviceHeaderHeight } from "@/lib/utils";
 import BottomSheet, { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useQuery } from "@tanstack/react-query";
-import { router, useLocalSearchParams } from "expo-router";
-import { Plus, Search, X, icons } from "lucide-react-native";
+import { router, useLocalSearchParams, useNavigation } from "expo-router";
+import { ArrowLeft, Plus, Search, X, icons } from "lucide-react-native";
 import React, { useRef } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
@@ -32,13 +32,33 @@ const Trip = () => {
   const [currentMarker, setCurrentMarker] = React.useState<CurrentMarker>();
   const headerHeight = getDeviceHeaderHeight() as number;
 
-  const snapPoints = React.useMemo(() => ["25%", "50%", "88%"], []);
+  const snapPoints = React.useMemo(() => ["30%", "88%"], []);
 
   const closeModelAndClearCurrentMarker = () => {
     setAddPointBottomSheet(false);
     sheetRef.current?.expand();
     setCurrentMarker(undefined);
   };
+
+  const navigation = useNavigation();
+
+  navigation.setOptions({
+    headerShown: true,
+    headerTransparent: true,
+    headerTitle: "",
+    headerLeft: () => (
+      <TouchableOpacity
+        className="rounded-full p-1 bg-white border border-gray-200 flex items-center justify-center"
+        onPress={() => {
+          router.push("/");
+          focusPointRef.current?.dismiss();
+        }}
+      >
+        <ArrowLeft className="text-gray-500" height={24} width={24}></ArrowLeft>
+      </TouchableOpacity>
+    ),
+    headerLeftContainerStyle: { paddingLeft: 20 },
+  });
 
   const trip = useQuery({
     queryKey: ["getTrip", tripId],
@@ -107,16 +127,6 @@ const Trip = () => {
 
   return (
     <View className="flex-1">
-      <TouchableOpacity
-        style={{ top: headerHeight, left: 10 }}
-        className="absolute z-10 rounded-full p-1 bg-white border border-gray-200 flex items-center justify-center"
-        onPress={() => {
-          router.push("/");
-          focusPointRef.current?.dismiss();
-        }}
-      >
-        <X className="text-gray-500" height={24} width={24}></X>
-      </TouchableOpacity>
       <TripMap
         ref={mapRef}
         points={points?.data ?? []}

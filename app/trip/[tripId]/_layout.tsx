@@ -1,6 +1,16 @@
 import { cva } from "class-variance-authority";
-import { Tabs } from "expo-router";
-import { Map, MapPin, Menu, Plus, User, View } from "lucide-react-native";
+import { Tabs, router } from "expo-router";
+import {
+  ArrowLeft,
+  Map,
+  MapPin,
+  Menu,
+  Plus,
+  User,
+  View,
+  X,
+} from "lucide-react-native";
+import { Text, TouchableOpacity } from "react-native";
 
 const IconsStyles = cva("mt-3", {
   variants: {
@@ -18,8 +28,6 @@ export default function TripLayout() {
         name="index"
         options={{
           tabBarShowLabel: false,
-          headerShown: false,
-          headerTitle: "",
           tabBarIcon: ({ focused }) => (
             <MapPin
               strokeWidth={1.2}
@@ -29,15 +37,14 @@ export default function TripLayout() {
             />
           ),
           tabBarLabelStyle: {},
-          header: () => null,
         }}
       />
       <Tabs.Screen
         name="info"
         options={{
           tabBarShowLabel: false,
-          headerShown: false,
-          headerTitle: "",
+          headerShown: true,
+          headerTitle: () => <Text className="text-xl text-sky-500">Menu</Text>,
           tabBarIcon: ({ focused }) => (
             <Menu
               strokeWidth={1.2}
@@ -46,8 +53,22 @@ export default function TripLayout() {
               width={32}
             />
           ),
+          headerLeft: () => (
+            <TouchableOpacity
+              className="rounded-full p-1 m-3  flex items-center justify-center"
+              onPress={() => {
+                router.push("/");
+              }}
+            >
+              <ArrowLeft
+                className="text-gray-500"
+                height={24}
+                width={24}
+              ></ArrowLeft>
+            </TouchableOpacity>
+          ),
           tabBarLabelStyle: {},
-          header: () => null,
+          headerShadowVisible: false,
         }}
       />
     </Tabs>
