@@ -18,7 +18,7 @@ import ColorPicker, {
   HueCircular,
   returnedResults,
 } from "reanimated-color-picker";
-import { Tag, icons } from "lucide-react-native";
+import { CircleX, Save, Tag, Trash2, icons } from "lucide-react-native";
 import { CategoryIcons } from "@/components/category-icons";
 import { useLocalSearchParams, router } from "expo-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -223,18 +223,21 @@ const EditCategory = () => {
           fullWidth
           onPress={() => handleSubmit()}
           disabled={!name || !color || !icon}
+          icon={<Save className="text-white" height={20} width={20} />}
         />
         <Button
           title="Delete"
           type="danger"
           fullWidth
           onPress={() => setDeleteModalVisible(true)}
+          icon={<Trash2 className="text-white" height={20} width={20} />}
         />
         <Button
           title="Cancel"
           type="secondary"
           fullWidth
           onPress={() => router.back()}
+          icon={<CircleX className="text-sky-500" height={20} width={20} />}
         />
       </View>
       <Modal

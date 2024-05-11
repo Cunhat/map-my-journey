@@ -154,7 +154,8 @@ const Trip = () => {
               textInputProps={{
                 placeholderTextColor: "#d1d5db",
                 onFocus: () => {
-                  setIndex(2);
+                  // setIndex(2);
+                  sheetRef.current?.snapToIndex(1);
                 },
               }}
               onPress={(data, details) => {

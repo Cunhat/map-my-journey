@@ -6,7 +6,7 @@ import { Database, Tables } from "@/lib/types/supabase";
 import { createDecrementArray } from "@/lib/utils";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CalendarDays, Tag, X } from "lucide-react-native";
+import { CalendarDays, Pin, Tag, X } from "lucide-react-native";
 import React, { useRef } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
@@ -145,6 +145,7 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
             createTripPointMutation.isPending
           }
           onPress={handleSubmit}
+          icon={<Pin className="text-white" height={20} width={20} />}
         />
       </View>
     </BottomSheet>

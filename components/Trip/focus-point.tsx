@@ -1,6 +1,6 @@
 import { Tables } from "@/lib/types/supabase";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { X, icons } from "lucide-react-native";
+import { Navigation, Navigation2, X, icons } from "lucide-react-native";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { Button } from "../ui/button";
@@ -67,6 +67,9 @@ export const FocusPoint = React.forwardRef<BottomSheetModal, FocusPointProps>(
           </View>
           <View className="flex-1 justify-center p-3">
             <Button
+              icon={
+                <Navigation className="text-white" height={20} width={20} />
+              }
               title="Directions"
               onPress={handleDirections}
               type="primary"

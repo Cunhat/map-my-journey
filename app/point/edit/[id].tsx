@@ -6,7 +6,7 @@ import { Database, Tables } from "@/lib/types/supabase";
 import { createDecrementArray } from "@/lib/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
-import { CalendarDays, Tag, X } from "lucide-react-native";
+import { CalendarDays, Save, Tag, X } from "lucide-react-native";
 import React, { useEffect } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
@@ -168,6 +168,7 @@ const EditPoint: React.FC = () => {
           type="primary"
           fullWidth
           onPress={handleSubmit}
+          icon={<Save className="text-white" height={20} width={20} />}
         />
       </View>
     </View>
