@@ -9,6 +9,7 @@ import {
   ScrollView,
   TextInput,
   Modal,
+  SafeAreaView,
 } from "react-native";
 import ColorPicker, {
   Panel1,
@@ -134,145 +135,148 @@ const EditCategory = () => {
   if (category.isLoading) return <FullPageLoading />;
 
   return (
-    <View
-      style={{ gap: 16 }}
-      className="h-full px-3 py-5 bg-white flex flex-col"
-    >
-      <Text className="text-xl text-sky-500">Edit Category</Text>
-      <View className="flex-1" style={{ gap: 16 }}>
-        <View className="relative">
-          <Tag
-            className="text-gray-500 absolute z-10 left-1.5 top-3.5 "
-            height={20}
-            width={20}
-          />
-          <TextInput
-            placeholder={"Category name..."}
-            placeholderTextColor={"#d1d5db"}
-            value={name}
-            style={{ paddingLeft: 35 }}
-            keyboardType={"number-pad"}
-            onChangeText={(text) => setName(text)}
-            className="h-11 w-full text-base p-2 bg-gray-100 rounded-xl text-gray-600  "
-          />
+    <SafeAreaView className="h-full bg-white">
+      <View style={{ gap: 16 }} className="flex-1 px-3 bg-white flex flex-col">
+        <View className="h-auto">
+          <View className="relative">
+            <Tag
+              className="text-gray-500 absolute z-10 left-1.5 top-3.5 "
+              height={20}
+              width={20}
+            />
+            <TextInput
+              placeholder={"Category name..."}
+              placeholderTextColor={"#d1d5db"}
+              value={name}
+              style={{ paddingLeft: 35 }}
+              keyboardType={"number-pad"}
+              onChangeText={(text) => setName(text)}
+              className="h-11 w-full text-base p-2 bg-gray-100 rounded-xl text-gray-600  "
+            />
+          </View>
         </View>
-        <View style={{ gap: 16 }} className="flex-1">
-          <View className="justify-center items-center">
-            <View
-              style={{ backgroundColor: color }}
-              className="h-32 w-32 rounded-full justify-center items-center"
-            >
-              <SelectedIcon
-                strokeWidth={2.7}
-                className="text-white"
-                height={"50%"}
-                width={"50%"}
-              />
-            </View>
-          </View>
-          <View className="items-center justify-center">
-            <Tabs>
-              <TabItem
-                onTabChange={onTabChange}
-                tabIndex={0}
-                currentTab={tab}
-                label="Color"
-              />
-              <TabItem
-                onTabChange={onTabChange}
-                tabIndex={1}
-                currentTab={tab}
-                label="Icon"
-              />
-            </Tabs>
-          </View>
-          <View className="flex-1 items-center">
-            {tab === 0 && (
-              <ColorPicker
-                value={color}
-                style={{ width: "75%", height: "75%" }}
-                sliderThickness={20}
-                thumbSize={24}
-                onChange={onSelectColor}
-                boundedThumb
+        <View className="flex-1" style={{ gap: 16 }}>
+          <View style={{ gap: 16 }} className="flex-1">
+            <View className="justify-center items-center">
+              <View
+                style={{ backgroundColor: color }}
+                className="h-28 w-28 rounded-full justify-center items-center"
               >
-                <HueCircular
-                  containerStyle={{ justifyContent: "center" }}
-                  thumbShape="pill"
+                <SelectedIcon
+                  strokeWidth={2.7}
+                  className="text-white"
+                  height={"50%"}
+                  width={"50%"}
+                />
+              </View>
+            </View>
+            <View className="items-center justify-center">
+              <Tabs>
+                <TabItem
+                  onTabChange={onTabChange}
+                  tabIndex={0}
+                  currentTab={tab}
+                  label="Color"
+                />
+                <TabItem
+                  onTabChange={onTabChange}
+                  tabIndex={1}
+                  currentTab={tab}
+                  label="Icon"
+                />
+              </Tabs>
+            </View>
+            <View className="flex-1 items-center">
+              {tab === 0 && (
+                <ColorPicker
+                  value={color}
+                  style={{ width: "70%", height: "70%" }}
+                  sliderThickness={20}
+                  thumbSize={24}
+                  onChange={onSelectColor}
+                  boundedThumb
                 >
-                  <Panel1
-                    style={{
-                      width: "70%",
-                      height: "70%",
-                      alignSelf: "center",
-                      borderRadius: 16,
-                    }}
-                  />
-                </HueCircular>
-              </ColorPicker>
-            )}
-            {tab === 1 && (
-              <CategoryIcons selectedIcon={icon} setSelectedIcon={setIcon} />
-            )}
-          </View>
-        </View>
-      </View>
-      <View style={{ gap: 12 }} className="h-auto pb-4">
-        <Button
-          title="Update"
-          fullWidth
-          onPress={() => handleSubmit()}
-          disabled={!name || !color || !icon}
-          icon={<Save className="text-white" height={20} width={20} />}
-        />
-        <Button
-          title="Delete"
-          type="danger"
-          fullWidth
-          onPress={() => setDeleteModalVisible(true)}
-          icon={<Trash2 className="text-white" height={20} width={20} />}
-        />
-        <Button
-          title="Cancel"
-          type="secondary"
-          fullWidth
-          onPress={() => router.back()}
-          icon={<CircleX className="text-sky-500" height={20} width={20} />}
-        />
-      </View>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={deleteModalVisible}
-      >
-        <View className="flex-1 bg-black/60 justify-center items-center">
-          <View
-            style={{ gap: 12 }}
-            className="bg-white rounded-xl p-3 flex flex-col h-auto w-[90%]"
-          >
-            <Text className="text-xl text-sky-500">Are you sure ?</Text>
-            <Text className="text-base text-gray-500">
-              The deletion of this category will result in the loss of all
-              points associated with it.
-            </Text>
-            <View style={{ gap: 12 }} className=" items-center justify-center">
-              <Button
-                title="Delete"
-                type="danger"
-                fullWidth
-                onPress={() => deleteCategory.mutate()}
-              />
-              <Button
-                title="Cancel"
-                type="secondary"
-                fullWidth
-                onPress={() => setDeleteModalVisible(false)}
-              />
+                  <HueCircular
+                    containerStyle={{ justifyContent: "center" }}
+                    thumbShape="pill"
+                  >
+                    <Panel1
+                      style={{
+                        width: "70%",
+                        height: "70%",
+                        alignSelf: "center",
+                        borderRadius: 16,
+                      }}
+                    />
+                  </HueCircular>
+                </ColorPicker>
+              )}
+              {tab === 1 && (
+                <CategoryIcons selectedIcon={icon} setSelectedIcon={setIcon} />
+              )}
             </View>
           </View>
         </View>
-      </Modal>
-    </View>
+        <View style={{ gap: 12 }} className="h-auto">
+          <Button
+            title="Update"
+            fullWidth
+            onPress={() => handleSubmit()}
+            disabled={!name || !color || !icon}
+            icon={<Save className="text-white" height={20} width={20} />}
+          />
+          <Button
+            title="Delete"
+            type="danger"
+            fullWidth
+            onPress={() => setDeleteModalVisible(true)}
+            icon={<Trash2 className="text-white" height={20} width={20} />}
+          />
+          <Button
+            title="Cancel"
+            type="secondary"
+            fullWidth
+            onPress={() => router.back()}
+            icon={<CircleX className="text-sky-500" height={20} width={20} />}
+          />
+        </View>
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={deleteModalVisible}
+        >
+          <View className="flex-1 bg-black/60 justify-center items-center">
+            <View
+              style={{ gap: 12 }}
+              className="bg-white rounded-xl p-3 flex flex-col h-auto w-[90%]"
+            >
+              <Text className="text-xl text-sky-500">Are you sure ?</Text>
+              <Text className="text-base text-gray-500">
+                The deletion of this category will result in the loss of all
+                points associated with it.
+              </Text>
+              <View
+                style={{ gap: 12 }}
+                className=" items-center justify-center"
+              >
+                <Button
+                  title="Delete"
+                  type="danger"
+                  fullWidth
+                  onPress={() => deleteCategory.mutate()}
+                />
+                <Button
+                  title="Cancel"
+                  type="secondary"
+                  fullWidth
+                  onPress={() => setDeleteModalVisible(false)}
+                />
+              </View>
+            </View>
+          </View>
+        </Modal>
+      </View>
+    </SafeAreaView>
   );
 };
 

@@ -38,8 +38,12 @@ export default function RootLayout() {
               <Stack.Screen
                 name="category/edit/[id]"
                 options={{
-                  headerShown: false,
+                  headerShown: true,
                   presentation: "modal",
+                  headerShadowVisible: false,
+                  headerTitle: () => (
+                    <Text className="text-xl text-sky-500">Edit Category</Text>
+                  ),
                 }}
               />
               <Stack.Screen
