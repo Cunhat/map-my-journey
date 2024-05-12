@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  SafeAreaView,
 } from "react-native";
 import ColorPicker, {
   Panel1,
@@ -17,7 +18,7 @@ import ColorPicker, {
   HueCircular,
   returnedResults,
 } from "reanimated-color-picker";
-import { Tag, icons } from "lucide-react-native";
+import { CircleX, Save, Tag, icons } from "lucide-react-native";
 import { CategoryIcons } from "@/components/category-icons";
 import {
   useLocalSearchParams,
@@ -88,30 +89,28 @@ const Create = () => {
   };
 
   return (
-    <View
-      style={{ gap: 16 }}
-      className="h-full px-3 py-5 bg-white flex flex-col"
-    >
-      <Text className="text-xl text-sky-500">Create Category</Text>
-      <View className="flex-1" style={{ gap: 16 }}>
-        <View className="relative">
-          <Tag
-            className="text-gray-500 absolute z-10 left-1.5 top-3.5 "
-            height={20}
-            width={20}
-          />
-          <TextInput
-            placeholder={"Category name..."}
-            placeholderTextColor={"#d1d5db"}
-            value={name}
-            style={{ paddingLeft: 35 }}
-            keyboardType={"number-pad"}
-            onChangeText={(text) => setName(text)}
-            className="h-11 w-full text-base p-2 bg-gray-100 rounded-xl text-gray-600  "
-          />
+    <SafeAreaView className="h-full bg-white">
+      <View style={{ gap: 16 }} className="flex-1 px-3 bg-white flex flex-col">
+        <View className="h-auto">
+          <View className="relative">
+            <Tag
+              className="text-gray-500 absolute z-10 left-1.5 top-3.5 "
+              height={20}
+              width={20}
+            />
+            <TextInput
+              placeholder={"Category name..."}
+              placeholderTextColor={"#d1d5db"}
+              value={name}
+              style={{ paddingLeft: 35 }}
+              keyboardType={"number-pad"}
+              onChangeText={(text) => setName(text)}
+              className="h-11 w-full text-base p-2 bg-gray-100 rounded-xl text-gray-600  "
+            />
+          </View>
         </View>
-        <View style={{ gap: 16 }} className="flex-1">
-          <View className="justify-center items-center">
+        <View className="flex-1" style={{ gap: 16 }}>
+          <View className="justify-center items-center h-auto">
             <View
               style={{ backgroundColor: color }}
               className="h-32 w-32 rounded-full justify-center items-center"
@@ -124,7 +123,7 @@ const Create = () => {
               />
             </View>
           </View>
-          <View className="items-center justify-center">
+          <View className="items-center justify-center h-auto">
             <Tabs>
               <TabItem
                 onTabChange={onTabChange}
@@ -140,11 +139,11 @@ const Create = () => {
               />
             </Tabs>
           </View>
-          <View className="flex-1 items-center">
+          <View className="flex-1 items-center justify-center ">
             {tab === 0 && (
               <ColorPicker
                 value={color}
-                style={{ width: "75%", height: "75%" }}
+                style={{ width: "70%", height: "70%" }}
                 sliderThickness={20}
                 thumbSize={24}
                 onChange={onSelectColor}
@@ -170,22 +169,24 @@ const Create = () => {
             )}
           </View>
         </View>
+        <View style={{ gap: 12 }} className="h-auto">
+          <Button
+            title="Create"
+            fullWidth
+            onPress={() => handleSubmit()}
+            disabled={!name || !color || !icon}
+            icon={<Save className="text-white" height={20} width={20} />}
+          />
+          <Button
+            title="Cancel"
+            type="secondary"
+            fullWidth
+            onPress={() => router.back()}
+            icon={<CircleX className="text-sky-500" height={20} width={20} />}
+          />
+        </View>
       </View>
-      <View style={{ gap: 12 }} className="h-auto pb-4">
-        <Button
-          title="Create"
-          fullWidth
-          onPress={() => handleSubmit()}
-          disabled={!name || !color || !icon}
-        />
-        <Button
-          title="Cancel"
-          type="secondary"
-          fullWidth
-          onPress={() => router.back()}
-        />
-      </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

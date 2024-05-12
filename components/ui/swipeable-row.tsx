@@ -58,8 +58,8 @@ export default class SwipeableRow extends Component<
         flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
       }}
     >
-      {this.renderRightAction("edit", "#ffab00", 100, progress, onEdit)}
-      {this.renderRightAction("delete", "#dd2c00", 100, progress, onDelete)}
+      {this.renderRightAction("edit", "#ffab00", 50, progress, onEdit)}
+      {this.renderRightAction("delete", "#dd2c00", 50, progress, onDelete)}
     </View>
   );
 

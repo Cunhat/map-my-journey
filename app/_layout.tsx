@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import React from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Text } from "react-native";
 
 const queryClient = new QueryClient();
 
@@ -24,8 +25,14 @@ export default function RootLayout() {
               <Stack.Screen
                 name="category/create"
                 options={{
-                  headerShown: false,
+                  headerShown: true,
                   presentation: "modal",
+                  headerShadowVisible: false,
+                  headerTitle: () => (
+                    <Text className="text-xl text-sky-500">
+                      Create Category
+                    </Text>
+                  ),
                 }}
               />
               <Stack.Screen
