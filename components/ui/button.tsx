@@ -25,7 +25,7 @@ const buttonStyle = cva(
         false: "w-fit-content",
       },
       disabled: {
-        true: "opacity-50",
+        true: "bg-sky-300",
       },
     },
     defaultVariants: {

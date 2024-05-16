@@ -37,6 +37,9 @@ export default function TripLayout() {
             />
           ),
           tabBarLabelStyle: {},
+          headerShown: true,
+          headerTransparent: true,
+          headerTitle: "",
         }}
       />
       <Tabs.Screen

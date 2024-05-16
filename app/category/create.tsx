@@ -28,11 +28,12 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { Tables } from "@/lib/types/supabase";
+import EmojiSelector from "react-native-emoji-selector";
 
 const Create = () => {
   const [color, setColor] = React.useState("blue");
   const [tab, setTab] = React.useState<number>(0);
-  const [icon, setIcon] = React.useState<string>("Home");
+  const [icon, setIcon] = React.useState<string>("📍");
   const [name, setName] = React.useState("");
   const test = useGlobalSearchParams();
 
@@ -103,7 +104,6 @@ const Create = () => {
               placeholderTextColor={"#d1d5db"}
               value={name}
               style={{ paddingLeft: 35 }}
-              keyboardType={"number-pad"}
               onChangeText={(text) => setName(text)}
               className="h-11 w-full text-base p-2 bg-gray-100 rounded-xl text-gray-600  "
             />
@@ -115,12 +115,7 @@ const Create = () => {
               style={{ backgroundColor: color }}
               className="h-32 w-32 rounded-full justify-center items-center"
             >
-              <SelectedIcon
-                strokeWidth={2.7}
-                className="text-white"
-                height={"50%"}
-                width={"50%"}
-              />
+              <Text className="text-[70%]">{icon}</Text>
             </View>
           </View>
           <View className="items-center justify-center h-auto">
@@ -165,7 +160,14 @@ const Create = () => {
               </ColorPicker>
             )}
             {tab === 1 && (
-              <CategoryIcons selectedIcon={icon} setSelectedIcon={setIcon} />
+              <View className="flex-1">
+                <EmojiSelector
+                  showTabs={false}
+                  placeholder="Search your emoji..."
+                  onEmojiSelected={(emoji) => setIcon(emoji)}
+                  columns={9}
+                />
+              </View>
             )}
           </View>
         </View>

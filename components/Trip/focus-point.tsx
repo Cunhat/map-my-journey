@@ -14,7 +14,7 @@ type FocusPointProps = {
 export const FocusPoint = React.forwardRef<BottomSheetModal, FocusPointProps>(
   ({ point, onModelClose }, ref) => {
     const snapPointsBottom = React.useMemo(() => ["25%"], []);
-    const LucideIcon = icons[point?.category?.icon as keyof typeof icons];
+    // const LucideIcon = icons[point?.category?.icon as keyof typeof icons];
 
     const handleDirections = () => {
       showLocation({
@@ -54,12 +54,7 @@ export const FocusPoint = React.forwardRef<BottomSheetModal, FocusPointProps>(
               style={{ backgroundColor: point?.category?.color }}
               className="h-10 w-10 rounded-full justify-center items-center"
             >
-              <LucideIcon
-                strokeWidth={1.2}
-                className="text-white"
-                height={"50%"}
-                width={"50%"}
-              />
+              <Text className="text-3xl">{point?.category?.icon}</Text>
             </View>
             <View className="flex-1">
               <Text className="text-xl text-gray-500 ">{point?.name}</Text>

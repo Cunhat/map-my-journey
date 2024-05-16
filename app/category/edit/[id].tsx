@@ -26,11 +26,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { Tables } from "@/lib/types/supabase";
 import { FullPageLoading } from "@/components/ui/loading";
+import EmojiSelector from "react-native-emoji-selector";
 
 const EditCategory = () => {
   const [color, setColor] = React.useState("blue");
   const [tab, setTab] = React.useState<number>(0);
-  const [icon, setIcon] = React.useState<string>("Home");
+  const [icon, setIcon] = React.useState<string>("");
   const [name, setName] = React.useState("");
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
 
@@ -66,8 +67,6 @@ const EditCategory = () => {
   const onTabChange = (index: number) => {
     setTab(index);
   };
-
-  const SelectedIcon = icons[icon as keyof typeof icons];
 
   const queryClient = useQueryClient();
 
@@ -162,12 +161,7 @@ const EditCategory = () => {
                 style={{ backgroundColor: color }}
                 className="h-28 w-28 rounded-full justify-center items-center"
               >
-                <SelectedIcon
-                  strokeWidth={2.7}
-                  className="text-white"
-                  height={"50%"}
-                  width={"50%"}
-                />
+                <Text className="text-[70%]">{icon}</Text>
               </View>
             </View>
             <View className="items-center justify-center">
@@ -212,7 +206,15 @@ const EditCategory = () => {
                 </ColorPicker>
               )}
               {tab === 1 && (
-                <CategoryIcons selectedIcon={icon} setSelectedIcon={setIcon} />
+                <EmojiSelector
+                  showTabs={false}
+                  placeholder="Search your emoji..."
+                  onEmojiSelected={(emoji) => {
+                    console.log(emoji);
+                    setIcon(emoji);
+                  }}
+                  columns={9}
+                />
               )}
             </View>
           </View>

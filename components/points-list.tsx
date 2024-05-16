@@ -37,9 +37,6 @@ export const PointsListItem: React.FC<PointsListItemProps> = ({
   point,
   focusPoint,
 }) => {
-  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
-  const Icon = icons[point.category.icon as keyof typeof icons];
-
   const location = point.name.split(", ");
   const mainLocation = location[0];
   location.shift();
@@ -89,7 +86,7 @@ export const PointsListItem: React.FC<PointsListItemProps> = ({
           style={{ backgroundColor: point.category.color }}
           className="rounded-full h-10 w-10 items-center justify-center"
         >
-          <Icon height={"50%"} width={"50%"} className="text-white" />
+          <Text className="text-3xl">{point.category.icon}</Text>
         </View>
         <View className="flex-1">
           <Text className="text-gray-500 font-bold text-base">

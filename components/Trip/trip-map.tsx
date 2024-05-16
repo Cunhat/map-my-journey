@@ -3,6 +3,7 @@ import { CurrentMarker } from "@/lib/types/types";
 import { icons } from "lucide-react-native";
 import React, { useRef } from "react";
 import MapView, { Marker } from "react-native-maps";
+import { Text } from "react-native";
 
 type TripMapProps = {
   points: Array<Tables<"point"> & { category: Tables<"category"> }>;
@@ -33,8 +34,6 @@ export const TripMap = React.forwardRef<MapView, TripMapProps>(
         ref={ref}
       >
         {points?.map((marker, index) => {
-          const Icon = icons[marker?.category?.icon as keyof typeof icons];
-
           return (
             <Marker
               key={marker.id}
@@ -49,7 +48,7 @@ export const TripMap = React.forwardRef<MapView, TripMapProps>(
               }}
               onPress={() => onPointPress(marker)}
             >
-              <Icon className="text-white" />
+              <Text className="text-2xl">{marker.category.icon}</Text>
             </Marker>
           );
         })}

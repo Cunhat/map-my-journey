@@ -18,34 +18,8 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import MapView from "react-native-maps";
 
 const Trip = () => {
-  const mapRef = useRef<MapView>(null);
-  const { tripId } = useLocalSearchParams<{ tripId: string }>();
-  const sheetRef = useRef<BottomSheet>(null);
-  const focusPointRef = useRef<BottomSheetModal>(null);
-  const [focusPoint, setFocusPoint] = React.useState<
-    Tables<"point"> & { category: Tables<"category"> }
-  >();
-
-  const [addPointBottomSheet, setAddPointBottomSheet] = React.useState(false);
-  const [index, setIndex] = React.useState(0);
-
-  const [currentMarker, setCurrentMarker] = React.useState<CurrentMarker>();
-  const headerHeight = getDeviceHeaderHeight() as number;
-
-  const snapPoints = React.useMemo(() => ["30%", "88%"], []);
-
-  const closeModelAndClearCurrentMarker = () => {
-    setAddPointBottomSheet(false);
-    sheetRef.current?.expand();
-    setCurrentMarker(undefined);
-  };
-
   const navigation = useNavigation();
-
   navigation.setOptions({
-    headerShown: true,
-    headerTransparent: true,
-    headerTitle: "",
     headerLeft: () => (
       <TouchableOpacity
         className="rounded-full p-1 bg-white border border-gray-200 flex items-center justify-center"
@@ -59,6 +33,26 @@ const Trip = () => {
     ),
     headerLeftContainerStyle: { paddingLeft: 20 },
   });
+  const mapRef = useRef<MapView>(null);
+  const { tripId } = useLocalSearchParams<{ tripId: string }>();
+  const sheetRef = useRef<BottomSheet>(null);
+  const focusPointRef = useRef<BottomSheetModal>(null);
+  const [focusPoint, setFocusPoint] = React.useState<
+    Tables<"point"> & { category: Tables<"category"> }
+  >();
+
+  const [addPointBottomSheet, setAddPointBottomSheet] = React.useState(false);
+  const [index, setIndex] = React.useState(1);
+
+  const [currentMarker, setCurrentMarker] = React.useState<CurrentMarker>();
+
+  const snapPoints = React.useMemo(() => ["10%", "30%", "88%"], []);
+
+  const closeModelAndClearCurrentMarker = () => {
+    setAddPointBottomSheet(false);
+    sheetRef.current?.expand();
+    setCurrentMarker(undefined);
+  };
 
   const trip = useQuery({
     queryKey: ["getTrip", tripId],
@@ -231,18 +225,10 @@ const Trip = () => {
                   key="AddCategory"
                 />
                 {categories?.data?.map((category) => {
-                  const SelectedIcon =
-                    icons[category.icon as keyof typeof icons];
                   return (
                     <Category
                       url={`category/edit/${category.id}?tripId=${tripId}`}
-                      icon={
-                        <SelectedIcon
-                          height={"50%"}
-                          width={"50%"}
-                          className="text-white"
-                        />
-                      }
+                      icon={category.icon}
                       name={category.name}
                       backgroundColor={category.color}
                       key={category.id}

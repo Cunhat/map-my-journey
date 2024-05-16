@@ -54,20 +54,6 @@ export default function RootLayout() {
                 }}
               />
 
-              {/* <Stack.Screen
-                name="trip/[tripId]/editCategory/[id]"
-                options={{
-                  headerShown: false,
-                  presentation: "modal",
-                }}
-              />
-              <Stack.Screen
-                name="trip/[tripId]/editPoint/[id]"
-                options={{
-                  headerShown: false,
-                  presentation: "modal",
-                }}
-              /> */}
               <Stack.Screen
                 name="(auth)/signIn"
                 options={{ headerShown: false }}
