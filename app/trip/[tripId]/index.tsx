@@ -149,7 +149,7 @@ const Trip = () => {
                 placeholderTextColor: "#d1d5db",
                 onFocus: () => {
                   // setIndex(2);
-                  sheetRef.current?.snapToIndex(1);
+                  sheetRef.current?.snapToIndex(2);
                 },
               }}
               onPress={(data, details) => {
