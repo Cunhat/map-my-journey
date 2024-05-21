@@ -17,13 +17,12 @@ type SelectProps = {
 const CategoryIcon: React.FC<{ category: { icon: string; color: string } }> = ({
   category,
 }) => {
-  const SelectedIcon = icons[category.icon as keyof typeof icons];
   return (
     <View
       style={{ backgroundColor: category.color }}
-      className="h-6 w-6 rounded-full justify-center items-center"
+      className="rounded-full h-8 w-8 items-center justify-center"
     >
-      <SelectedIcon height={"50%"} width={"50%"} className="text-white" />
+      <Text className="text-xl">{category.icon}</Text>
     </View>
   );
 };
