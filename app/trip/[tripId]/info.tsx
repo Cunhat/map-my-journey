@@ -26,17 +26,16 @@ import {
 
 const Info = () => {
   const [name, setName] = React.useState("");
-  const [days, setDays] = React.useState(0);
-  const [city, setCity] = React.useState<
-    | {
-        name: string;
-        latitude: number;
-        longitude: number;
-      }
-    | undefined
-  >();
+  const [days, setDays] = React.useState<"" | number>(0);
+  // const [city, setCity] = React.useState<
+  //   | {
+  //       name: string;
+  //       latitude: number;
+  //       longitude: number;
+  //     }
+  //   | undefined
+  // >();
   const { tripId } = useGlobalSearchParams<{ tripId: string }>();
-  const ref = useRef<GooglePlacesAutocompleteRef>(null);
 
   const queryClient = useQueryClient();
 
@@ -99,7 +98,7 @@ const Info = () => {
 
   if (isPending) return <FullPageLoading />;
 
-  const validDaysChange = days < (data?.days ?? 999);
+  const validDaysChange = days !== "" && days < (data?.days ?? 999);
 
   const isDirty = () => {
     return (name === data?.name && days == data?.days) || validDaysChange;
@@ -121,7 +120,7 @@ const Info = () => {
               value={name}
               style={{ paddingLeft: 35 }}
               onChangeText={(text) => setName(text)}
-              className="h-11 w-full text-base  p-2 bg-gray-100 rounded-xl text-gray-600"
+              className="h-11 w-full text-base p-2 bg-gray-100 rounded-xl text-gray-600"
             />
           </View>
           <View className="relative">
@@ -136,7 +135,10 @@ const Info = () => {
               value={days.toString()}
               style={{ paddingLeft: 35 }}
               keyboardType={"number-pad"}
-              onChangeText={(text) => setDays(text)}
+              onChangeText={(text) => {
+                console.log(typeof text);
+                setDays(text !== "" ? parseInt(text) : "");
+              }}
               className="h-11 w-full text-base p-2 bg-gray-100 rounded-xl text-gray-600 "
             />
             {validDaysChange && (

@@ -6,7 +6,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, ImageBackground } from "react-native";
 
 type TripCardProps = {
-  tripInfo: Tables<"trip">;
+  tripInfo: Tables<"trip"> & { point: Array<Tables<"point">> };
 };
 
 export const TripCard: React.FC<TripCardProps> = ({ tripInfo }) => {
@@ -38,7 +38,7 @@ export const TripCard: React.FC<TripCardProps> = ({ tripInfo }) => {
             >
               <MapPin height={16} width={16} className="text-red-500" />
               <Text className="text-sm text-black">
-                {tripInfo?.points?.length ?? 0} points
+                {tripInfo?.point?.length ?? 0} points
               </Text>
             </View>
           </View>
