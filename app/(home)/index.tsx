@@ -40,8 +40,6 @@ const Home = () => {
         .eq("userId", user?.id)
         .order("created_at", { ascending: false });
 
-      console.log(resp.data);
-
       return resp.data;
     },
   });
