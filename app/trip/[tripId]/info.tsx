@@ -61,7 +61,14 @@ const Info = () => {
 
   const deleteMutation = useMutation({
     mutationFn: async () => {
-      return await supabase.from("trip").delete().eq("id", tripId).select();
+      const resp = await supabase
+        .from("trip")
+        .delete()
+        .eq("id", tripId)
+        .select();
+
+      console.log(resp);
+      return resp;
     },
 
     onSuccess: ({ data }) => {

@@ -25,6 +25,7 @@ import { useGetUser } from "@/hooks/useGetUser";
 import { FullPageLoading } from "@/components/ui/loading";
 import { TripSchema } from "@/lib/types/trips";
 import { TripCard } from "@/components/trip-card";
+import NoTrips from "@/assets/svg/notrips";
 
 const Home = () => {
   const { getUser } = useGetUser();
@@ -45,6 +46,14 @@ const Home = () => {
   });
 
   if (isPending) return <FullPageLoading />;
+
+  if (data?.length === 0)
+    return (
+      <View className="flex-1 items-center justify-center">
+        <NoTrips width={"80%"} height={"80%"} />
+        <Text className="text-xl text-sky-500">No trips yet...</Text>
+      </View>
+    );
 
   return (
     <HomeLayout>

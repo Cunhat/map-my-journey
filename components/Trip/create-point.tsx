@@ -37,7 +37,7 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
   const [selectedCategory, setSelectedCategory] =
     React.useState<Tables<"category"> | null>(null);
   const [selectedDay, setSelectedDay] = React.useState<{ title: number }>();
-  const snapPointsBottom = React.useMemo(() => ["38%"], []);
+  const snapPointsBottom = React.useMemo(() => ["34%"], []);
   const { getUser } = useGetUser();
 
   const queryClient = useQueryClient();
