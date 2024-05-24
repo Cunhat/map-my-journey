@@ -8,6 +8,8 @@ import {
   AppState,
   SafeAreaView,
   Text,
+  TouchableOpacity,
+  ImageBackground,
 } from "react-native";
 import { supabase } from "@/lib/supabase";
 import { Redirect, router } from "expo-router";
@@ -64,8 +66,33 @@ const SignIn = () => {
 
   return (
     <SafeAreaView className="flex-1">
-      <View style={{ gap: 24 }} className="flex-1 p-3">
-        <View>
+      <View
+        style={{ gap: 24 }}
+        className="flex-1 p-3 justify-center items-center bg-white"
+      >
+        <Text className="text-4xl text-sky-500 font-bold">Sign in</Text>
+        <Text className="text-xl text-sky-500">
+          What did you use to access your account?
+        </Text>
+        <TouchableOpacity className="flex-row items-center justify-center h-12 px-4 py-2 rounded-2xl text-lg font-medium bg-black w-full">
+          <Text className="text-white text-xl">Sign in with Apple</Text>
+        </TouchableOpacity>
+        <TouchableOpacity className="flex-row items-center justify-center h-12 px-4 py-2 rounded-2xl text-lg font-medium bg-blue-500 w-full">
+          <Text className="text-white text-xl">Sign in with Facebook</Text>
+        </TouchableOpacity>
+        <TouchableOpacity className="flex-row items-center justify-center h-12 px-4 py-2 rounded-2xl text-lg font-medium bg-white w-full border">
+          <Text className="text-black text-xl">Sign in with Gmail</Text>
+        </TouchableOpacity>
+        <View
+          style={{ gap: 12 }}
+          className="flex flex-row justify-center items-center"
+        >
+          <View className="h-[1px] bg-gray-300 flex-1"></View>
+          <Text className="text-base text-sky-500">Or</Text>
+          <View className="h-[1px] bg-gray-300 flex-1"></View>
+        </View>
+        <Button title="Sign up" fullWidth></Button>
+        {/* <View>
           <CustomTextInput
             label="Email"
             onChangeText={(text) => setEmail(text)}
@@ -97,7 +124,7 @@ const SignIn = () => {
             //   disabled={loading}
             onPress={() => signUpWithEmail()}
           />
-        </View>
+        </View> */}
       </View>
     </SafeAreaView>
   );

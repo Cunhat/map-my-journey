@@ -86,7 +86,7 @@ export const PointsListItem: React.FC<PointsListItemProps> = ({
           style={{ backgroundColor: point.category.color }}
           className="rounded-full h-10 w-10 items-center justify-center"
         >
-          <Text className="text-3xl">{point.category.icon}</Text>
+          <Text className="text-2xl">{point.category.icon}</Text>
         </View>
         <View className="flex-1">
           <Text className="text-gray-500 font-bold text-base">
