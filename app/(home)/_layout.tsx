@@ -14,10 +14,6 @@ const IconsStyles = cva("mt-3", {
 });
 
 export default function HomeLayout() {
-  const { session } = useAuth();
-
-  if (!session) return <Redirect href={"/(auth)/signIn"} />;
-
   return (
     <Tabs>
       <Tabs.Screen
