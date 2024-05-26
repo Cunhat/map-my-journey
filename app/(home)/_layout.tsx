@@ -14,6 +14,9 @@ const IconsStyles = cva("mt-3", {
 });
 
 export default function HomeLayout() {
+  const { session, isLoading } = useAuth();
+
+
   return (
     <Tabs>
       <Tabs.Screen

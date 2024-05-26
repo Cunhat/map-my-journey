@@ -9,16 +9,11 @@ import {
 } from "react-native";
 import { User as UserIcon } from "lucide-react-native";
 import { HomeLayout } from "@/components/home-layout";
-
-import { supabase } from "@/lib/supabase";
-import { useAuth } from "@/provider/authProvider";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 
 const User = () => {
-  const { session } = useAuth();
-
-  const signOut = async () => {
-    await supabase.auth.signOut();
-  };
+  const { signOut } = useAuth();
+  const { user } = useUser();
 
   return (
     <HomeLayout>
@@ -31,9 +26,9 @@ const User = () => {
         />
         <Text className="font-bold text-sky-500 text-2xl">User</Text>
       </View>
-      <Text className="text-xl text-sky-500">{session?.user.email}</Text>
+      <Text className="text-xl text-sky-500">{user?.fullName ?? ""}</Text>
       <TouchableOpacity
-        onPress={signOut}
+        onPress={() => signOut()}
         className="flex flex-row gap-2 items-center"
       >
         <Text>Log out</Text>

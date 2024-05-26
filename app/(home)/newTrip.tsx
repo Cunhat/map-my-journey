@@ -2,9 +2,8 @@ import { HomeLayout } from "@/components/home-layout";
 import { PlacePhoto } from "@/components/place-photo";
 import { Button } from "@/components/ui/button";
 import { CustomTextInput } from "@/components/ui/text-input";
-
-import { supabase } from "@/lib/supabase";
-import { useAuth } from "@/provider/authProvider";
+import { supabaseClient } from "@/lib/supabase";
+import { useAuth } from "@clerk/clerk-expo";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { router, useNavigation } from "expo-router";
 import { CalendarDays, MapPin, Plane, X } from "lucide-react-native";
@@ -38,19 +37,25 @@ const NewTrip = () => {
   >();
   const [photo, setPhoto] = React.useState<string>();
   const ref = useRef<GooglePlacesAutocompleteRef>(null);
-  const { session } = useAuth();
+  const { getToken } = useAuth();
 
   const queryClient = useQueryClient();
 
   const createTripMutation = useMutation({
     mutationFn: async (newTrip: any) => {
+      const token = await getToken({ template: "routes-app-supabase" });
+
+      // const { user, error } = supabase.auth.setAuth(token);
+
+      const supabase = await supabaseClient(token!);
+
       return await supabase
         .from("trip")
         .insert([
           {
             name: newTrip.name,
             days: parseInt(newTrip.days),
-            userId: session?.user.id,
+            // userId: session?.user.id,
             city: newTrip.city.name,
             latitude: newTrip.city.latitude,
             longitude: newTrip.city.longitude,
