@@ -26,9 +26,10 @@ import {
   useGlobalSearchParams,
 } from "expo-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
+import { supabase, supabaseClient } from "@/lib/supabase";
 import { Tables } from "@/lib/types/supabase";
 import EmojiSelector from "react-native-emoji-selector";
+import { useAuth } from "@clerk/clerk-expo";
 
 const Create = () => {
   const [color, setColor] = React.useState("blue");
@@ -46,8 +47,7 @@ const Create = () => {
   const onTabChange = (index: number) => {
     setTab(index);
   };
-
-  const SelectedIcon = icons[icon as keyof typeof icons];
+  const { getToken, userId, isLoaded } = useAuth();
 
   const queryClient = useQueryClient();
 
@@ -57,6 +57,10 @@ const Create = () => {
       color: string;
       icon: string;
     }) => {
+      const token = await getToken({ template: "routes-app-supabase" });
+
+      const supabase = await supabaseClient(token!);
+
       return await supabase
         .from("category")
         .insert({

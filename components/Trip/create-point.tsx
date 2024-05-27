@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
-import { useGetUser } from "@/hooks/useGetUser";
-import { supabase } from "@/lib/supabase";
+import { supabase, supabaseClient } from "@/lib/supabase";
 import { Database, Tables } from "@/lib/types/supabase";
 import { createDecrementArray } from "@/lib/utils";
+import { useAuth } from "@clerk/clerk-expo";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CalendarDays, Pin, Tag, X } from "lucide-react-native";
@@ -38,28 +38,35 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
     React.useState<Tables<"category"> | null>(null);
   const [selectedDay, setSelectedDay] = React.useState<{ title: number }>();
   const snapPointsBottom = React.useMemo(() => ["34%"], []);
-  const { getUser } = useGetUser();
-
+  const { getToken, userId, isLoaded } = useAuth();
   const queryClient = useQueryClient();
 
   const createTripPointMutation = useMutation({
     mutationFn: async (
       point: Omit<Database["public"]["Tables"]["point"]["Insert"], "user_id">
     ) => {
-      const user = await getUser();
+      const token = await getToken({ template: "routes-app-supabase" });
 
-      return await supabase
+      const supabase = await supabaseClient(token!);
+
+      console.log("userId", userId);
+
+      const resp = await supabase
         .from("point")
         .insert({
           name: point.name,
           day: point.day,
-          user_id: user?.id,
+          user_id: userId!,
           latitude: point.latitude,
           longitude: point.longitude,
           trip_id: point.trip_id,
           category_id: point.category_id,
         })
         .select();
+
+      console.log("resp", resp);
+
+      return resp;
     },
 
     onSuccess: () => {
@@ -73,7 +80,7 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
     },
   });
 
-  if (!addPointBottomSheet) return null;
+  if (!addPointBottomSheet || !isLoaded) return null;
 
   const handleSubmit = () => {
     createTripPointMutation.mutate({

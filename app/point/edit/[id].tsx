@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { FullPageLoading } from "@/components/ui/loading";
 import { Select } from "@/components/ui/select";
-import { supabase } from "@/lib/supabase";
+import { supabaseClient } from "@/lib/supabase";
+
 import { Database, Tables } from "@/lib/types/supabase";
 import { createDecrementArray } from "@/lib/utils";
+import { useAuth } from "@clerk/clerk-expo";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
 import { CalendarDays, Save, Tag, X } from "lucide-react-native";
@@ -18,12 +20,16 @@ const EditPoint: React.FC = () => {
   }>();
   const [selectedDay, setSelectedDay] = React.useState<{ title: string }>();
   const { tripId, id } = useLocalSearchParams<{ tripId: string; id: string }>();
-
+  const { getToken, userId, isLoaded } = useAuth();
   const queryClient = useQueryClient();
 
   const categories = useQuery({
     queryKey: ["getCategories", id],
     queryFn: async () => {
+      const token = await getToken({ template: "routes-app-supabase" });
+
+      const supabase = await supabaseClient(token!);
+
       const resp = await supabase
         .from("category")
         .select("*")
@@ -36,6 +42,10 @@ const EditPoint: React.FC = () => {
   const trip = useQuery({
     queryKey: ["getNumberOfDays", id],
     queryFn: async () => {
+      const token = await getToken({ template: "routes-app-supabase" });
+
+      const supabase = await supabaseClient(token!);
+
       const resp = await supabase
         .from("trip")
         .select("*")
@@ -49,6 +59,10 @@ const EditPoint: React.FC = () => {
   const point = useQuery({
     queryKey: ["getPoint", id],
     queryFn: async () => {
+      const token = await getToken({ template: "routes-app-supabase" });
+
+      const supabase = await supabaseClient(token!);
+
       const resp = await supabase
         .from("point")
         .select(`*, category("*")`)
@@ -81,6 +95,10 @@ const EditPoint: React.FC = () => {
         "user_id" | "id" | "trip_id"
       >
     ) => {
+      const token = await getToken({ template: "routes-app-supabase" });
+
+      const supabase = await supabaseClient(token!);
+
       return await supabase
         .from("point")
         .update({

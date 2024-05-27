@@ -7,15 +7,9 @@ import { useAuth } from '@clerk/clerk-expo'
 const supabaseUrl = "https://vdpwbhouavsizhorslco.supabase.co"
 const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkcHdiaG91YXZzaXpob3JzbGNvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTI4NjgzMjUsImV4cCI6MjAyODQ0NDMyNX0.2cGeW_77xcmju236HSjkVlLozjyxIGLdgQpWyn9DQLI"
 
-// const { getToken } = useAuth();
 
-// const token = await getToken({ template: "routes-app-supabase" });
-
-// export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {global: { headers: {
-//   Authorization: `Bearer ${token}`}}});
 
 export const supabaseClient = async (token: string) => {
-  // const token = await getToken({ template: "routes-app-supabase" });
 
   return createClient<Database>(supabaseUrl, supabaseAnonKey, {global: { headers: {
     Authorization: `Bearer ${token}`}}});

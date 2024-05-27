@@ -12,8 +12,9 @@ import Calendar from "@/assets/svg/calendar";
 import { Tables } from "@/lib/types/supabase";
 import SwipeableRow from "./ui/swipeable-row";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
 import { router } from "expo-router";
+import { supabaseClient } from "@/lib/supabase";
+import { useAuth } from "@clerk/clerk-expo";
 
 export const PointsList: React.FC<PropsWithChildren> = ({ children }) => {
   return (
@@ -41,11 +42,16 @@ export const PointsListItem: React.FC<PointsListItemProps> = ({
   const mainLocation = location[0];
   location.shift();
   const subLocation = location.join(", ");
+  const { getToken, userId, isLoaded } = useAuth();
 
   const queryClient = useQueryClient();
 
   const deletePointMutation = useMutation({
     mutationFn: async (pointId: number) => {
+      const token = await getToken({ template: "routes-app-supabase" });
+
+      const supabase = await supabaseClient(token!);
+
       const resp = await supabase
         .from("point")
         .delete()

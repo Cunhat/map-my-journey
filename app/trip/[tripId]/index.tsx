@@ -4,10 +4,11 @@ import { Points } from "@/components/Trip/points";
 import { TripMap } from "@/components/Trip/trip-map";
 import { Category } from "@/components/category";
 import { FullPageLoading } from "@/components/ui/loading";
-import { supabase } from "@/lib/supabase";
+import { supabase, supabaseClient } from "@/lib/supabase";
 import { Tables } from "@/lib/types/supabase";
 import { CurrentMarker } from "@/lib/types/types";
 import { getDeviceHeaderHeight } from "@/lib/utils";
+import { useAuth } from "@clerk/clerk-expo";
 import BottomSheet, { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useQuery } from "@tanstack/react-query";
 import { router, useLocalSearchParams, useNavigation } from "expo-router";
@@ -45,6 +46,7 @@ const Trip = () => {
   const [index, setIndex] = React.useState(1);
 
   const [currentMarker, setCurrentMarker] = React.useState<CurrentMarker>();
+  const { getToken, userId, isLoaded } = useAuth();
 
   const snapPoints = React.useMemo(() => ["10%", "30%", "88%"], []);
 
@@ -57,6 +59,10 @@ const Trip = () => {
   const trip = useQuery({
     queryKey: ["getTrip", tripId],
     queryFn: async () => {
+      const token = await getToken({ template: "routes-app-supabase" });
+
+      const supabase = await supabaseClient(token);
+
       const resp = await supabase
         .from("trip")
         .select("*")
@@ -70,6 +76,10 @@ const Trip = () => {
   const categories = useQuery({
     queryKey: ["getTripCategories", tripId],
     queryFn: async () => {
+      const token = await getToken({ template: "routes-app-supabase" });
+
+      const supabase = await supabaseClient(token);
+
       const resp = await supabase
         .from("category")
         .select("*")
@@ -83,6 +93,9 @@ const Trip = () => {
   const points = useQuery({
     queryKey: ["getTripPoints", tripId],
     queryFn: async () => {
+      const token = await getToken({ template: "routes-app-supabase" });
+      const supabase = await supabaseClient(token);
+
       const resp = await supabase
         .from("point")
         .select(`*, category("*")`)
@@ -93,7 +106,7 @@ const Trip = () => {
     },
   });
 
-  if (categories.isPending || trip.isPending || points.isPending)
+  if (categories.isPending || trip.isPending || points.isPending || !isLoaded)
     return <FullPageLoading />;
 
   const handleFocusPoint = (

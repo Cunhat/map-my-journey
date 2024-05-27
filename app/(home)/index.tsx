@@ -21,7 +21,6 @@ import { Link, router } from "expo-router";
 import { supabaseClient } from "@/lib/supabase";
 import { err } from "react-native-svg";
 import { useQuery } from "@tanstack/react-query";
-import { useGetUser } from "@/hooks/useGetUser";
 import { FullPageLoading } from "@/components/ui/loading";
 import { TripSchema } from "@/lib/types/trips";
 import { TripCard } from "@/components/trip-card";
@@ -29,14 +28,11 @@ import NoTrips from "@/assets/svg/notrips";
 import { useAuth, useUser } from "@clerk/clerk-expo";
 
 const Home = () => {
-  // const { getUser } = useGetUser();
-  const { getToken } = useAuth();
-  const { user } = useUser();
+  const { getToken, userId, isLoaded } = useAuth();
 
   const { data, isPending, error, isSuccess } = useQuery({
     queryKey: ["getTrips"],
     queryFn: async () => {
-      // const user = await getUser();
       const token = await getToken({ template: "routes-app-supabase" });
 
       const supabase = await supabaseClient(token);
@@ -44,16 +40,14 @@ const Home = () => {
       const resp = await supabase
         .from("trip")
         .select("*, point(*)")
-        .eq("userId", user?.id!)
+        .eq("userId", userId!)
         .order("created_at", { ascending: false });
-
-      console.log("User", user.id);
 
       return resp.data;
     },
   });
 
-  if (isPending) return <FullPageLoading />;
+  if (isPending || !isLoaded) return <FullPageLoading />;
 
   if (data?.length === 0)
     return (

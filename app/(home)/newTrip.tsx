@@ -37,15 +37,13 @@ const NewTrip = () => {
   >();
   const [photo, setPhoto] = React.useState<string>();
   const ref = useRef<GooglePlacesAutocompleteRef>(null);
-  const { getToken } = useAuth();
+  const { getToken, userId, isLoaded } = useAuth();
 
   const queryClient = useQueryClient();
 
   const createTripMutation = useMutation({
     mutationFn: async (newTrip: any) => {
       const token = await getToken({ template: "routes-app-supabase" });
-
-      // const { user, error } = supabase.auth.setAuth(token);
 
       const supabase = await supabaseClient(token!);
 
@@ -55,7 +53,7 @@ const NewTrip = () => {
           {
             name: newTrip.name,
             days: parseInt(newTrip.days),
-            // userId: session?.user.id,
+            userId: userId,
             city: newTrip.city.name,
             latitude: newTrip.city.latitude,
             longitude: newTrip.city.longitude,
@@ -90,7 +88,7 @@ const NewTrip = () => {
     });
   };
 
-  if (createTripMutation.isPending)
+  if (createTripMutation.isPending || !isLoaded)
     return (
       <HomeLayout>
         <View className="flex-row items-center justify-center flex-1">

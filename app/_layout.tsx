@@ -75,14 +75,11 @@ function RootLayoutNav() {
     }
   }, [isLoaded]);
 
-  useEffect(() => {
-    console.log("sessionId", sessionId);
-  }, [sessionId]);
+  if (!isLoaded) return null;
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <QueryClientProvider client={queryClient}>
-        {/* <AuthProvider> */}
         <BottomSheetModalProvider>
           <Stack>
             <Stack.Screen name="(home)" options={{ headerShown: false }} />
@@ -128,7 +125,6 @@ function RootLayoutNav() {
             />
           </Stack>
         </BottomSheetModalProvider>
-        {/* </AuthProvider> */}
       </QueryClientProvider>
     </GestureHandlerRootView>
   );

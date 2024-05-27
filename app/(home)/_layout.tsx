@@ -1,6 +1,5 @@
-import { useAuth } from "@/provider/authProvider";
 import { cva } from "class-variance-authority";
-import { Redirect, Tabs } from "expo-router";
+import { Tabs } from "expo-router";
 import { Map, Plus, User } from "lucide-react-native";
 import { View } from "react-native";
 
@@ -14,9 +13,6 @@ const IconsStyles = cva("mt-3", {
 });
 
 export default function HomeLayout() {
-  const { session, isLoading } = useAuth();
-
-
   return (
     <Tabs>
       <Tabs.Screen

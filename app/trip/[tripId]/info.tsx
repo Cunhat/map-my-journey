@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { FullPageLoading } from "@/components/ui/loading";
 import { supabase } from "@/lib/supabase";
+import { useAuth } from "@clerk/clerk-expo";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   router,
@@ -36,12 +37,15 @@ const Info = () => {
   //   | undefined
   // >();
   const { tripId } = useGlobalSearchParams<{ tripId: string }>();
-
+  const { getToken, userId, isLoaded } = useAuth();
   const queryClient = useQueryClient();
 
   const { data, isPending, isSuccess } = useQuery({
     queryKey: ["getTrip", tripId],
     queryFn: async () => {
+      const token = await getToken({ template: "routes-app-supabase" });
+
+      const supabase = await supabaseClient(token);
       const resp = await supabase
         .from("trip")
         .select("*")
