@@ -23,10 +23,12 @@ import { CircleX, Save, Tag, Trash2, icons } from "lucide-react-native";
 import { CategoryIcons } from "@/components/category-icons";
 import { useLocalSearchParams, router } from "expo-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
+
 import { Tables } from "@/lib/types/supabase";
 import { FullPageLoading } from "@/components/ui/loading";
 import EmojiSelector from "react-native-emoji-selector";
+import { useAuth } from "@clerk/clerk-expo";
+import { supabaseClient } from "@/lib/supabase";
 
 const EditCategory = () => {
   const [color, setColor] = React.useState("blue");
@@ -36,10 +38,15 @@ const EditCategory = () => {
   const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
 
   const { tripId, id } = useLocalSearchParams<{ tripId: string; id: string }>();
+  const { getToken, userId, isLoaded } = useAuth();
 
   const category = useQuery({
     queryKey: ["getCategory", id],
     queryFn: async () => {
+      const token = await getToken({ template: "routes-app-supabase" });
+
+      const supabase = await supabaseClient(token!);
+
       const resp = await supabase
         .from("category")
         .select("*")
@@ -76,6 +83,10 @@ const EditCategory = () => {
       color: string;
       icon: string;
     }) => {
+      const token = await getToken({ template: "routes-app-supabase" });
+
+      const supabase = await supabaseClient(token!);
+
       const resp = await supabase
         .from("category")
         .update({
