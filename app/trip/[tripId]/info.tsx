@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { FullPageLoading } from "@/components/ui/loading";
-import { supabase } from "@/lib/supabase";
+import { supabase, supabaseClient } from "@/lib/supabase";
 import { useAuth } from "@clerk/clerk-expo";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -46,6 +46,7 @@ const Info = () => {
       const token = await getToken({ template: "routes-app-supabase" });
 
       const supabase = await supabaseClient(token);
+
       const resp = await supabase
         .from("trip")
         .select("*")
@@ -65,6 +66,10 @@ const Info = () => {
 
   const deleteMutation = useMutation({
     mutationFn: async () => {
+      const token = await getToken({ template: "routes-app-supabase" });
+
+      const supabase = await supabaseClient(token);
+
       const resp = await supabase
         .from("trip")
         .delete()
@@ -88,6 +93,10 @@ const Info = () => {
 
   const updateMutation = useMutation({
     mutationFn: async (newTrip: any) => {
+      const token = await getToken({ template: "routes-app-supabase" });
+
+      const supabase = await supabaseClient(token);
+
       return await supabase
         .from("trip")
         .update({

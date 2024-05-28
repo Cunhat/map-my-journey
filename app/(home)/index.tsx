@@ -40,7 +40,7 @@ const Home = () => {
       const resp = await supabase
         .from("trip")
         .select("*, point(*)")
-        .eq("userId", userId!)
+        .eq("user_id", userId!)
         .order("created_at", { ascending: false });
 
       return resp.data;
