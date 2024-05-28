@@ -117,6 +117,10 @@ const EditCategory = () => {
 
   const deleteCategory = useMutation({
     mutationFn: async () => {
+      const token = await getToken({ template: "routes-app-supabase" });
+
+      const supabase = await supabaseClient(token!);
+
       return await supabase.from("category").delete().eq("id", id).select();
     },
 

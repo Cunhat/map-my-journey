@@ -17,6 +17,7 @@ export type Database = {
           id: number
           name: string
           tripId: number
+          user_id: string | null
         }
         Insert: {
           color: string
@@ -25,6 +26,7 @@ export type Database = {
           id?: number
           name: string
           tripId: number
+          user_id?: string | null
         }
         Update: {
           color?: string
@@ -33,10 +35,11 @@ export type Database = {
           id?: number
           name?: string
           tripId?: number
+          user_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "public_category_tripId_fkey"
+            foreignKeyName: "category_tripId_fkey"
             columns: ["tripId"]
             isOneToOne: false
             referencedRelation: "trip"
@@ -76,13 +79,6 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "point_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "public_point_categoryId_fkey"
             columns: ["category_id"]
@@ -144,8 +140,7 @@ export type Database = {
           longitude: number
           name: string
           photo_url: string
-          points: number[] | null
-          userId: string | null
+          user_id: string | null
         }
         Insert: {
           city?: string | null
@@ -156,8 +151,7 @@ export type Database = {
           longitude: number
           name: string
           photo_url: string
-          points?: number[] | null
-          userId?: string | null
+          user_id?: string | null
         }
         Update: {
           city?: string | null
@@ -168,25 +162,19 @@ export type Database = {
           longitude?: number
           name?: string
           photo_url?: string
-          points?: number[] | null
-          userId?: string | null
+          user_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "public_trip_userId_fkey"
-            columns: ["userId"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      requesting_user_id: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never

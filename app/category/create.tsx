@@ -68,6 +68,7 @@ const Create = () => {
           color: newCategory.color,
           icon: newCategory.icon,
           tripId: parseInt(tripId),
+          user_id: userId!,
         })
         .select();
     },
