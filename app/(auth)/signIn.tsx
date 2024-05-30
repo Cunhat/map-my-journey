@@ -1,21 +1,12 @@
+import Apple from "@/assets/svg/apple";
+import Facebook from "@/assets/svg/facebook";
+import Google from "@/assets/svg/google";
 import { Button } from "@/components/ui/button";
-import { CustomTextInput } from "@/components/ui/text-input";
-import React, { useState } from "react";
-import {
-  Alert,
-  StyleSheet,
-  View,
-  AppState,
-  SafeAreaView,
-  Text,
-  TouchableOpacity,
-  ImageBackground,
-} from "react-native";
-import { supabase } from "@/lib/supabase";
-import { Redirect, router, useRouter } from "expo-router";
-import { useAuth } from "@/provider/authProvider";
 import { useWarmUpBrowser } from "@/hooks/useWarmUpBrowser";
 import { useOAuth } from "@clerk/clerk-expo";
+import { useRouter } from "expo-router";
+import React from "react";
+import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
 
 enum Strategy {
   Google = "oauth_google",
@@ -53,7 +44,7 @@ const SignIn = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView className="flex-1 bg-white">
       <View
         style={{ gap: 24 }}
         className="flex-1 p-3 justify-center items-center bg-white"
@@ -63,21 +54,27 @@ const SignIn = () => {
           What did you use to access your account?
         </Text>
         <TouchableOpacity
+          style={{ gap: 8 }}
           onPress={() => onSelectAuth(Strategy.Apple)}
           className="flex-row items-center justify-center h-12 px-4 py-2 rounded-2xl text-lg font-medium bg-black w-full"
         >
+          <Apple height={24} width={24} />
           <Text className="text-white text-xl">Sign in with Apple</Text>
         </TouchableOpacity>
         <TouchableOpacity
+          style={{ gap: 8 }}
           onPress={() => onSelectAuth(Strategy.Facebook)}
-          className="flex-row items-center justify-center h-12 px-4 py-2 rounded-2xl text-lg font-medium bg-blue-500 w-full"
+          className="flex-row items-center justify-center h-12 px-4 py-2 rounded-2xl text-lg font-medium bg-[#1877F2] w-full"
         >
+          <Facebook height={24} width={24} />
           <Text className="text-white text-xl">Sign in with Facebook</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => onSelectAuth(Strategy.Google)}
+          style={{ gap: 8 }}
           className="flex-row items-center justify-center h-12 px-4 py-2 rounded-2xl text-lg font-medium bg-white w-full border"
         >
+          <Google height={24} width={24} />
           <Text className="text-black text-xl">Sign in with Gmail</Text>
         </TouchableOpacity>
         <View
