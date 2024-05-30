@@ -4,11 +4,13 @@ import { supabase, supabaseClient } from "@/lib/supabase";
 import { Database, Tables } from "@/lib/types/supabase";
 import { createDecrementArray } from "@/lib/utils";
 import { useAuth } from "@clerk/clerk-expo";
-import BottomSheet from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CalendarDays, Pin, Tag, X } from "lucide-react-native";
 import React, { useRef } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
+import { useSharedValue } from "react-native-reanimated";
+import { DynamicBottomSheet } from "../ui/dynamic-bottom-sheet";
 
 type CreatePointProps = {
   addPointBottomSheet: boolean;
@@ -94,17 +96,7 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
   };
 
   return (
-    <BottomSheet
-      animateOnMount
-      ref={addPointRef}
-      index={0}
-      // enableDynamicSizing
-      snapPoints={snapPointsBottom}
-      handleIndicatorStyle={{
-        backgroundColor: "#6b7280",
-        width: 40,
-      }}
-    >
+    <DynamicBottomSheet ref={addPointRef}>
       <View style={{ gap: 24 }} className="flex-1 p-3">
         <View className="flex-row items-center">
           <View className="flex-1">
@@ -156,6 +148,6 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
           icon={<Pin className="text-white" height={20} width={20} />}
         />
       </View>
-    </BottomSheet>
+    </DynamicBottomSheet>
   );
 };

@@ -14,8 +14,8 @@ type FocusPointProps = {
 
 export const FocusPoint = React.forwardRef<BottomSheetModal, FocusPointProps>(
   ({ point, onModelClose }, ref) => {
-    const snapPointsBottom = React.useMemo(() => ["25%"], []);
-    // const LucideIcon = icons[point?.category?.icon as keyof typeof icons];
+    // const snapPointsBottom = React.useMemo(() => ["25%"], []);
+    // // const LucideIcon = icons[point?.category?.icon as keyof typeof icons];
 
     const handleDirections = () => {
       showLocation({
@@ -44,7 +44,6 @@ export const FocusPoint = React.forwardRef<BottomSheetModal, FocusPointProps>(
       <BottomSheetModal
         animateOnMount
         ref={ref}
-        // snapPoints={snapPointsBottom}
         enableDynamicSizing
         contentHeight={animatedContentHeight}
         handleIndicatorStyle={{
