@@ -31,7 +31,7 @@ const Home = () => {
   const { getToken, userId, isLoaded } = useAuth();
 
   const { data, isPending, error, isSuccess } = useQuery({
-    queryKey: ["getTrips"],
+    queryKey: ["getTrips", userId],
     queryFn: async () => {
       const token = await getToken({ template: "routes-app-supabase" });
 
@@ -43,8 +43,11 @@ const Home = () => {
         .eq("user_id", userId!)
         .order("created_at", { ascending: false });
 
+      // if (resp.error) throw new Error(resp.error.message);
+
       return resp.data;
     },
+    retry: true,
   });
 
   if (isPending || !isLoaded) return <FullPageLoading />;
