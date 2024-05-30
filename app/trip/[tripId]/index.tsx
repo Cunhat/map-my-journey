@@ -13,27 +13,14 @@ import BottomSheet, { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useQuery } from "@tanstack/react-query";
 import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import { ArrowLeft, Plus, Search, X, icons } from "lucide-react-native";
-import React, { useRef } from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import MapView from "react-native-maps";
 
 const Trip = () => {
   const navigation = useNavigation();
-  navigation.setOptions({
-    headerLeft: () => (
-      <TouchableOpacity
-        className="rounded-full p-1 bg-white border border-gray-200 flex items-center justify-center"
-        onPress={() => {
-          router.push("/");
-          focusPointRef.current?.dismiss();
-        }}
-      >
-        <ArrowLeft className="text-gray-500" height={24} width={24}></ArrowLeft>
-      </TouchableOpacity>
-    ),
-    headerLeftContainerStyle: { paddingLeft: 20 },
-  });
+
   const mapRef = useRef<MapView>(null);
   const { tripId } = useLocalSearchParams<{ tripId: string }>();
   const sheetRef = useRef<BottomSheet>(null);
@@ -49,6 +36,27 @@ const Trip = () => {
   const { getToken, userId, isLoaded } = useAuth();
 
   const snapPoints = React.useMemo(() => ["10%", "30%", "88%"], []);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity
+          className="rounded-full p-1 bg-white border border-gray-200 flex items-center justify-center"
+          onPress={() => {
+            router.push("/");
+            focusPointRef.current?.dismiss();
+          }}
+        >
+          <ArrowLeft
+            className="text-gray-500"
+            height={24}
+            width={24}
+          ></ArrowLeft>
+        </TouchableOpacity>
+      ),
+      headerLeftContainerStyle: { paddingLeft: 20 },
+    });
+  }, []);
 
   const closeModelAndClearCurrentMarker = () => {
     setAddPointBottomSheet(false);
