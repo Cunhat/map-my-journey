@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
-import { supabase, supabaseClient } from "@/lib/supabase";
+import { supabaseClient } from "@/lib/supabase";
 import { Database, Tables } from "@/lib/types/supabase";
 import { createDecrementArray } from "@/lib/utils";
 import { useAuth } from "@clerk/clerk-expo";
@@ -50,8 +50,6 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
       const token = await getToken({ template: "routes-app-supabase" });
 
       const supabase = await supabaseClient(token!);
-
-      console.log("userId", userId);
 
       const resp = await supabase
         .from("point")
