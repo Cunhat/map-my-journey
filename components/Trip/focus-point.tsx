@@ -1,10 +1,11 @@
 import { Tables } from "@/lib/types/supabase";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { Navigation, Navigation2, X, icons } from "lucide-react-native";
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
 import { Button } from "../ui/button";
 import { showLocation } from "react-native-map-link";
+import { useSharedValue } from "react-native-reanimated";
 
 type FocusPointProps = {
   point: Tables<"point"> & { category: Tables<"category"> };
@@ -37,41 +38,47 @@ export const FocusPoint = React.forwardRef<BottomSheetModal, FocusPointProps>(
       });
     };
 
+    const animatedContentHeight = useSharedValue(0);
+
     return (
       <BottomSheetModal
         animateOnMount
         ref={ref}
-        snapPoints={snapPointsBottom}
+        // snapPoints={snapPointsBottom}
+        enableDynamicSizing
+        contentHeight={animatedContentHeight}
         handleIndicatorStyle={{
           backgroundColor: "#6b7280",
           width: 40,
         }}
         onDismiss={onModelClose}
       >
-        <View className="flex-1">
-          <View style={{ gap: 12 }} className="flex-row items-center py-1 px-3">
-            <View
-              style={{ backgroundColor: point?.category?.color }}
-              className="h-10 w-10 rounded-full justify-center items-center"
-            >
-              <Text className="text-3xl">{point?.category?.icon}</Text>
+        <BottomSheetView>
+          <View style={{ gap: 12 }} className="flex-1 pb-4 pt-2">
+            <View style={{ gap: 12 }} className="flex-row items-center px-3">
+              <View
+                style={{ backgroundColor: point?.category?.color }}
+                className="h-10 w-10 rounded-full justify-center items-center"
+              >
+                <Text className="text-3xl">{point?.category?.icon}</Text>
+              </View>
+              <View className="flex-1">
+                <Text className="text-xl text-gray-500 ">{point?.name}</Text>
+              </View>
             </View>
-            <View className="flex-1">
-              <Text className="text-xl text-gray-500 ">{point?.name}</Text>
+            <View className="flex-1 justify-center p-3">
+              <Button
+                icon={
+                  <Navigation className="text-white" height={20} width={20} />
+                }
+                title="Directions"
+                onPress={handleDirections}
+                type="primary"
+                fullWidth
+              />
             </View>
           </View>
-          <View className="flex-1 justify-center p-3">
-            <Button
-              icon={
-                <Navigation className="text-white" height={20} width={20} />
-              }
-              title="Directions"
-              onPress={handleDirections}
-              type="primary"
-              fullWidth
-            />
-          </View>
-        </View>
+        </BottomSheetView>
       </BottomSheetModal>
     );
   }

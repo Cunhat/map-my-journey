@@ -37,7 +37,7 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
   const [selectedCategory, setSelectedCategory] =
     React.useState<Tables<"category"> | null>(null);
   const [selectedDay, setSelectedDay] = React.useState<{ title: number }>();
-  const snapPointsBottom = React.useMemo(() => ["34%"], []);
+  const snapPointsBottom = React.useMemo(() => ["50%"], []);
   const { getToken, userId, isLoaded } = useAuth();
   const queryClient = useQueryClient();
 
@@ -98,6 +98,7 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
       animateOnMount
       ref={addPointRef}
       index={0}
+      // enableDynamicSizing
       snapPoints={snapPointsBottom}
       handleIndicatorStyle={{
         backgroundColor: "#6b7280",
