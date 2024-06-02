@@ -4,7 +4,14 @@ import { supabaseClient } from "@/lib/supabase";
 import { useAuth } from "@clerk/clerk-expo";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useGlobalSearchParams } from "expo-router";
-import { CalendarDays, Plane, Save, Trash2 } from "lucide-react-native";
+import {
+  CalendarDays,
+  MapPin,
+  Plane,
+  Save,
+  Trash2,
+  Map,
+} from "lucide-react-native";
 import React, { useEffect, useMemo } from "react";
 import { SafeAreaView, Text, TextInput, View } from "react-native";
 import CountriesJson from "@/assets/data/countries.json";
@@ -29,8 +36,6 @@ const Info = () => {
         .eq("id", tripId)
         .maybeSingle();
 
-      console.log(resp);
-
       return resp.data;
     },
   });
@@ -54,7 +59,6 @@ const Info = () => {
         .eq("id", tripId)
         .select();
 
-      console.log(resp);
       return resp;
     },
 
@@ -96,6 +100,11 @@ const Info = () => {
 
   const countries = useMemo(() => {
     const allCountries = new Set<string>();
+
+    const city = data?.city?.split(",");
+    if (city?.length)
+      allCountries.add(city[city.length - 1].replaceAll(" ", ""));
+
     data?.point?.forEach((point) => {
       const country = point.name.split(",");
 
@@ -159,45 +168,53 @@ const Info = () => {
           <View style={{ gap: 12 }}>
             <Text className="text-sky-500 pl-3 text-xl">Trip Info</Text>
             <View>
-              <View className="flex flex-row justify-between p-6 border-b border-t border-gray-200">
-                <Text className="text-gray-500 text-base">
-                  Number of points:
-                </Text>
+              <View className="border-[0.5px] border-gray-300" />
+              <View className="flex flex-row justify-between p-6">
+                <View style={{ gap: 4 }} className="flex flex-row items-center">
+                  <MapPin className="text-gray-500" height={20} width={20} />
+                  <Text className="text-gray-500 text-base">
+                    Number of points:
+                  </Text>
+                </View>
                 <Text className="text-gray-500 text-base">
                   {data?.point?.length}
                 </Text>
               </View>
-              <View className="flex flex-row justify-between p-6 border-b border-t border-gray-200">
-                <Text className="text-gray-500 text-base">Countries:</Text>
-                <Text className="text-gray-500 text-base">
-                  <View className="flex flex-row" style={{ gap: 8 }}>
-                    {countries.map((country) => {
-                      const ctr = CountriesJson.find(
-                        (elem) => elem.name === country
-                      );
+              <View className="border-[0.5px] border-gray-300" />
+              <View className="flex flex-row justify-between p-6 ">
+                <View style={{ gap: 4 }} className="flex flex-row items-center">
+                  <Map className="text-gray-500" height={20} width={20} />
+                  <Text className="text-gray-500 text-base">Countries:</Text>
+                </View>
 
-                      return (
-                        <View
-                          key={country}
-                          className="flex items-center flex-row border border-gray-400 rounded-full px-2"
-                          style={{ gap: 4 }}
-                        >
-                          {ctr && ctr.flag && (
-                            <Text className="text-xl text-gray-500">
-                              {ctr.flag}
-                            </Text>
-                          )}
-                          <Text>{ctr?.name}</Text>
-                        </View>
-                      );
-                    })}
-                  </View>
-                </Text>
+                <View className="flex flex-row" style={{ gap: 8 }}>
+                  {countries.map((country) => {
+                    const ctr = CountriesJson.find(
+                      (elem) => elem.name === country
+                    );
+
+                    return (
+                      <View
+                        key={country}
+                        className="flex items-center flex-row border border-gray-400 rounded-full px-2"
+                        style={{ gap: 4 }}
+                      >
+                        {ctr && ctr.flag && (
+                          <Text className="text-xl text-gray-500">
+                            {ctr.flag}
+                          </Text>
+                        )}
+                        <Text>{ctr?.name}</Text>
+                      </View>
+                    );
+                  })}
+                </View>
               </View>
+              <View className="border-[0.5px] border-gray-300" />
             </View>
           </View>
         </View>
-        <View style={{ gap: 12 }}>
+        <View style={{ gap: 12 }} className="p-3">
           {!isDirty() && (
             <Button
               title="Save"

@@ -47,7 +47,7 @@ const NewTrip = () => {
 
       const supabase = await supabaseClient(token!);
 
-      const resp = await supabase
+      return await supabase
         .from("trip")
         .insert([
           {
@@ -61,10 +61,6 @@ const NewTrip = () => {
           },
         ])
         .select();
-
-      console.log(resp);
-
-      return resp;
     },
 
     onSuccess: ({ data }) => {
