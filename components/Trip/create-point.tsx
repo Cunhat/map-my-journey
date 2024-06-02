@@ -64,8 +64,6 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
         })
         .select();
 
-      console.log("resp", resp);
-
       return resp;
     },
 

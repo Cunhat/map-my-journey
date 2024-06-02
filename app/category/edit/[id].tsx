@@ -225,7 +225,6 @@ const EditCategory = () => {
                   showTabs={false}
                   placeholder="Search your emoji..."
                   onEmojiSelected={(emoji) => {
-                    console.log(emoji);
                     setIcon(emoji);
                   }}
                   columns={9}

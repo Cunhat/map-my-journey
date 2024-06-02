@@ -54,7 +54,7 @@ const Home = () => {
 
   if (data?.length === 0)
     return (
-      <View className="flex-1 items-center justify-center">
+      <View className="flex-1 items-center justify-center bg-white">
         <NoTrips width={"80%"} height={"80%"} />
         <Text className="text-xl text-sky-500">No trips yet...</Text>
       </View>

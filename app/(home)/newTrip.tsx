@@ -47,13 +47,13 @@ const NewTrip = () => {
 
       const supabase = await supabaseClient(token!);
 
-      return await supabase
+      const resp = await supabase
         .from("trip")
         .insert([
           {
             name: newTrip.name,
             days: parseInt(newTrip.days),
-            userId: userId,
+            user_id: userId,
             city: newTrip.city.name,
             latitude: newTrip.city.latitude,
             longitude: newTrip.city.longitude,
@@ -61,6 +61,10 @@ const NewTrip = () => {
           },
         ])
         .select();
+
+      console.log(resp);
+
+      return resp;
     },
 
     onSuccess: ({ data }) => {
