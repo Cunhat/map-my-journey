@@ -77,7 +77,7 @@ const SignIn = () => {
           <Google height={24} width={24} />
           <Text className="text-black text-xl">Sign in with Gmail</Text>
         </TouchableOpacity>
-        <View
+        {/* <View
           style={{ gap: 12 }}
           className="flex flex-row justify-center items-center"
         >
@@ -89,7 +89,7 @@ const SignIn = () => {
           onPress={() => router.push("/(home)")}
           title="Sign up"
           fullWidth
-        ></Button>
+        ></Button> */}
       </View>
     </SafeAreaView>
   );

@@ -1,11 +1,11 @@
 import { Tables } from "@/lib/types/supabase";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
-import { Navigation, Navigation2, X, icons } from "lucide-react-native";
+import { Navigation } from "lucide-react-native";
 import React from "react";
-import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
-import { Button } from "../ui/button";
+import { Text, View } from "react-native";
 import { showLocation } from "react-native-map-link";
 import { useSharedValue } from "react-native-reanimated";
+import { Button } from "../ui/button";
 
 type FocusPointProps = {
   point: Tables<"point"> & { category: Tables<"category"> };
@@ -59,7 +59,7 @@ export const FocusPoint = React.forwardRef<BottomSheetModal, FocusPointProps>(
                 style={{ backgroundColor: point?.category?.color }}
                 className="h-10 w-10 rounded-full justify-center items-center"
               >
-                <Text className="text-3xl">{point?.category?.icon}</Text>
+                <Text className="text-2xl">{point?.category?.icon}</Text>
               </View>
               <View className="flex-1">
                 <Text className="text-xl text-gray-500 ">{point?.name}</Text>
