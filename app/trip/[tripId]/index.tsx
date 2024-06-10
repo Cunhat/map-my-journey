@@ -1,4 +1,5 @@
 import { CreatePoint } from "@/components/Trip/create-point";
+import { DayView } from "@/components/Trip/day-view";
 import { FocusPoint } from "@/components/Trip/focus-point";
 import { Points } from "@/components/Trip/points";
 import { TripMap } from "@/components/Trip/trip-map";
@@ -24,13 +25,14 @@ const Trip = () => {
   const { tripId } = useLocalSearchParams<{ tripId: string }>();
   const sheetRef = useRef<BottomSheet>(null);
   const focusPointRef = useRef<BottomSheetModal>(null);
+  const daySheetRef = useRef<BottomSheetModal>(null);
   const [focusPoint, setFocusPoint] = React.useState<
     Tables<"point"> & { category: Tables<"category"> }
   >();
 
   const [addPointBottomSheet, setAddPointBottomSheet] = React.useState(false);
   const [index, setIndex] = React.useState(1);
-
+  const [selectedDay, setSelectedDay] = React.useState<number>(0);
   const [currentMarker, setCurrentMarker] = React.useState<CurrentMarker>();
   const { getToken, userId, isLoaded } = useAuth();
 
@@ -139,6 +141,17 @@ const Trip = () => {
     sheetRef.current?.expand();
   };
 
+  const onDayOpen = (day: number) => {
+    setSelectedDay(day);
+    sheetRef.current?.close();
+    daySheetRef.current?.present();
+  };
+
+  const onDayClose = () => {
+    daySheetRef.current?.close();
+    sheetRef.current?.expand();
+  };
+
   return (
     <View className="flex-1">
       <TripMap
@@ -151,120 +164,125 @@ const Trip = () => {
         }}
         onPointPress={handleFocusPoint}
       />
-      {
-        <BottomSheet
-          animateOnMount
-          ref={sheetRef}
-          index={index}
-          snapPoints={snapPoints}
-          handleIndicatorStyle={{
-            backgroundColor: "#6b7280",
-            width: 40,
-          }}
-        >
-          <View style={{ gap: 16, height: "90%" }} className="flex-1 p-2">
-            <GooglePlacesAutocomplete
-              placeholder="Search your point of interest..."
-              textInputProps={{
-                placeholderTextColor: "#d1d5db",
-                onFocus: () => {
-                  // setIndex(2);
-                  sheetRef.current?.snapToIndex(2);
-                },
-              }}
-              onPress={(data, details) => {
-                const { lat, lng } = details?.geometry?.location;
 
-                setCurrentMarker({
-                  latitude: lat,
-                  longitude: lng,
-                  data,
-                  details,
-                });
-                mapRef.current?.animateCamera(
-                  {
-                    center: {
-                      latitude: lat,
-                      longitude: lng,
-                    },
-                    zoom: 15,
-                    altitude: 3000,
+      <BottomSheet
+        animateOnMount
+        ref={sheetRef}
+        index={index}
+        snapPoints={snapPoints}
+        handleIndicatorStyle={{
+          backgroundColor: "#6b7280",
+          width: 40,
+        }}
+      >
+        <View style={{ gap: 16, height: "90%" }} className="flex-1 p-2">
+          <GooglePlacesAutocomplete
+            placeholder="Search your point of interest..."
+            textInputProps={{
+              placeholderTextColor: "#d1d5db",
+              onFocus: () => {
+                // setIndex(2);
+                sheetRef.current?.snapToIndex(2);
+              },
+            }}
+            onPress={(data, details) => {
+              const { lat, lng } = details?.geometry?.location;
+
+              setCurrentMarker({
+                latitude: lat,
+                longitude: lng,
+                data,
+                details,
+              });
+              mapRef.current?.animateCamera(
+                {
+                  center: {
+                    latitude: lat,
+                    longitude: lng,
                   },
-                  { duration: 1000 }
+                  zoom: 15,
+                  altitude: 3000,
+                },
+                { duration: 1000 }
+              );
+              // setIndex(0);
+              sheetRef.current?.collapse();
+              setAddPointBottomSheet(!addPointBottomSheet);
+            }}
+            renderLeftButton={() => (
+              <View className="absolute z-10 left-1.5 top-2.5 ">
+                <Search className="text-gray-500" height={20} width={20} />
+              </View>
+            )}
+            styles={{
+              container: {
+                flex: 0,
+              },
+              textInput: {
+                backgroundColor: "#f3f4f6",
+                borderRadius: 12,
+                paddingLeft: 35,
+                color: "#4b5563",
+                height: 40,
+              },
+              textInputContainer: {
+                backgroundColor: "white",
+                padding: 0,
+              },
+            }}
+            query={{
+              key: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
+              language: "en",
+            }}
+            fetchDetails
+            enablePoweredByContainer={false}
+            renderRow={(data) => (
+              <Text className="text-gray-500">{data.description}</Text>
+            )}
+          />
+          <View className="flex flex-col gap-2">
+            <Text className="text-sky-500 text-xl">Categories</Text>
+            <ScrollView
+              horizontal
+              contentContainerStyle={{ gap: 12, paddingRight: 20 }}
+              showsHorizontalScrollIndicator={false}
+              className="h-auto p-3 bg-gray-100 rounded-xl flex flex-row "
+            >
+              <Category
+                url={`category/create?tripId=${tripId}`}
+                icon={
+                  <Plus height={"50%"} width={"50%"} className="text-white" />
+                }
+                name="Add"
+                backgroundColor="#0ea5e9"
+                key="AddCategory"
+              />
+              {categories?.data?.map((category) => {
+                return (
+                  <Category
+                    url={`category/edit/${category.id}?tripId=${tripId}`}
+                    icon={category.icon}
+                    name={category.name}
+                    backgroundColor={category.color}
+                    key={category.id}
+                  />
                 );
-                // setIndex(0);
-                sheetRef.current?.collapse();
-                setAddPointBottomSheet(!addPointBottomSheet);
-              }}
-              renderLeftButton={() => (
-                <View className="absolute z-10 left-1.5 top-2.5 ">
-                  <Search className="text-gray-500" height={20} width={20} />
-                </View>
-              )}
-              styles={{
-                container: {
-                  flex: 0,
-                },
-                textInput: {
-                  backgroundColor: "#f3f4f6",
-                  borderRadius: 12,
-                  paddingLeft: 35,
-                  color: "#4b5563",
-                  height: 40,
-                },
-                textInputContainer: {
-                  backgroundColor: "white",
-                  padding: 0,
-                },
-              }}
-              query={{
-                key: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
-                language: "en",
-              }}
-              fetchDetails
-              enablePoweredByContainer={false}
-              renderRow={(data) => (
-                <Text className="text-gray-500">{data.description}</Text>
-              )}
-            />
-            <View className="flex flex-col gap-2">
-              <Text className="text-sky-500 text-xl">Categories</Text>
-              <ScrollView
-                horizontal
-                contentContainerStyle={{ gap: 12, paddingRight: 20 }}
-                showsHorizontalScrollIndicator={false}
-                className="h-auto p-3 bg-gray-100 rounded-xl flex flex-row "
-              >
-                <Category
-                  url={`category/create?tripId=${tripId}`}
-                  icon={
-                    <Plus height={"50%"} width={"50%"} className="text-white" />
-                  }
-                  name="Add"
-                  backgroundColor="#0ea5e9"
-                  key="AddCategory"
-                />
-                {categories?.data?.map((category) => {
-                  return (
-                    <Category
-                      url={`category/edit/${category.id}?tripId=${tripId}`}
-                      icon={category.icon}
-                      name={category.name}
-                      backgroundColor={category.color}
-                      key={category.id}
-                    />
-                  );
-                })}
-              </ScrollView>
-            </View>
-            <Points
-              tripDays={trip?.data?.days ?? 0}
-              points={points?.data ?? []}
-              focusPoint={handleFocusPoint}
-            />
+              })}
+            </ScrollView>
           </View>
-        </BottomSheet>
-      }
+          <Points
+            tripDays={trip?.data?.days ?? 0}
+            points={points?.data ?? []}
+            focusPoint={handleFocusPoint}
+            onDayOpen={onDayOpen}
+          />
+        </View>
+      </BottomSheet>
+      <DayView
+        ref={daySheetRef}
+        onDayClose={onDayClose}
+        points={points.data?.filter((point) => point.day === selectedDay)}
+      />
       <CreatePoint
         addPointBottomSheet={addPointBottomSheet}
         setAddPointBottomSheet={setAddPointBottomSheet}

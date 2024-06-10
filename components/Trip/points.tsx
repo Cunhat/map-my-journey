@@ -1,15 +1,15 @@
+import Calendar from "@/assets/svg/calendar";
 import Empty from "@/assets/svg/empty";
-import { Tables } from "@/lib/types/supabase";
-import React, { useEffect } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
 import {
   PointsList,
   PointsListItem,
   PointsListSeparator,
 } from "@/components/points-list";
-import Calendar from "@/assets/svg/calendar";
-import { ChevronDown } from "lucide-react-native";
+import { Tables } from "@/lib/types/supabase";
 import { cva } from "class-variance-authority";
+import { ChevronDown } from "lucide-react-native";
+import React from "react";
+import { Text, TouchableOpacity, View } from "react-native";
 
 type PointsProps = {
   points: Array<Tables<"point"> & { category: Tables<"category"> }>;
@@ -17,12 +17,14 @@ type PointsProps = {
   focusPoint: (
     point: Tables<"point"> & { category: Tables<"category"> }
   ) => void;
+  onDayOpen?: (day: number) => void;
 };
 
 export const Points: React.FC<PointsProps> = ({
   points,
   tripDays,
   focusPoint,
+  onDayOpen,
 }) => {
   if (points?.length === 0)
     return (
@@ -51,6 +53,7 @@ export const Points: React.FC<PointsProps> = ({
                 focusPoint={focusPoint}
                 day={i}
                 key={i}
+                onDayOpen={onDayOpen}
               />
             );
           })}
@@ -72,16 +75,21 @@ const Day: React.FC<Omit<PointsProps, "tripDays"> & { day: number }> = ({
   points,
   focusPoint,
   day,
+  onDayOpen,
 }) => {
   const [expanded, setExpanded] = React.useState(true);
 
   return (
     <View style={{ gap: 12 }}>
       <View className="flex flex-row items-center justify-between">
-        <View style={{ gap: 8 }} className="flex-row items-center p-2">
+        <TouchableOpacity
+          style={{ gap: 8 }}
+          onPress={() => onDayOpen && onDayOpen(day + 1)}
+          className="flex-row items-center p-2"
+        >
           <Calendar height={24} width={24} />
           <Text className="text-gray-500 font-bold text-lg">Day {day + 1}</Text>
-        </View>
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setExpanded(!expanded)}
           className="flex-row items-center justify-center"
@@ -103,7 +111,7 @@ const Day: React.FC<Omit<PointsProps, "tripDays"> & { day: number }> = ({
   );
 };
 
-const PointsByDay: React.FC<Omit<PointsProps, "tripDays">> = ({
+export const PointsByDay: React.FC<Omit<PointsProps, "tripDays">> = ({
   points,
   focusPoint,
 }) => {

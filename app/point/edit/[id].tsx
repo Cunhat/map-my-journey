@@ -134,13 +134,6 @@ const EditPoint: React.FC = () => {
     <View style={{ gap: 24 }} className="flex-1 p-3 bg-white">
       <View className="flex-row items-center">
         <LocationTitle title={point?.data[0]?.name} />
-        {/* <View className="flex-1">
-          {point && point.data && (
-            <Text className="text-xl text-gray-500 ">
-              {point?.data[0]?.name}
-            </Text>
-          )}
-        </View> */}
         <TouchableOpacity
           className=" rounded-full p-1 bg-gray-100 items-center justify-center"
           onPress={() => router.navigate("/trip/" + tripId)}

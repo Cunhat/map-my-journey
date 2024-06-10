@@ -95,6 +95,7 @@ function RootLayoutNav() {
                 headerShown: false,
               }}
             />
+
             <Stack.Screen
               name="category/create"
               options={{
