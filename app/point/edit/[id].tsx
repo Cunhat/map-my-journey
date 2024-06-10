@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { FullPageLoading } from "@/components/ui/loading";
+import { LocationTitle } from "@/components/ui/location-title";
 import { Select } from "@/components/ui/select";
 import { supabaseClient } from "@/lib/supabase";
 
@@ -132,13 +133,14 @@ const EditPoint: React.FC = () => {
   return (
     <View style={{ gap: 24 }} className="flex-1 p-3 bg-white">
       <View className="flex-row items-center">
-        <View className="flex-1">
+        <LocationTitle title={point?.data[0]?.name} />
+        {/* <View className="flex-1">
           {point && point.data && (
             <Text className="text-xl text-gray-500 ">
               {point?.data[0]?.name}
             </Text>
           )}
-        </View>
+        </View> */}
         <TouchableOpacity
           className=" rounded-full p-1 bg-gray-100 items-center justify-center"
           onPress={() => router.navigate("/trip/" + tripId)}

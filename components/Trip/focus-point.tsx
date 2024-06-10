@@ -1,11 +1,12 @@
 import { Tables } from "@/lib/types/supabase";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
-import { Navigation } from "lucide-react-native";
+import { Navigation, X } from "lucide-react-native";
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { showLocation } from "react-native-map-link";
 import { useSharedValue } from "react-native-reanimated";
 import { Button } from "../ui/button";
+import { LocationTitle } from "../ui/location-title";
 
 type FocusPointProps = {
   point: Tables<"point"> & { category: Tables<"category"> };
@@ -49,11 +50,12 @@ export const FocusPoint = React.forwardRef<BottomSheetModal, FocusPointProps>(
         handleIndicatorStyle={{
           backgroundColor: "#6b7280",
           width: 40,
+          height: 0,
         }}
         onDismiss={onModelClose}
       >
         <BottomSheetView>
-          <View style={{ gap: 12 }} className="flex-1 pb-4 pt-2">
+          <View style={{ gap: 12 }} className="flex-1 pb-4">
             <View style={{ gap: 12 }} className="flex-row items-center px-3">
               <View
                 style={{ backgroundColor: point?.category?.color }}
@@ -61,8 +63,17 @@ export const FocusPoint = React.forwardRef<BottomSheetModal, FocusPointProps>(
               >
                 <Text className="text-2xl">{point?.category?.icon}</Text>
               </View>
-              <View className="flex-1">
-                <Text className="text-xl text-gray-500 ">{point?.name}</Text>
+              <LocationTitle title={point?.name} />
+              <View>
+                <TouchableOpacity
+                  className=" rounded-full p-1 bg-gray-100 items-center justify-center"
+                  onPress={() => {
+                    onModelClose();
+                    ref?.current?.close();
+                  }}
+                >
+                  <X className="text-gray-500" height={24} width={24}></X>
+                </TouchableOpacity>
               </View>
             </View>
             <View className="flex-1 justify-center p-3">
