@@ -281,7 +281,10 @@ const Trip = () => {
       <DayView
         ref={daySheetRef}
         onDayClose={onDayClose}
-        points={points.data?.filter((point) => point.day === selectedDay)}
+        day={selectedDay}
+        maxDays={trip?.data?.days ?? 0}
+        points={points.data?.filter((point) => point.day === selectedDay) ?? []}
+        changeDay={setSelectedDay}
       />
       <CreatePoint
         addPointBottomSheet={addPointBottomSheet}
