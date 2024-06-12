@@ -46,6 +46,7 @@ const Trip = () => {
           onPress={() => {
             router.push("/");
             focusPointRef.current?.dismiss();
+            daySheetRef.current?.dismiss();
           }}
         >
           <ArrowLeft
@@ -122,6 +123,7 @@ const Trip = () => {
     point: Tables<"point"> & { category: Tables<"category"> }
   ) => {
     sheetRef.current?.close();
+    daySheetRef?.current?.close();
     setFocusPoint(point);
     mapRef.current?.animateCamera(
       {
@@ -138,7 +140,8 @@ const Trip = () => {
   };
 
   const onModelClose = () => {
-    sheetRef.current?.expand();
+    if (selectedDay === 0) sheetRef.current?.expand();
+    else daySheetRef.current?.expand();
   };
 
   const onDayOpen = (day: number) => {
@@ -150,6 +153,7 @@ const Trip = () => {
   const onDayClose = () => {
     daySheetRef.current?.close();
     sheetRef.current?.expand();
+    setSelectedDay(0);
   };
 
   return (
@@ -285,6 +289,7 @@ const Trip = () => {
         maxDays={trip?.data?.days ?? 0}
         points={points.data?.filter((point) => point.day === selectedDay) ?? []}
         changeDay={setSelectedDay}
+        handleFocusPoint={handleFocusPoint}
       />
       <CreatePoint
         addPointBottomSheet={addPointBottomSheet}

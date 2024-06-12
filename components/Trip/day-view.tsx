@@ -18,6 +18,9 @@ type DayViewProps = {
   day: number;
   maxDays: number;
   changeDay: React.Dispatch<React.SetStateAction<number>>;
+  handleFocusPoint: (
+    point: Tables<"point"> & { category: Tables<"category"> }
+  ) => void;
 };
 
 const SwipeArrow = cva(
@@ -33,7 +36,7 @@ const SwipeArrow = cva(
 );
 
 export const DayView = React.forwardRef<BottomSheetModal, DayViewProps>(
-  ({ onDayClose, points, day, maxDays, changeDay }, ref) => {
+  ({ onDayClose, points, day, maxDays, changeDay, handleFocusPoint }, ref) => {
     const snapPoints = React.useMemo(() => ["30%", "88%"], []);
 
     return (
@@ -78,7 +81,7 @@ export const DayView = React.forwardRef<BottomSheetModal, DayViewProps>(
             </View>
 
             <PointsList>
-              <PointsByDay points={points} />
+              <PointsByDay points={points} focusPoint={handleFocusPoint} />
             </PointsList>
           </View>
         </BottomSheetView>
