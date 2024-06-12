@@ -9,7 +9,7 @@ export const LocationTitle: React.FC<{ title: string }> = ({ title }) => {
 
   return (
     <View className="flex-1">
-      <Text className="text-lg text-gray-500">{mainLocation}</Text>
+      <Text className="text-lg text-gray-500 font-bold">{mainLocation}</Text>
       <Text className="text-sm text-gray-500">{secondaryLocation}</Text>
     </View>
   );

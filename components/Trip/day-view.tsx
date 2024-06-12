@@ -79,7 +79,6 @@ export const DayView = React.forwardRef<BottomSheetModal, DayViewProps>(
                 />
               </TouchableOpacity>
             </View>
-
             <PointsList>
               <PointsByDay points={points} focusPoint={handleFocusPoint} />
             </PointsList>

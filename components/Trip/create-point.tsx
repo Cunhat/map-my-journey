@@ -11,6 +11,7 @@ import React, { useRef } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import { DynamicBottomSheet } from "../ui/dynamic-bottom-sheet";
+import { LocationTitle } from "../ui/location-title";
 
 type CreatePointProps = {
   addPointBottomSheet: boolean;
@@ -94,10 +95,8 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
   return (
     <DynamicBottomSheet ref={addPointRef}>
       <View style={{ gap: 24 }} className="flex-1 p-3">
-        <View className="flex-row items-center">
-          <View className="flex-1">
-            <Text className="text-xl text-gray-500 ">{point.name}</Text>
-          </View>
+        <View style={{ gap: 16 }} className="flex-row items-center ">
+          <LocationTitle title={point?.name} />
           <TouchableOpacity
             className=" rounded-full p-1 bg-gray-100 items-center justify-center"
             onPress={() => closeModelAndClearCurrentMarker()}
@@ -105,6 +104,7 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
             <X className="text-gray-500" height={24} width={24}></X>
           </TouchableOpacity>
         </View>
+
         <Select
           placeholder="Select category..."
           decorationIcon={

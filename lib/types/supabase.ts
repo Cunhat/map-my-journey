@@ -57,6 +57,7 @@ export type Database = {
           name: string
           trip_id: number
           user_id: string
+          visited: boolean | null
         }
         Insert: {
           category_id: number
@@ -67,6 +68,7 @@ export type Database = {
           name: string
           trip_id: number
           user_id: string
+          visited?: boolean | null
         }
         Update: {
           category_id?: number
@@ -77,6 +79,7 @@ export type Database = {
           name?: string
           trip_id?: number
           user_id?: string
+          visited?: boolean | null
         }
         Relationships: [
           {

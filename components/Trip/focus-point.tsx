@@ -1,12 +1,15 @@
 import { Tables } from "@/lib/types/supabase";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
-import { Navigation, X } from "lucide-react-native";
+import { Check, Navigation, X } from "lucide-react-native";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { showLocation } from "react-native-map-link";
 import { useSharedValue } from "react-native-reanimated";
 import { Button } from "../ui/button";
 import { LocationTitle } from "../ui/location-title";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabaseClient } from "@/lib/supabase";
+import { useAuth } from "@clerk/clerk-expo";
 
 type FocusPointProps = {
   point: Tables<"point"> & { category: Tables<"category"> };
@@ -15,8 +18,7 @@ type FocusPointProps = {
 
 export const FocusPoint = React.forwardRef<BottomSheetModal, FocusPointProps>(
   ({ point, onModelClose }, ref) => {
-    // const snapPointsBottom = React.useMemo(() => ["25%"], []);
-    // // const LucideIcon = icons[point?.category?.icon as keyof typeof icons];
+    const { getToken } = useAuth();
 
     const handleDirections = () => {
       showLocation({
@@ -40,6 +42,38 @@ export const FocusPoint = React.forwardRef<BottomSheetModal, FocusPointProps>(
     };
 
     const animatedContentHeight = useSharedValue(0);
+
+    const queryClient = useQueryClient();
+
+    const visitedPointMutation = useMutation({
+      mutationFn: async (mutationData: {
+        pointId: number;
+        visited: boolean;
+      }) => {
+        const token = await getToken({ template: "routes-app-supabase" });
+
+        const supabase = await supabaseClient(token!);
+
+        const resp = await supabase
+          .from("point")
+          .update({
+            visited: mutationData.visited,
+          })
+          .eq("id", mutationData.pointId)
+          .select();
+
+        return resp;
+      },
+
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["getTripPoints", point.trip_id.toString()],
+        });
+      },
+      onError: (err) => {
+        console.log("err", err);
+      },
+    });
 
     return (
       <BottomSheetModal
@@ -76,7 +110,25 @@ export const FocusPoint = React.forwardRef<BottomSheetModal, FocusPointProps>(
                 </TouchableOpacity>
               </View>
             </View>
-            <View className="flex-1 justify-center p-3">
+            <View style={{ gap: 12 }} className="flex-1 justify-center p-3">
+              <Button
+                icon={
+                  !point?.visited ? (
+                    <Check className="text-white" height={20} width={20} />
+                  ) : (
+                    <X className="text-white" height={20} width={20} />
+                  )
+                }
+                title={point?.visited ? "Not visited" : "Visited"}
+                onPress={() =>
+                  visitedPointMutation.mutate({
+                    pointId: point.id,
+                    visited: !point?.visited,
+                  })
+                }
+                type={!point?.visited ? "success" : "danger"}
+                fullWidth
+              />
               <Button
                 icon={
                   <Navigation className="text-white" height={20} width={20} />

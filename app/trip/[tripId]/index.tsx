@@ -110,6 +110,7 @@ const Trip = () => {
         .from("point")
         .select(`*, category("*")`)
         .eq("trip_id", tripId)
+        .order("created_at", { ascending: true })
         .returns<Array<Tables<"point"> & { category: Tables<"category"> }>>();
 
       return resp.data;

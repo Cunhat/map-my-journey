@@ -4,7 +4,7 @@ import { TouchableOpacity, Text } from "react-native";
 
 type ButtonProps = {
   title: string;
-  type?: "primary" | "secondary" | "danger";
+  type?: "primary" | "secondary" | "danger" | "success";
   fullWidth?: boolean;
   onPress?: () => void;
   disabled?: boolean;
@@ -19,6 +19,7 @@ const buttonStyle = cva(
         primary: "bg-sky-500 text-white",
         secondary: "bg-white border border-sky-500 text-sky-500",
         danger: "bg-red-500",
+        success: "bg-green-600",
       },
       fullWidth: {
         true: "w-full",
@@ -41,6 +42,7 @@ const textStyles = cva("text-lg font-medium ", {
       primary: "text-white",
       secondary: "text-sky-500",
       danger: "text-white",
+      success: "text-white",
     },
   },
   defaultVariants: {
