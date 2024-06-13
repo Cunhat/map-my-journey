@@ -155,11 +155,17 @@ const Trip = () => {
     setSelectedDay(0);
   };
 
+  const filterMapPoints = () => {
+    if (selectedDay > 0)
+      return points.data?.filter((point) => point.day === selectedDay) ?? [];
+    else return points.data ?? [];
+  };
+
   return (
     <View className="flex-1">
       <TripMap
         ref={mapRef}
-        points={points?.data ?? []}
+        points={filterMapPoints()}
         currentMarker={currentMarker}
         tripLocation={{
           latitude: trip?.data?.latitude ?? 0,
