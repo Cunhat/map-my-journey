@@ -1,7 +1,7 @@
 import { Tables } from "@/lib/types/supabase";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { Check, Navigation, X } from "lucide-react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { showLocation } from "react-native-map-link";
 import { useSharedValue } from "react-native-reanimated";
@@ -74,6 +74,10 @@ export const FocusPoint = React.forwardRef<BottomSheetModal, FocusPointProps>(
         console.log("err", err);
       },
     });
+
+    useEffect(() => {
+      console.log(point?.visited);
+    }, [point]);
 
     return (
       <BottomSheetModal

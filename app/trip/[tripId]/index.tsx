@@ -26,9 +26,7 @@ const Trip = () => {
   const sheetRef = useRef<BottomSheet>(null);
   const focusPointRef = useRef<BottomSheetModal>(null);
   const daySheetRef = useRef<BottomSheetModal>(null);
-  const [focusPoint, setFocusPoint] = React.useState<
-    Tables<"point"> & { category: Tables<"category"> }
-  >();
+  const [focusPoint, setFocusPoint] = React.useState<number | undefined>();
 
   const [addPointBottomSheet, setAddPointBottomSheet] = React.useState(false);
   const [index, setIndex] = React.useState(1);
@@ -125,7 +123,7 @@ const Trip = () => {
   ) => {
     sheetRef.current?.close();
     daySheetRef?.current?.close();
-    setFocusPoint(point);
+    setFocusPoint(point.id);
     mapRef.current?.animateCamera(
       {
         center: {
@@ -307,7 +305,7 @@ const Trip = () => {
       />
       <FocusPoint
         ref={focusPointRef}
-        point={focusPoint!}
+        point={points.data?.find((point) => point.id === focusPoint)!}
         onModelClose={onModelClose}
       />
     </View>
