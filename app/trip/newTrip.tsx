@@ -99,13 +99,6 @@ const NewTrip = () => {
 
   return (
     <HomeLayout>
-      <View className="flex-row items-center">
-        <TouchableOpacity onPress={() => router.push("/(home)/")}>
-          <X className="text-gray-900" height={24} width={24} />
-        </TouchableOpacity>
-        <Text className="text-xl text-sky-500 ml-auto">Create a new trip</Text>
-        <View className="ml-auto"></View>
-      </View>
       <View className="relative">
         <Plane
           className="text-gray-500 absolute z-10 left-1.5 top-3.5 "

@@ -10,7 +10,7 @@ import {
 } from "expo-router";
 import React, { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
 import { useFonts } from "expo-font";
 import * as SecureStore from "expo-secure-store";
@@ -95,7 +95,21 @@ function RootLayoutNav() {
                 headerShown: false,
               }}
             />
-
+            <Stack.Screen
+              name="trip/newTrip"
+              options={{
+                headerShown: true,
+                headerShadowVisible: false,
+                presentation: "modal",
+                headerTitle: () => (
+                  <View className="flex-row items-center">
+                    <Text className="text-xl text-sky-500 ml-auto">
+                      Create a new trip
+                    </Text>
+                  </View>
+                ),
+              }}
+            />
             <Stack.Screen
               name="category/create"
               options={{

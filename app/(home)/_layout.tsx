@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
-import { Tabs } from "expo-router";
-import { Map, Plus, User } from "lucide-react-native";
-import { View } from "react-native";
+import { Tabs, router } from "expo-router";
+import { Map, Plus, Settings, User, UserIcon } from "lucide-react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 
 const IconsStyles = cva("mt-3", {
   variants: {
@@ -19,8 +19,33 @@ export default function HomeLayout() {
         name="index"
         options={{
           tabBarShowLabel: false,
-          headerShown: false,
-          headerTitle: "",
+          headerShown: true,
+          headerShadowVisible: false,
+          headerTitle: () => (
+            <View className="flex-row items-center justify-between w-full">
+              <View style={{ gap: 8 }} className="flex-row items-center">
+                <Map
+                  strokeWidth={1.2}
+                  className="text-sky-500"
+                  height={32}
+                  width={32}
+                />
+                <Text className="text-sky-500 text-2xl">My Trips</Text>
+              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  router.push("/trip/newTrip");
+                }}
+              >
+                <Plus
+                  height={32}
+                  width={32}
+                  strokeWidth={1.2}
+                  className="text-sky-500"
+                />
+              </TouchableOpacity>
+            </View>
+          ),
           tabBarIcon: ({ focused }) => (
             <Map
               strokeWidth={1.2}
@@ -32,31 +57,24 @@ export default function HomeLayout() {
           tabBarLabelStyle: {},
         }}
       />
-      <Tabs.Screen
-        name="newTrip"
-        options={{
-          tabBarShowLabel: false,
-          headerShown: false,
-          tabBarIcon: () => (
-            <View className=" p-1 -mt-3 rounded-full bg-white border border-gray-100 h-[68px] w-[68px] justify-center items-center">
-              <View className="rounded-full h-full w-full bg-sky-400 flex justify-center items-center">
-                <Plus
-                  strokeWidth={2.7}
-                  height={44}
-                  width={44}
-                  className="text-white"
-                />
-              </View>
-            </View>
-          ),
-        }}
-      />
+
       <Tabs.Screen
         name="user"
         options={{
           tabBarShowLabel: false,
-          headerShown: false,
-          headerTitleContainerStyle: {},
+          headerShown: true,
+          headerShadowVisible: false,
+          headerTitle: () => (
+            <View className="flex-row w-screen ">
+              <UserIcon
+                strokeWidth={1.2}
+                className="text-sky-500"
+                height={32}
+                width={32}
+              />
+              <Text className=" text-sky-500 text-2xl">User</Text>
+            </View>
+          ),
           tabBarIcon: ({ focused }) => (
             <User
               strokeWidth={1.2}

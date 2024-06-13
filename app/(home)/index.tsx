@@ -30,6 +30,10 @@ import { useAuth, useUser } from "@clerk/clerk-expo";
 const Home = () => {
   const { getToken, userId, isLoaded } = useAuth();
 
+  const user = useUser();
+
+  console.log(user);
+
   const { data, isPending, error, isSuccess } = useQuery({
     queryKey: ["getTrips", userId],
     queryFn: async () => {
@@ -62,17 +66,8 @@ const Home = () => {
 
   return (
     <HomeLayout>
-      <View style={{ gap: 8 }} className="flex-row items-center">
-        <Map
-          strokeWidth={1.2}
-          className="text-sky-500"
-          height={32}
-          width={32}
-        />
-        <Text className="font-bold text-sky-500 text-2xl">Trips</Text>
-      </View>
       <ScrollView
-        contentContainerStyle={{ gap: 12 }}
+        contentContainerStyle={{ gap: 12, paddingTop: 16 }}
         showsVerticalScrollIndicator={false}
       >
         {isSuccess &&
