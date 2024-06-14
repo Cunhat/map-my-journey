@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "map-my-journey",
+    "name": "Map My Journey",
     "slug": "map-my-journey",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -16,7 +16,9 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.cunhat.mapmyjourney",
+      "buildNumber": "2"
     },
     "android": {
       "adaptiveIcon": {
@@ -35,6 +37,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "eca3c0c4-60cb-4d42-9691-e5176ee54882"
+      }
     }
   }
 }

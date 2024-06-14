@@ -163,7 +163,6 @@ const EditCategory = () => {
               placeholderTextColor={"#d1d5db"}
               value={name}
               style={{ paddingLeft: 35 }}
-              keyboardType={"number-pad"}
               onChangeText={(text) => setName(text)}
               className="h-11 w-full text-base p-2 bg-gray-100 rounded-xl text-gray-600  "
             />
