@@ -75,10 +75,6 @@ export const FocusPoint = React.forwardRef<BottomSheetModal, FocusPointProps>(
       },
     });
 
-    useEffect(() => {
-      console.log(point?.visited);
-    }, [point]);
-
     return (
       <BottomSheetModal
         animateOnMount

@@ -32,8 +32,6 @@ const Home = () => {
 
   const user = useUser();
 
-  console.log(user);
-
   const { data, isPending, error, isSuccess } = useQuery({
     queryKey: ["getTrips", userId],
     queryFn: async () => {

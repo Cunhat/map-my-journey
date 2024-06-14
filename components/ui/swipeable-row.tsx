@@ -117,12 +117,6 @@ export default class SwipeableRow extends Component<
             this.props.visited
           )
         }
-        // onSwipeableOpen={(direction) => {
-        //   console.log(`Opening swipeable from the ${direction}`);
-        // }}
-        // onSwipeableClose={(direction) => {
-        //   console.log(`Closing swipeable to the ${direction}`);
-        // }}
       >
         {children}
       </Swipeable>
