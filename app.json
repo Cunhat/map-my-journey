@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "routes-moble-app",
-    "slug": "routes-moble-app",
+    "name": "map-my-journey",
+    "slug": "map-my-journey",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
