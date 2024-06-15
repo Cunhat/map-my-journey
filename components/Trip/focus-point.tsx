@@ -10,6 +10,7 @@ import { LocationTitle } from "../ui/location-title";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabaseClient } from "@/lib/supabase";
 import { useAuth } from "@clerk/clerk-expo";
+import { useGlobalSearchParams } from "expo-router";
 
 type FocusPointProps = {
   point: Tables<"point"> & { category: Tables<"category"> };
@@ -19,6 +20,7 @@ type FocusPointProps = {
 export const FocusPoint = React.forwardRef<BottomSheetModal, FocusPointProps>(
   ({ point, onModelClose }, ref) => {
     const { getToken } = useAuth();
+    const { tripId } = useGlobalSearchParams<{ tripId: string }>();
 
     const handleDirections = () => {
       showLocation({
