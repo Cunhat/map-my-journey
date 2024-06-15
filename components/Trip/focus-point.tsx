@@ -71,6 +71,9 @@ export const FocusPoint = React.forwardRef<BottomSheetModal, FocusPointProps>(
         queryClient.invalidateQueries({
           queryKey: ["getTripPoints", point.trip_id.toString()],
         });
+        queryClient.invalidateQueries({
+          queryKey: ["getTrip", tripId],
+        });
       },
       onError: (err) => {
         console.log("err", err);

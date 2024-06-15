@@ -1,16 +1,12 @@
+import Calendar from "@/assets/svg/calendar";
 import { Tables } from "@/lib/types/supabase";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
-import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import {
-  PointsList,
-  PointsListItem,
-  PointsListSeparator,
-} from "../points-list";
-import { PointsByDay } from "./points";
-import Calendar from "@/assets/svg/calendar";
-import { ChevronLeft, ChevronRight } from "lucide-react-native";
 import { cva } from "class-variance-authority";
+import { ChevronLeft, ChevronRight } from "lucide-react-native";
+import React from "react";
+import { Text, TouchableOpacity, View } from "react-native";
+import { PointsList } from "../points-list";
+import { PointsByDay } from "./points";
 
 type DayViewProps = {
   onDayClose: () => void;

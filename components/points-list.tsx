@@ -93,6 +93,9 @@ export const PointsListItem: React.FC<PointsListItemProps> = ({
       queryClient.invalidateQueries({
         queryKey: ["getTripPoints", point.trip_id.toString()],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["getTrip", point.trip_id.toString()],
+      });
     },
     onError: (err) => {
       console.log("err", err);

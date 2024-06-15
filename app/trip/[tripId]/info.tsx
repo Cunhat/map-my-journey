@@ -109,7 +109,7 @@ const Info = () => {
       return resp;
     },
 
-    onSuccess: ({ data }) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["getTrip", tripId],
       });
