@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
 import { supabaseClient } from "@/lib/supabase";
 import { Database, Tables } from "@/lib/types/supabase";
-import { createDecrementArray } from "@/lib/utils";
+import { createDaysArray } from "@/lib/utils";
 import { useAuth } from "@clerk/clerk-expo";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -94,7 +94,7 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
 
   return (
     <DynamicBottomSheet ref={addPointRef}>
-      <View style={{ gap: 24 }} className="flex-1 p-3">
+      <View style={{ gap: 24 }} className="flex-1 px-3 pb-3">
         <View style={{ gap: 16 }} className="flex-row items-center ">
           <LocationTitle title={point?.name} />
           <TouchableOpacity
@@ -128,7 +128,7 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
             <CalendarDays className="text-gray-500" height={20} width={20} />
           }
           placeholder="Select the day you want to visit..."
-          data={createDecrementArray(numberOfDays)}
+          data={createDaysArray(numberOfDays)}
           onSelect={(value) => setSelectedDay(value)}
         />
         <Button
