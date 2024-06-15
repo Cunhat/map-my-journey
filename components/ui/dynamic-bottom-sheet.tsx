@@ -1,11 +1,18 @@
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import BottomSheet, {
+  BottomSheetProps,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
 import React, { PropsWithChildren } from "react";
 import { useSharedValue } from "react-native-reanimated";
 
+interface DynamicBottomSheetProps extends BottomSheetProps {
+  headerIndicator?: boolean;
+}
+
 export const DynamicBottomSheet = React.forwardRef<
   BottomSheet,
-  PropsWithChildren
->(({ children }, ref) => {
+  PropsWithChildren<DynamicBottomSheetProps>
+>(({ headerIndicator = true, children }, ref) => {
   const animatedContentHeight = useSharedValue(0);
 
   return (
@@ -17,6 +24,7 @@ export const DynamicBottomSheet = React.forwardRef<
       handleIndicatorStyle={{
         backgroundColor: "#6b7280",
         width: 40,
+        height: headerIndicator ? 40 : 0,
       }}
     >
       <BottomSheetView>{children}</BottomSheetView>

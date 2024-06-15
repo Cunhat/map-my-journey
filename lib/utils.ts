@@ -10,6 +10,6 @@ export const getDeviceHeaderHeight = () => {
   
 };
 
-export const createDecrementArray = (number: number) => {
-  return [...Array(number).keys()].map(i => ({ title: (number - i ).toString() }));
+export const createDaysArray = (number: number) => {
+  return [...Array(number).keys()].map(i => ({ title: (i + 1).toString() }));
 };

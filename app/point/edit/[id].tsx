@@ -5,13 +5,13 @@ import { Select } from "@/components/ui/select";
 import { supabaseClient } from "@/lib/supabase";
 
 import { Database, Tables } from "@/lib/types/supabase";
-import { createDecrementArray } from "@/lib/utils";
+import { createDaysArray } from "@/lib/utils";
 import { useAuth } from "@clerk/clerk-expo";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
 import { CalendarDays, Save, Tag, X } from "lucide-react-native";
 import React, { useEffect } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 const EditPoint: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = React.useState<{
@@ -170,7 +170,7 @@ const EditPoint: React.FC = () => {
             }
             defaultValue={selectedDay}
             placeholder="Select the day you want to visit..."
-            data={createDecrementArray(trip?.data?.days ?? 0)}
+            data={createDaysArray(trip?.data?.days ?? 0)}
             onSelect={(value) => setSelectedDay(value)}
           />
         </View>
