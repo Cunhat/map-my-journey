@@ -1,34 +1,20 @@
 import { Button } from "@/components/ui/button";
-import { Tabs, TabItem } from "@/components/ui/tabs";
-import { CustomTextInput } from "@/components/ui/text-input";
+import { TabItem, Tabs } from "@/components/ui/tabs";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { router, useLocalSearchParams } from "expo-router";
+import { CircleX, Save, Tag, Trash2 } from "lucide-react-native";
 import React, { useEffect } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  TextInput,
-  Modal,
-  SafeAreaView,
-} from "react-native";
+import { Modal, SafeAreaView, Text, TextInput, View } from "react-native";
 import ColorPicker, {
-  Panel1,
-  Swatches,
-  colorKit,
-  PreviewText,
   HueCircular,
+  Panel1,
   returnedResults,
 } from "reanimated-color-picker";
-import { CircleX, Save, Tag, Trash2, icons } from "lucide-react-native";
-import { CategoryIcons } from "@/components/category-icons";
-import { useLocalSearchParams, router } from "expo-router";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { Tables } from "@/lib/types/supabase";
 import { FullPageLoading } from "@/components/ui/loading";
-import EmojiSelector from "react-native-emoji-selector";
-import { useAuth } from "@clerk/clerk-expo";
 import { supabaseClient } from "@/lib/supabase";
+import { useAuth } from "@clerk/clerk-expo";
+import EmojiSelector from "react-native-emoji-selector";
 
 const EditCategory = () => {
   const [color, setColor] = React.useState("blue");

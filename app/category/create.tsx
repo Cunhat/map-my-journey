@@ -1,35 +1,22 @@
 import { Button } from "@/components/ui/button";
-import { Tabs, TabItem } from "@/components/ui/tabs";
-import { CustomTextInput } from "@/components/ui/text-input";
-import React from "react";
+import { TabItem, Tabs } from "@/components/ui/tabs";
+import { supabaseClient } from "@/lib/supabase";
+import { useAuth } from "@clerk/clerk-expo";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  TextInput,
-  SafeAreaView,
-} from "react-native";
-import ColorPicker, {
-  Panel1,
-  Swatches,
-  colorKit,
-  PreviewText,
-  HueCircular,
-  returnedResults,
-} from "reanimated-color-picker";
-import { CircleX, Save, Tag, icons } from "lucide-react-native";
-import { CategoryIcons } from "@/components/category-icons";
-import {
-  useLocalSearchParams,
   router,
   useGlobalSearchParams,
+  useLocalSearchParams,
 } from "expo-router";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase, supabaseClient } from "@/lib/supabase";
-import { Tables } from "@/lib/types/supabase";
+import { CircleX, Save, Tag } from "lucide-react-native";
+import React from "react";
+import { SafeAreaView, Text, TextInput, View } from "react-native";
 import EmojiSelector from "react-native-emoji-selector";
-import { useAuth } from "@clerk/clerk-expo";
+import ColorPicker, {
+  HueCircular,
+  Panel1,
+  returnedResults,
+} from "reanimated-color-picker";
 
 const Create = () => {
   const [color, setColor] = React.useState("blue");

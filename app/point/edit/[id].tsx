@@ -1,27 +1,31 @@
 import { Button } from "@/components/ui/button";
+import { CategoryIcon } from "@/components/ui/category-icon";
 import { FullPageLoading } from "@/components/ui/loading";
 import { LocationTitle } from "@/components/ui/location-title";
 import { Select } from "@/components/ui/select";
+import { SelectBottomSheet } from "@/components/ui/select-bottom-sheet";
 import { supabaseClient } from "@/lib/supabase";
 
 import { Database, Tables } from "@/lib/types/supabase";
 import { createDaysArray } from "@/lib/utils";
 import { useAuth } from "@clerk/clerk-expo";
+import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
 import { CalendarDays, Save, Tag, X } from "lucide-react-native";
 import React, { useEffect } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View, Text, SafeAreaView } from "react-native";
 
 const EditPoint: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = React.useState<{
-    title: string;
-    icon?: { isCategory?: boolean; icon: string; color: string };
-    id: number;
-  }>();
+  // const [selectedCategory, setSelectedCategory] = React.useState<{
+  //   title: string;
+  //   icon?: { isCategory?: boolean; icon: string; color: string };
+  //   id: number;
+  // }>();
   const [selectedDay, setSelectedDay] = React.useState<{ title: string }>();
   const { tripId, id } = useLocalSearchParams<{ tripId: string; id: string }>();
   const { getToken, userId, isLoaded } = useAuth();
+  const [selectedCategory, setSelectedCategory] = React.useState(null);
   const queryClient = useQueryClient();
 
   const categories = useQuery({
@@ -76,15 +80,15 @@ const EditPoint: React.FC = () => {
 
   useEffect(() => {
     if (point.isSuccess && point.data) {
-      setSelectedCategory({
-        title: point?.data[0]?.category?.name,
-        id: point?.data[0]?.category?.id,
-        icon: {
-          color: point?.data[0]?.category?.color,
-          icon: point?.data[0]?.category?.icon,
-          isCategory: true,
-        },
-      });
+      // setSelectedCategory({
+      //   title: point?.data[0]?.category?.name,
+      //   id: point?.data[0]?.category?.id,
+      //   icon: {
+      //     color: point?.data[0]?.category?.color,
+      //     icon: point?.data[0]?.category?.icon,
+      //     isCategory: true,
+      //   },
+      // });
       setSelectedDay({ title: point?.data[0]?.day?.toString() });
     }
   }, [point.isSuccess]);
@@ -130,8 +134,12 @@ const EditPoint: React.FC = () => {
     });
   };
 
+  // const ref = React.useRef<BottomSheetModal>(null);
+
+  // const snapPoints = React.useMemo(() => ["50%"], []);
+
   return (
-    <View style={{ gap: 24 }} className="flex-1 p-3 bg-white">
+    <SafeAreaView style={{ gap: 24 }} className="flex-1 p-3 bg-white">
       <View className="flex-row items-center">
         <LocationTitle title={point?.data[0]?.name} />
         <TouchableOpacity
@@ -143,7 +151,7 @@ const EditPoint: React.FC = () => {
       </View>
       <View className="justify-between flex-1">
         <View style={{ gap: 24 }}>
-          <Select
+          {/* <Select
             placeholder="Select category..."
             decorationIcon={
               <Tag className="text-gray-500" height={20} width={20} />
@@ -163,7 +171,7 @@ const EditPoint: React.FC = () => {
               }) ?? []
             }
             onSelect={(value) => setSelectedCategory(value)}
-          />
+          /> */}
           <Select
             decorationIcon={
               <CalendarDays className="text-gray-500" height={20} width={20} />
@@ -173,6 +181,29 @@ const EditPoint: React.FC = () => {
             data={createDaysArray(trip?.data?.days ?? 0)}
             onSelect={(value) => setSelectedDay(value)}
           />
+          <SelectBottomSheet
+            icon={
+              <CalendarDays className="text-gray-500" height={20} width={20} />
+            }
+            label="Select the day you want to visit..."
+            selectTitle="Day"
+            selectValues={
+              categories?.data?.map((item) => {
+                return {
+                  label: item.name,
+                  id: item.id,
+                  value: item.name,
+                  icon: (
+                    <CategoryIcon
+                      category={{ icon: item.icon, color: item.color }}
+                    />
+                  ),
+                };
+              }) ?? []
+            }
+            onSelect={(value) => setSelectedCategory(value)}
+            value={selectedCategory}
+          />
         </View>
       </View>
       <View className="h-auto pb-10">
@@ -180,11 +211,12 @@ const EditPoint: React.FC = () => {
           title="Update"
           type="primary"
           fullWidth
-          onPress={handleSubmit}
+          onPress={() => ref.current?.present()}
+          // onPress={handleSubmit}
           icon={<Save className="text-white" height={20} width={20} />}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

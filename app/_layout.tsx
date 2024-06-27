@@ -136,7 +136,7 @@ function RootLayoutNav() {
               name="point/edit/[id]"
               options={{
                 headerShown: false,
-                presentation: "modal",
+                // presentation: "modal",
               }}
             />
             <Stack.Screen
