@@ -12,6 +12,8 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import { DynamicBottomSheet } from "../ui/dynamic-bottom-sheet";
 import { LocationTitle } from "../ui/location-title";
+import { SelectBottomSheet, SelectDataType } from "../ui/select-bottom-sheet";
+import { CategoryIcon } from "../ui/category-icon";
 
 type CreatePointProps = {
   addPointBottomSheet: boolean;
@@ -38,9 +40,9 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
 }) => {
   const addPointRef = useRef<BottomSheet>(null);
   const [selectedCategory, setSelectedCategory] =
-    React.useState<Tables<"category"> | null>(null);
-  const [selectedDay, setSelectedDay] = React.useState<{ title: number }>();
-  const snapPointsBottom = React.useMemo(() => ["50%"], []);
+    React.useState<SelectDataType>();
+  const [selectedDay, setSelectedDay] = React.useState<SelectDataType>();
+
   const { getToken, userId, isLoaded } = useAuth();
   const queryClient = useQueryClient();
 
@@ -72,19 +74,25 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
       queryClient.invalidateQueries({
         queryKey: ["getTripPoints", tripId],
       });
-      closeModelAndClearCurrentMarker();
+      closeModal();
     },
     onError: (err) => {
       console.log("err", err);
     },
   });
 
+  const closeModal = () => {
+    setSelectedCategory(undefined);
+    setSelectedDay(undefined);
+    closeModelAndClearCurrentMarker();
+  };
+
   if (!addPointBottomSheet || !isLoaded) return null;
 
   const handleSubmit = () => {
     createTripPointMutation.mutate({
       name: point.name,
-      day: selectedDay?.title ?? 0,
+      day: selectedDay?.value ?? 0,
       category_id: selectedCategory?.id ?? 0,
       latitude: point?.latitude,
       longitude: point?.longitude,
@@ -99,37 +107,42 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
           <LocationTitle title={point?.name} />
           <TouchableOpacity
             className=" rounded-full p-1 bg-gray-100 items-center justify-center"
-            onPress={() => closeModelAndClearCurrentMarker()}
+            onPress={() => closeModal()}
           >
             <X className="text-gray-500" height={24} width={24}></X>
           </TouchableOpacity>
         </View>
 
-        <Select
-          placeholder="Select category..."
-          decorationIcon={
-            <Tag className="text-gray-500" height={20} width={20} />
+        <SelectBottomSheet
+          inputIcon={<Tag className="text-gray-600" height={20} width={20} />}
+          inputPlaceholder="Select the category..."
+          bottomSheetTitle="Select the category"
+          data={
+            categories?.map((item) => {
+              return {
+                label: item.name,
+                id: item.id,
+                value: item.name,
+                icon: (
+                  <CategoryIcon
+                    category={{ icon: item.icon, color: item.color }}
+                  />
+                ),
+              };
+            }) ?? []
           }
-          data={categories?.map((item) => {
-            return {
-              title: item.name,
-              id: item.id,
-              icon: {
-                color: item.color,
-                icon: item.icon,
-                isCategory: true,
-              },
-            };
-          })}
           onSelect={(value) => setSelectedCategory(value)}
+          value={selectedCategory}
         />
-        <Select
-          decorationIcon={
+        <SelectBottomSheet
+          inputIcon={
             <CalendarDays className="text-gray-500" height={20} width={20} />
           }
-          placeholder="Select the day you want to visit..."
+          inputPlaceholder="Select the category..."
+          bottomSheetTitle="Select the category"
           data={createDaysArray(numberOfDays)}
           onSelect={(value) => setSelectedDay(value)}
+          value={selectedDay}
         />
         <Button
           title="Add Point"
