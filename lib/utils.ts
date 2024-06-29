@@ -11,5 +11,7 @@ export const getDeviceHeaderHeight = () => {
 };
 
 export const createDaysArray = (number: number) => {
-  return [...Array(number).keys()].map(i => ({ title: (i + 1).toString() }));
+  return [...Array(number).keys()].map(i => ({   label: (i + 1).toString(),
+    id: (i + 1).toString() + '_day',
+    value:  (i + 1).toString() }));
 };
