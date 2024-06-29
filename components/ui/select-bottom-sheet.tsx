@@ -91,7 +91,10 @@ export const SelectBottomSheet: React.FC<SelectBottomSheetProps> = ({
             <Text className="text-xl text-gray-700">{bottomSheetTitle}</Text>
           </View>
           <ScrollView
-            contentContainerStyle={{ paddingTop: 16, height: "100%" }}
+            contentContainerStyle={{
+              paddingTop: 16,
+              paddingBottom: 70,
+            }}
             showsVerticalScrollIndicator={false}
           >
             {data?.map((item, index) => (

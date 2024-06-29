@@ -140,62 +140,68 @@ const EditPoint: React.FC = () => {
     });
   };
 
-  console.log("DAYS", createDaysArray(trip?.data?.days ?? 0));
-
   return (
-    <SafeAreaView style={{ gap: 24 }} className="flex-1 p-3 bg-white">
-      <View className="flex-row items-center">
-        <LocationTitle title={point?.data[0]?.name} />
-        <TouchableOpacity
-          className=" rounded-full p-1 bg-gray-100 items-center justify-center"
-          onPress={() => router.navigate("/trip/" + tripId)}
-        >
-          <X className="text-gray-500" height={24} width={24}></X>
-        </TouchableOpacity>
-      </View>
-      <View className="justify-between flex-1">
-        <View style={{ gap: 24 }}>
-          <SelectBottomSheet
-            inputIcon={
-              <CalendarDays className="text-gray-500" height={20} width={20} />
-            }
-            inputPlaceholder="Select the category..."
-            bottomSheetTitle="Select the category"
-            data={createDaysArray(trip?.data?.days ?? 0)}
-            onSelect={(value) => setSelectedDay(value)}
-            value={selectedDay}
-          />
-          <SelectBottomSheet
-            inputIcon={<Tag className="text-gray-600" height={20} width={20} />}
-            inputPlaceholder="Select the category..."
-            bottomSheetTitle="Select the category"
-            data={
-              categories?.data?.map((item) => {
-                return {
-                  label: item.name,
-                  id: item.id,
-                  value: item.name,
-                  icon: (
-                    <CategoryIcon
-                      category={{ icon: item.icon, color: item.color }}
-                    />
-                  ),
-                };
-              }) ?? []
-            }
-            onSelect={(value) => setSelectedCategory(value)}
-            value={selectedCategory}
+    <SafeAreaView className="h-full bg-white">
+      <View style={{ gap: 24 }} className="flex-1 p-3 bg-white">
+        <View className="flex-row items-center">
+          <LocationTitle title={point?.data[0]?.name} />
+          <TouchableOpacity
+            className=" rounded-full p-1 bg-gray-100 items-center justify-center"
+            onPress={() => router.navigate("/trip/" + tripId)}
+          >
+            <X className="text-gray-500" height={24} width={24}></X>
+          </TouchableOpacity>
+        </View>
+        <View className="justify-between flex-1">
+          <View style={{ gap: 24 }}>
+            <SelectBottomSheet
+              inputIcon={
+                <CalendarDays
+                  className="text-gray-500"
+                  height={20}
+                  width={20}
+                />
+              }
+              inputPlaceholder="Select the category..."
+              bottomSheetTitle="Select the category"
+              data={createDaysArray(trip?.data?.days ?? 0)}
+              onSelect={(value) => setSelectedDay(value)}
+              value={selectedDay}
+            />
+            <SelectBottomSheet
+              inputIcon={
+                <Tag className="text-gray-600" height={20} width={20} />
+              }
+              inputPlaceholder="Select the category..."
+              bottomSheetTitle="Select the category"
+              data={
+                categories?.data?.map((item) => {
+                  return {
+                    label: item.name,
+                    id: item.id,
+                    value: item.name,
+                    icon: (
+                      <CategoryIcon
+                        category={{ icon: item.icon, color: item.color }}
+                      />
+                    ),
+                  };
+                }) ?? []
+              }
+              onSelect={(value) => setSelectedCategory(value)}
+              value={selectedCategory}
+            />
+          </View>
+        </View>
+        <View className="h-auto pb-10">
+          <Button
+            title="Update"
+            type="primary"
+            fullWidth
+            onPress={handleSubmit}
+            icon={<Save className="text-white" height={20} width={20} />}
           />
         </View>
-      </View>
-      <View className="h-auto pb-10">
-        <Button
-          title="Update"
-          type="primary"
-          fullWidth
-          onPress={handleSubmit}
-          icon={<Save className="text-white" height={20} width={20} />}
-        />
       </View>
     </SafeAreaView>
   );

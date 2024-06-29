@@ -32,24 +32,6 @@ const User = () => {
         contentContainerStyle={{ gap: 12, paddingTop: 16 }}
         showsVerticalScrollIndicator={false}
       >
-        {/* <TouchableOpacity onPress={onShare} className="px-6">
-          <View className="bg-sky-50 h-24 rounded-lg flex-row items-center">
-            <View className="w-[20%] items-center justify-center">
-              <View className="bg-sky-500 p-3 rounded-full items-center justify-center ">
-                <UserRoundPlus height={24} width={24} className="text-white" />
-              </View>
-            </View>
-            <View className="w-[70%] items-start justify-center">
-              <Text className="text-gray-600 text-lg">
-                Share with your friends
-              </Text>
-              <Text className="text-gray-500  text-sm">
-                Share with your friends and helps reach more people
-              </Text>
-            </View>
-          </View>
-        </TouchableOpacity> */}
-
         <Text className="text-sky-500 pl-3 text-xl">Account Info</Text>
         <View>
           <View className="border-[0.5px] border-gray-300" />
