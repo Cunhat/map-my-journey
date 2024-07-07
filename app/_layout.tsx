@@ -1,19 +1,14 @@
-import AuthProvider from "@/provider/authProvider";
+import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import {
-  SplashScreen,
-  Stack,
-  useNavigation,
-  usePathname,
-  useRouter,
-} from "expo-router";
-import React, { useEffect } from "react";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Text, View } from "react-native";
-import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
 import { useFonts } from "expo-font";
+import { SplashScreen, Stack, useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
+import React, { useEffect } from "react";
+import { Text, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { StatusBar } from "expo-status-bar";
+import { Appearance, useColorScheme } from "react-native";
 
 const queryClient = new QueryClient();
 
@@ -87,6 +82,7 @@ function RootLayoutNav() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <QueryClientProvider client={queryClient}>
         <BottomSheetModalProvider>
+          <StatusBar style="dark" />
           <Stack>
             <Stack.Screen name="(home)" options={{ headerShown: false }} />
             <Stack.Screen
@@ -100,7 +96,7 @@ function RootLayoutNav() {
               options={{
                 headerShown: true,
                 headerShadowVisible: false,
-                presentation: "modal",
+                // presentation: "modal",
                 headerTitle: () => (
                   <View className="flex-row items-center">
                     <Text className="text-xl text-sky-500 ml-auto">
@@ -108,6 +104,8 @@ function RootLayoutNav() {
                     </Text>
                   </View>
                 ),
+                headerBackTitleVisible: false,
+                // headerBackVisible: false,
               }}
             />
             <Stack.Screen

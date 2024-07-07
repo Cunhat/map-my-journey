@@ -1,10 +1,5 @@
 PODS:
   - boost (1.83.0)
-  - ComputableLayout (0.7.0):
-    - DGSwiftUtilities (~> 0.11)
-  - ContextMenuAuxiliaryPreview (0.5.0):
-    - DGSwiftUtilities (~> 0.18.1)
-  - DGSwiftUtilities (0.18.1)
   - DoubleConversion (1.1.6)
   - EXConstants (16.0.2):
     - ExpoModulesCore
@@ -1240,15 +1235,6 @@ PODS:
     - React-logger (= 0.74.2)
     - React-perflogger (= 0.74.2)
     - React-utils (= 0.74.2)
-  - ReactNativeIosContextMenu (2.5.1):
-    - ContextMenuAuxiliaryPreview (~> 0.3)
-    - DGSwiftUtilities
-    - ExpoModulesCore
-    - ReactNativeIosUtilities
-  - ReactNativeIosUtilities (4.4.5):
-    - ComputableLayout (~> 0.7)
-    - DGSwiftUtilities (~> 0.17)
-    - ExpoModulesCore
   - RNCAsyncStorage (1.23.1):
     - React-Core
   - RNGestureHandler (2.16.2):
@@ -1391,8 +1377,6 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
-  - ReactNativeIosContextMenu (from `../node_modules/react-native-ios-context-menu`)
-  - ReactNativeIosUtilities (from `../node_modules/react-native-ios-utilities`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -1402,9 +1386,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - ComputableLayout
-    - ContextMenuAuxiliaryPreview
-    - DGSwiftUtilities
     - SocketRocket
 
 EXTERNAL SOURCES:
@@ -1545,10 +1526,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
-  ReactNativeIosContextMenu:
-    :path: "../node_modules/react-native-ios-context-menu"
-  ReactNativeIosUtilities:
-    :path: "../node_modules/react-native-ios-utilities"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNGestureHandler:
@@ -1564,9 +1541,6 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
-  ComputableLayout: c50faffac4ed9f8f05b0ce5e6f3a60df1f6042c8
-  ContextMenuAuxiliaryPreview: 1c73742ff3100dac1e0fb70bbe30284a6e711071
-  DGSwiftUtilities: 9be88816a2057f125bc8fac3da6aca3ae89c1eec
   DoubleConversion: 76ab83afb40bddeeee456813d9c04f67f78771b5
   EXConstants: 409690fbfd5afea964e5e9d6c4eb2c2b59222c59
   Expo: 9c87c876b45a6934894ba5e9353ee94fdba48125
@@ -1634,8 +1608,6 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 56b642bf605ba5afa500d35790928fc1d51565ad
   React-utils: 4476b7fcbbd95cfd002f3e778616155241d86e31
   ReactCommon: ecad995f26e0d1e24061f60f4e5d74782f003f12
-  ReactNativeIosContextMenu: e5f972174bd78ab3a552bd6ee4745762ffaa42b3
-  ReactNativeIosUtilities: 638290fbfaa093c1b50d1f926715d77cabcae759
   RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
   RNGestureHandler: 2282cfbcf86c360d29f44ace393203afd5c6cff7
   RNReanimated: 35f9ac9c3ac42d0497ebd1cce5c39d7687a8493e

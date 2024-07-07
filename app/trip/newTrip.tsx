@@ -1,6 +1,7 @@
 import { HomeLayout } from "@/components/home-layout";
 import { PlacePhoto } from "@/components/place-photo";
 import { Button } from "@/components/ui/button";
+import { CalendarBottomSheet } from "@/components/ui/calendar-bottom-sheet";
 import { CustomTextInput } from "@/components/ui/text-input";
 import { supabaseClient } from "@/lib/supabase";
 import { useAuth } from "@clerk/clerk-expo";
@@ -114,7 +115,7 @@ const NewTrip = () => {
           className="h-11 w-full text-base  p-2 bg-gray-100 rounded-xl text-gray-600"
         />
       </View>
-      <View className="relative">
+      {/* <View className="relative">
         <CalendarDays
           className="text-gray-500 absolute z-10 left-1.5 top-3.5 "
           height={20}
@@ -129,7 +130,15 @@ const NewTrip = () => {
           onChangeText={(text) => setDays(text)}
           className="h-11 w-full text-base p-2 bg-gray-100 rounded-xl text-gray-600  "
         />
-      </View>
+      </View> */}
+      <CalendarBottomSheet
+        inputIcon={
+          <CalendarDays className="text-gray-500" height={20} width={20} />
+        }
+        inputPlaceholder="How many days will you be there?"
+        bottomSheetTitle="Calendar"
+        value={undefined}
+      />
       <View style={{ gap: 4 }}>
         <GooglePlacesAutocomplete
           placeholder="Search your city"

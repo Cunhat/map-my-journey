@@ -12,9 +12,16 @@ import { useAuth } from "@clerk/clerk-expo";
 import BottomSheet, { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useQuery } from "@tanstack/react-query";
 import { router, useLocalSearchParams, useNavigation } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { ArrowLeft, Plus, Search } from "lucide-react-native";
 import React, { useLayoutEffect, useRef } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+  useColorScheme,
+} from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import MapView from "react-native-maps";
 
@@ -27,7 +34,7 @@ const Trip = () => {
   const focusPointRef = useRef<BottomSheetModal>(null);
   const daySheetRef = useRef<BottomSheetModal>(null);
   const [focusPoint, setFocusPoint] = React.useState<number | undefined>();
-
+  let colorScheme = useColorScheme();
   const [addPointBottomSheet, setAddPointBottomSheet] = React.useState(false);
   const [index, setIndex] = React.useState(1);
   const [selectedDay, setSelectedDay] = React.useState<number>(0);
@@ -163,6 +170,7 @@ const Trip = () => {
 
   return (
     <View className="flex-1">
+      <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
       <TripMap
         ref={mapRef}
         points={filterMapPoints()}
