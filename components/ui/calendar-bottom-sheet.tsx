@@ -4,8 +4,9 @@ import {
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { useMemo, useRef } from "react";
-
+import { CalendarList, DateData } from "react-native-calendars";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { CalendarListPicker } from "./calendar-list";
 
 type CalendarBottomSheetProps = {
   inputIcon: React.ReactNode;
@@ -66,15 +67,15 @@ export const CalendarBottomSheet: React.FC<CalendarBottomSheetProps> = ({
             {inputIcon}
             <Text className="text-xl text-gray-700">{bottomSheetTitle}</Text>
           </View>
-          <ScrollView
+          {/* <ScrollView
             contentContainerStyle={{
               paddingTop: 16,
               paddingBottom: 70,
             }}
             showsVerticalScrollIndicator={false}
-          >
-            <Text>CALENDAR</Text>
-          </ScrollView>
+          > */}
+          <CalendarListPicker horizontalView={true} />
+          {/* </ScrollView> */}
         </BottomSheetView>
       </BottomSheetModal>
     </>
