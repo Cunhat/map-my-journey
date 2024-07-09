@@ -1,15 +1,17 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { StyleSheet, Text, View, TextStyle } from "react-native";
 import { CalendarList, DateData } from "react-native-calendars";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const RANGE = 24;
-const initialDate = "2024-07-07";
-const nextWeekDate = "2024-07-14";
-const nextMonthDate = "2024-08-05";
+// const initialDate = "2024-07-07";
 
-interface Props {
-  horizontalView?: boolean;
-}
+interface Props {}
 const testIDs = {
   menu: {
     CONTAINER: "menu",
@@ -37,34 +39,83 @@ const testIDs = {
   weekCalendar: { CONTAINER: "weekCalendar" },
 };
 
-export const CalendarListPicker: React.FC<Props> = ({
-  horizontalView = false,
-}) => {
-  const [selected, setSelected] = useState(initialDate);
-  const marked = useMemo(() => {
-    return {
-      [nextWeekDate]: {
-        selected: selected === nextWeekDate,
-        selectedTextColor: "#5E60CE",
-        marked: true,
-      },
-      [nextMonthDate]: {
-        selected: selected === nextMonthDate,
-        selectedTextColor: "#5E60CE",
-        marked: true,
-      },
-      [selected]: {
-        selected: true,
-        disableTouchEvent: true,
-        selectedColor: "#5E60CE",
-        selectedTextColor: "white",
-      },
-    };
-  }, [selected]);
+export const CalendarListPicker: React.FC<Props> = ({}) => {
+  const [startDate, setStartDate] = useState<string | undefined>(undefined);
+  const [endDate, setEndDate] = useState<string | undefined>(undefined);
 
-  const onDayPress = useCallback((day: DateData) => {
-    setSelected(day.dateString);
-  }, []);
+  const marked = useMemo(() => {
+    const intervalDates = () => {
+      if (!startDate || !endDate) return {};
+
+      let startTs = dayjs(startDate).utc(true);
+      const endTs = dayjs(endDate).utc(true);
+      startTs = startTs.add(1, "day");
+
+      let intervalObj = {};
+
+      while (startTs.isBefore(endTs)) {
+        intervalObj = {
+          ...intervalObj,
+          [startTs.format("YYYY-MM-DD")]: { color: "green" },
+        };
+        startTs = startTs.add(1, "day");
+      }
+
+      return intervalObj;
+    };
+
+    let finalDate = {};
+
+    if (startDate === undefined && endDate === undefined) return undefined;
+
+    if (startDate) {
+      finalDate = {
+        ...finalDate,
+        [startDate]: {
+          selected: true,
+          startingDay: true,
+          disableTouchEvent: true,
+          selectedColor: "black",
+          color: "black",
+        },
+      };
+    }
+
+    if (endDate) {
+      finalDate = {
+        ...finalDate,
+        [endDate]: {
+          selected: true,
+          endingDay: true,
+          disableTouchEvent: true,
+          selectedColor: "black",
+          color: "black",
+        },
+      };
+    }
+
+    if (startDate && endDate) {
+      finalDate = {
+        ...finalDate,
+        ...intervalDates(),
+      };
+    }
+
+    return finalDate;
+  }, [startDate, endDate]);
+
+  const onDayPress = (day: DateData) => {
+    if (startDate && endDate) {
+      setStartDate(day.dateString);
+      setEndDate(undefined);
+    }
+
+    if (!startDate) {
+      setStartDate(day.dateString);
+    } else {
+      setEndDate(day.dateString);
+    }
+  };
 
   return (
     // <CalendarList
@@ -83,9 +134,10 @@ export const CalendarListPicker: React.FC<Props> = ({
     // />
     <CalendarList
       // Callback which gets executed when visible months change in scroll view. Default = undefined
-      onVisibleMonthsChange={(months) => {
-        console.log("now these months are visible", months);
-      }}
+      //   onVisibleMonthsChange={(months) => {
+      //     console.log("now these months are visible", months);
+      //   }}
+      onDayPress={onDayPress}
       // Max amount of months allowed to scroll to the past. Default = 50
       pastScrollRange={50}
       // Max amount of months allowed to scroll to the future. Default = 50
@@ -94,7 +146,30 @@ export const CalendarListPicker: React.FC<Props> = ({
       scrollEnabled={true}
       // Enable or disable vertical scroll indicator. Default = false
       showScrollIndicator={true}
-      current={initialDate}
+      // current={selected}
+      markedDates={marked}
+      current={startDate}
+      markingType={startDate && endDate ? "period" : undefined}
+      // theme={{
+      //   // todayTextColor: "#0ea5e9",
+      //   stylesheet: {
+      //     day: {
+      //       basic: {
+      //         today: {
+      //           borderColor: "#48BFE3",
+      //           borderWidth: 0.8,
+      //         },
+      //         todayText: {
+      //           color: "#5390D9",
+      //           fontWeight: "800",
+      //         },
+      //       },
+      //     },
+      //   },
+      // }}
+
+      //
+      // }}
       //   ...calendarParams
     />
   );
@@ -122,26 +197,6 @@ const theme = {
     },
   },
 };
-
-function renderCustomHeader(date: any) {
-  const header = date.toString("MMMM yyyy");
-  const [month, year] = header.split(" ");
-  const textStyle: TextStyle = {
-    fontSize: 18,
-    fontWeight: "bold",
-    paddingTop: 10,
-    paddingBottom: 10,
-    color: "#5E60CE",
-    paddingRight: 5,
-  };
-
-  return (
-    <View style={styles.header}>
-      <Text style={[styles.month, textStyle]}>{`${month}`}</Text>
-      <Text style={[styles.year, textStyle]}>{year}</Text>
-    </View>
-  );
-}
 
 const styles = StyleSheet.create({
   header: {
