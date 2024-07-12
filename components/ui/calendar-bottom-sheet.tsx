@@ -7,23 +7,33 @@ import { useMemo, useRef } from "react";
 import { CalendarList, DateData } from "react-native-calendars";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { CalendarListPicker } from "./calendar-list";
+import dayjs from "dayjs";
 
 type CalendarBottomSheetProps = {
   inputIcon: React.ReactNode;
   inputPlaceholder: string;
-  value: any;
+  date: { startDate: string | undefined; endDate: string | undefined };
+  setDate: React.Dispatch<React.SetStateAction<any>>;
   bottomSheetTitle: string;
 };
 
 export const CalendarBottomSheet: React.FC<CalendarBottomSheetProps> = ({
   inputIcon,
   inputPlaceholder,
-  value,
+  date,
+  setDate,
   bottomSheetTitle,
 }) => {
   const ref = useRef<BottomSheetModal>(null);
 
-  const snapPoints = useMemo(() => ["70%"], []);
+  const snapPoints = useMemo(() => ["85%"], []);
+
+  const startDate = date?.startDate
+    ? dayjs(date?.startDate).format("DD/MM/YYYY")
+    : "";
+  const endDate = date?.endDate
+    ? dayjs(date?.endDate).format("DD/MM/YYYY")
+    : "";
 
   return (
     <>
@@ -33,10 +43,11 @@ export const CalendarBottomSheet: React.FC<CalendarBottomSheetProps> = ({
         className="h-12 bg-gray-100 rounded-xl flex-row items-center pl-1.5"
       >
         {inputIcon}
-        {value ? (
+        {date.startDate && date.endDate ? (
           <View className="flex-row items-center" style={{ gap: 8 }}>
-            {value.icon}
-            <Text className="text-gray-500 text-base">{value.label}</Text>
+            <Text className="text-gray-500 text-base">{startDate}</Text>
+            <Text className="text-gray-500 text-base">to</Text>
+            <Text className="text-gray-500 text-base">{endDate}</Text>
           </View>
         ) : (
           <Text className="text-gray-300 text-base">{inputPlaceholder}</Text>
@@ -67,15 +78,7 @@ export const CalendarBottomSheet: React.FC<CalendarBottomSheetProps> = ({
             {inputIcon}
             <Text className="text-xl text-gray-700">{bottomSheetTitle}</Text>
           </View>
-          {/* <ScrollView
-            contentContainerStyle={{
-              paddingTop: 16,
-              paddingBottom: 70,
-            }}
-            showsVerticalScrollIndicator={false}
-          > */}
-          <CalendarListPicker horizontalView={true} />
-          {/* </ScrollView> */}
+          <CalendarListPicker date={date} setDate={setDate} />
         </BottomSheetView>
       </BottomSheetModal>
     </>

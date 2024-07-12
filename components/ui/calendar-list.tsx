@@ -8,47 +8,26 @@ import timezone from "dayjs/plugin/timezone";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-const RANGE = 24;
-// const initialDate = "2024-07-07";
-
-interface Props {}
-const testIDs = {
-  menu: {
-    CONTAINER: "menu",
-    CALENDARS: "calendars_btn",
-    CALENDAR_LIST: "calendar_list_btn",
-    HORIZONTAL_LIST: "horizontal_list_btn",
-    AGENDA: "agenda_btn",
-    EXPANDABLE_CALENDAR: "expandable_calendar_btn",
-    WEEK_CALENDAR: "week_calendar_btn",
-    TIMELINE_CALENDAR: "timeline_calendar_btn",
-    PLAYGROUND: "playground_btn",
-  },
-  calendars: {
-    CONTAINER: "calendars",
-    FIRST: "first_calendar",
-    LAST: "last_calendar",
-  },
-  calendarList: { CONTAINER: "calendarList" },
-  horizontalList: { CONTAINER: "horizontalList" },
-  agenda: {
-    CONTAINER: "agenda",
-    ITEM: "item",
-  },
-  expandableCalendar: { CONTAINER: "expandableCalendar" },
-  weekCalendar: { CONTAINER: "weekCalendar" },
+export type CalendarDates = {
+  startDate: string | undefined;
+  endDate: string | undefined;
 };
 
-export const CalendarListPicker: React.FC<Props> = ({}) => {
-  const [startDate, setStartDate] = useState<string | undefined>(undefined);
-  const [endDate, setEndDate] = useState<string | undefined>(undefined);
+type CalendarProps = {
+  date: CalendarDates;
+  setDate: React.Dispatch<React.SetStateAction<CalendarDates>>;
+};
 
+export const CalendarListPicker: React.FC<CalendarProps> = ({
+  date,
+  setDate,
+}) => {
   const marked = useMemo(() => {
     const intervalDates = () => {
-      if (!startDate || !endDate) return {};
+      if (!date) return {};
 
-      let startTs = dayjs(startDate).utc(true);
-      const endTs = dayjs(endDate).utc(true);
+      let startTs = dayjs(date.startDate).utc(true);
+      const endTs = dayjs(date.endDate).utc(true);
       startTs = startTs.add(1, "day");
 
       let intervalObj = {};
@@ -56,7 +35,10 @@ export const CalendarListPicker: React.FC<Props> = ({}) => {
       while (startTs.isBefore(endTs)) {
         intervalObj = {
           ...intervalObj,
-          [startTs.format("YYYY-MM-DD")]: { color: "green" },
+          [startTs.format("YYYY-MM-DD")]: {
+            color: "#0ea5e9",
+            textColor: "white",
+          },
         };
         startTs = startTs.add(1, "day");
       }
@@ -66,35 +48,38 @@ export const CalendarListPicker: React.FC<Props> = ({}) => {
 
     let finalDate = {};
 
-    if (startDate === undefined && endDate === undefined) return undefined;
+    if (date?.startDate === undefined && date?.endDate === undefined)
+      return undefined;
 
-    if (startDate) {
+    if (date.startDate) {
       finalDate = {
         ...finalDate,
-        [startDate]: {
+        [date.startDate]: {
           selected: true,
-          startingDay: true,
+          startingDay: date?.endDate ? true : false,
           disableTouchEvent: true,
-          selectedColor: "black",
-          color: "black",
+          selectedColor: "#0ea5e9",
+          color: "#0ea5e9",
+          textColor: "white",
         },
       };
     }
 
-    if (endDate) {
+    if (date.endDate) {
       finalDate = {
         ...finalDate,
-        [endDate]: {
+        [date.endDate]: {
           selected: true,
           endingDay: true,
           disableTouchEvent: true,
-          selectedColor: "black",
-          color: "black",
+          selectedColor: "#0ea5e9",
+          color: "#0ea5e9",
+          textColor: "white",
         },
       };
     }
 
-    if (startDate && endDate) {
+    if (date.startDate && date.endDate) {
       finalDate = {
         ...finalDate,
         ...intervalDates(),
@@ -102,41 +87,23 @@ export const CalendarListPicker: React.FC<Props> = ({}) => {
     }
 
     return finalDate;
-  }, [startDate, endDate]);
+  }, [date]);
 
   const onDayPress = (day: DateData) => {
-    if (startDate && endDate) {
-      setStartDate(day.dateString);
-      setEndDate(undefined);
-    }
-
-    if (!startDate) {
-      setStartDate(day.dateString);
+    console.log("day", day);
+    if (date?.startDate && date?.endDate) {
+      setDate({ startDate: day.dateString, endDate: undefined });
+    } else if (!date?.startDate) {
+      setDate({ startDate: day.dateString, endDate: undefined });
+    } else if (dayjs(day.dateString).isBefore(dayjs(date?.startDate))) {
+      setDate({ startDate: day.dateString, endDate: undefined });
     } else {
-      setEndDate(day.dateString);
+      setDate({ startDate: date.startDate, endDate: day.dateString });
     }
   };
 
   return (
-    // <CalendarList
-    //   testID={testIDs.calendarList.CONTAINER}
-    //   current={initialDate}
-    //   pastScrollRange={RANGE}
-    //   futureScrollRange={RANGE}
-    //   onDayPress={onDayPress}
-    //   markedDates={marked}
-    //   renderHeader={!horizontalView ? renderCustomHeader : undefined}
-    //   calendarHeight={!horizontalView ? 390 : undefined}
-    //   theme={!horizontalView ? theme : undefined}
-    //   horizontal={horizontalView}
-    //   pagingEnabled={horizontalView}
-    //   staticHeader={horizontalView}
-    // />
     <CalendarList
-      // Callback which gets executed when visible months change in scroll view. Default = undefined
-      //   onVisibleMonthsChange={(months) => {
-      //     console.log("now these months are visible", months);
-      //   }}
       onDayPress={onDayPress}
       // Max amount of months allowed to scroll to the past. Default = 50
       pastScrollRange={50}
@@ -148,68 +115,9 @@ export const CalendarListPicker: React.FC<Props> = ({}) => {
       showScrollIndicator={true}
       // current={selected}
       markedDates={marked}
-      current={startDate}
-      markingType={startDate && endDate ? "period" : undefined}
-      // theme={{
-      //   // todayTextColor: "#0ea5e9",
-      //   stylesheet: {
-      //     day: {
-      //       basic: {
-      //         today: {
-      //           borderColor: "#48BFE3",
-      //           borderWidth: 0.8,
-      //         },
-      //         todayText: {
-      //           color: "#5390D9",
-      //           fontWeight: "800",
-      //         },
-      //       },
-      //     },
-      //   },
-      // }}
-
-      //
-      // }}
-      //   ...calendarParams
+      animateScroll={true}
+      // current={date?.startDate}
+      markingType={date?.startDate && date?.endDate ? "period" : "dot"}
     />
   );
 };
-
-const theme = {
-  stylesheet: {
-    calendar: {
-      header: {
-        dayHeader: {
-          fontWeight: "600",
-          color: "#48BFE3",
-        },
-      },
-    },
-  },
-  "stylesheet.day.basic": {
-    today: {
-      borderColor: "#48BFE3",
-      borderWidth: 0.8,
-    },
-    todayText: {
-      color: "#5390D9",
-      fontWeight: "800",
-    },
-  },
-};
-
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "space-between",
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  month: {
-    marginLeft: 5,
-  },
-  year: {
-    marginRight: 5,
-  },
-});

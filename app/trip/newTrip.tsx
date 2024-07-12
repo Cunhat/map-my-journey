@@ -8,7 +8,7 @@ import { useAuth } from "@clerk/clerk-expo";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { router, useNavigation } from "expo-router";
 import { CalendarDays, MapPin, Plane, X } from "lucide-react-native";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Text, View, Image, TextInput, TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import {
@@ -39,6 +39,17 @@ const NewTrip = () => {
   const [photo, setPhoto] = React.useState<string>();
   const ref = useRef<GooglePlacesAutocompleteRef>(null);
   const { getToken, userId, isLoaded } = useAuth();
+  const [date, setDate] = React.useState<{
+    startDate: string | undefined;
+    endDate: string | undefined;
+  }>({
+    startDate: undefined,
+    endDate: undefined,
+  });
+
+  useEffect(() => {
+    console.log("date", date);
+  }, [date]);
 
   const queryClient = useQueryClient();
 
@@ -115,29 +126,15 @@ const NewTrip = () => {
           className="h-11 w-full text-base  p-2 bg-gray-100 rounded-xl text-gray-600"
         />
       </View>
-      {/* <View className="relative">
-        <CalendarDays
-          className="text-gray-500 absolute z-10 left-1.5 top-3.5 "
-          height={20}
-          width={20}
-        />
-        <TextInput
-          placeholder={"How many days will you be there?"}
-          placeholderTextColor={"#d1d5db"}
-          value={days}
-          style={{ paddingLeft: 35 }}
-          keyboardType={"number-pad"}
-          onChangeText={(text) => setDays(text)}
-          className="h-11 w-full text-base p-2 bg-gray-100 rounded-xl text-gray-600  "
-        />
-      </View> */}
+
       <CalendarBottomSheet
         inputIcon={
           <CalendarDays className="text-gray-500" height={20} width={20} />
         }
         inputPlaceholder="How many days will you be there?"
         bottomSheetTitle="Calendar"
-        value={undefined}
+        date={date}
+        setDate={setDate}
       />
       <View style={{ gap: 4 }}>
         <GooglePlacesAutocomplete
