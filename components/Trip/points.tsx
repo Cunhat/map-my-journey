@@ -6,25 +6,29 @@ import {
   PointsListSeparator,
 } from "@/components/points-list";
 import { Tables } from "@/lib/types/supabase";
+import { getDates } from "@/lib/utils";
 import { cva } from "class-variance-authority";
+import dayjs from "dayjs";
 import { ChevronDown } from "lucide-react-native";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
 type PointsProps = {
   points: Array<Tables<"point"> & { category: Tables<"category"> }>;
-  tripDays: number;
   focusPoint: (
     point: Tables<"point"> & { category: Tables<"category"> }
   ) => void;
   onDayOpen?: (day: number) => void;
+  startDate: string;
+  endDate: string;
 };
 
 export const Points: React.FC<PointsProps> = ({
   points,
-  tripDays,
   focusPoint,
   onDayOpen,
+  startDate,
+  endDate,
 }) => {
   if (points?.length === 0)
     return (
@@ -36,27 +40,27 @@ export const Points: React.FC<PointsProps> = ({
       </View>
     );
 
+  const days = getDates(startDate, endDate);
+
   return (
     <View style={{ gap: 12 }} className="flex-1">
       <Text className="text-sky-500 text-xl">Points</Text>
       <PointsList>
-        {Array(tripDays)
-          .fill(0)
-          .map((_, i) => {
-            const filterPoints = [
-              ...points?.filter((point) => point.day === i + 1),
-            ];
+        {days.map((day) => {
+          const filterPoints = [
+            ...points?.filter((point) => point.date === day.value),
+          ];
 
-            return (
-              <Day
-                points={filterPoints}
-                focusPoint={focusPoint}
-                day={i}
-                key={i}
-                onDayOpen={onDayOpen}
-              />
-            );
-          })}
+          return (
+            <Day
+              points={filterPoints}
+              focusPoint={focusPoint}
+              day={day.value}
+              key={day.value}
+              onDayOpen={onDayOpen}
+            />
+          );
+        })}
       </PointsList>
     </View>
   );
@@ -84,11 +88,13 @@ const Day: React.FC<Omit<PointsProps, "tripDays"> & { day: number }> = ({
       <View className="flex flex-row items-center justify-between">
         <TouchableOpacity
           style={{ gap: 8 }}
-          onPress={() => onDayOpen && onDayOpen(day + 1)}
+          onPress={() => onDayOpen && onDayOpen(day)}
           className="flex-row items-center p-2"
         >
           <Calendar height={24} width={24} />
-          <Text className="text-gray-500 font-bold text-lg">Day {day + 1}</Text>
+          <Text className="text-gray-500 font-bold text-lg">
+            {dayjs(day).format("D MMMM")}
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setExpanded(!expanded)}

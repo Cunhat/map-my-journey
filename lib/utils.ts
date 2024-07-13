@@ -23,7 +23,6 @@ export const getDates = (startDate: string, endDate: string) => {
 
   const dates: { id: string; value: string; label: string }[] = [];
 
-
   while (start.isBefore(end) || start.isSame(end)) {
     dates.push({id: start.format("YYYY-MM-DD"), value: start.format("YYYY-MM-DD"), label: start.format("D MMM YYYY")});
     start =start.add(1, "day");

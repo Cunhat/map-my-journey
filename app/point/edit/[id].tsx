@@ -1,4 +1,6 @@
+import Calendar from "@/assets/svg/calendar";
 import { Button } from "@/components/ui/button";
+import { CalendarBottomSheet } from "@/components/ui/calendar-bottom-sheet";
 import { CategoryIcon } from "@/components/ui/category-icon";
 import { FullPageLoading } from "@/components/ui/loading";
 import { LocationTitle } from "@/components/ui/location-title";
@@ -10,7 +12,7 @@ import {
 import { supabaseClient } from "@/lib/supabase";
 
 import { Database, Tables } from "@/lib/types/supabase";
-import { createDaysArray } from "@/lib/utils";
+import { createDaysArray, getDates } from "@/lib/utils";
 import { useAuth } from "@clerk/clerk-expo";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -92,10 +94,9 @@ const EditPoint: React.FC = () => {
           />
         ),
       });
-      const days = createDaysArray(trip?.data?.days ?? 0);
-      setSelectedDay(
-        days.find((day) => day.value === point?.data[0]?.day?.toString())
-      );
+
+      const days = getDates(trip?.data?.start_date!, trip?.data?.end_date!);
+      setSelectedDay(days.find((day) => day.value === point?.data[0]?.date));
     }
   }, [point.isSuccess]);
 
@@ -113,7 +114,7 @@ const EditPoint: React.FC = () => {
       return await supabase
         .from("point")
         .update({
-          day: point.day,
+          date: point.date,
           category_id: point.category_id,
         })
         .eq("id", id)
@@ -135,7 +136,7 @@ const EditPoint: React.FC = () => {
 
   const handleSubmit = () => {
     updateTripPointMutation.mutate({
-      day: parseInt(selectedDay?.label ?? "0"),
+      date: selectedDay?.value,
       category_id: selectedCategory?.id ?? 0,
     });
   };
@@ -154,20 +155,6 @@ const EditPoint: React.FC = () => {
         </View>
         <View className="justify-between flex-1">
           <View style={{ gap: 24 }}>
-            <SelectBottomSheet
-              inputIcon={
-                <CalendarDays
-                  className="text-gray-500"
-                  height={20}
-                  width={20}
-                />
-              }
-              inputPlaceholder="Select the category..."
-              bottomSheetTitle="Select the category"
-              data={createDaysArray(trip?.data?.days ?? 0)}
-              onSelect={(value) => setSelectedDay(value)}
-              value={selectedDay}
-            />
             <SelectBottomSheet
               inputIcon={
                 <Tag className="text-gray-600" height={20} width={20} />
@@ -190,6 +177,16 @@ const EditPoint: React.FC = () => {
               }
               onSelect={(value) => setSelectedCategory(value)}
               value={selectedCategory}
+            />
+            <SelectBottomSheet
+              inputIcon={
+                <Calendar height={24} width={24} /> // <CalendarDays className="text-gray-500" height={20} width={20} />
+              }
+              inputPlaceholder="Select date..."
+              bottomSheetTitle="Select date"
+              data={getDates(trip?.data?.start_date!, trip?.data?.end_date!)}
+              onSelect={(value) => setSelectedDay(value)}
+              value={selectedDay}
             />
           </View>
         </View>

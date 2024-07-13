@@ -37,7 +37,7 @@ const Trip = () => {
   let colorScheme = useColorScheme();
   const [addPointBottomSheet, setAddPointBottomSheet] = React.useState(false);
   const [index, setIndex] = React.useState(1);
-  const [selectedDay, setSelectedDay] = React.useState<number>(0);
+  const [selectedDay, setSelectedDay] = React.useState<string>();
   const [currentMarker, setCurrentMarker] = React.useState<CurrentMarker>();
   const { getToken, userId, isLoaded } = useAuth();
 
@@ -288,10 +288,11 @@ const Trip = () => {
             </ScrollView>
           </View>
           <Points
-            tripDays={trip?.data?.days ?? 0}
             points={points?.data ?? []}
             focusPoint={handleFocusPoint}
             onDayOpen={onDayOpen}
+            startDate={trip?.data?.start_date ?? ""}
+            endDate={trip?.data?.end_date ?? ""}
           />
         </View>
       </BottomSheet>
@@ -299,8 +300,11 @@ const Trip = () => {
         ref={daySheetRef}
         onDayClose={onDayClose}
         day={selectedDay}
-        maxDays={trip?.data?.days ?? 0}
-        points={points.data?.filter((point) => point.day === selectedDay) ?? []}
+        maxDay={trip?.data?.end_date!}
+        minDay={trip?.data?.start_date!}
+        points={
+          points.data?.filter((point) => point.date === selectedDay) ?? []
+        }
         changeDay={setSelectedDay}
         handleFocusPoint={handleFocusPoint}
       />

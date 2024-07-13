@@ -7,13 +7,15 @@ import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { PointsList } from "../points-list";
 import { PointsByDay } from "./points";
+import dayjs from "dayjs";
 
 type DayViewProps = {
   onDayClose: () => void;
   points: Array<Tables<"point"> & { category: Tables<"category"> }> | [];
   day: number;
-  maxDays: number;
-  changeDay: React.Dispatch<React.SetStateAction<number>>;
+  maxDay: string;
+  minDay: string;
+  changeDay: React.Dispatch<React.SetStateAction<string>>;
   handleFocusPoint: (
     point: Tables<"point"> & { category: Tables<"category"> }
   ) => void;
@@ -32,7 +34,10 @@ const SwipeArrow = cva(
 );
 
 export const DayView = React.forwardRef<BottomSheetModal, DayViewProps>(
-  ({ onDayClose, points, day, maxDays, changeDay, handleFocusPoint }, ref) => {
+  (
+    { onDayClose, points, day, maxDay, changeDay, handleFocusPoint, minDay },
+    ref
+  ) => {
     const snapPoints = React.useMemo(() => ["30%", "88%"], []);
 
     return (
@@ -50,9 +55,18 @@ export const DayView = React.forwardRef<BottomSheetModal, DayViewProps>(
           <View style={{ gap: 16 }} className="p-3">
             <View className="flex-row items-center justify-between">
               <TouchableOpacity
-                className={SwipeArrow({ disabled: day - 1 === 0 })}
-                disabled={day - 1 === 0}
-                onPress={() => changeDay(day - 1)}
+                className={SwipeArrow({
+                  disabled: dayjs(day).isSame(dayjs(minDay)),
+                })}
+                disabled={dayjs(day).isSame(dayjs(minDay))}
+                onPress={() => {
+                  changeDay(
+                    dayjs(day)
+                      .subtract(1, "day")
+                      .format("YYYY-MM-DD")
+                      .toString()
+                  );
+                }}
               >
                 <ChevronLeft height={24} width={24} className="text-gray-500" />
               </TouchableOpacity>
@@ -60,13 +74,19 @@ export const DayView = React.forwardRef<BottomSheetModal, DayViewProps>(
               <View style={{ gap: 4 }} className="flex flex-row items-center">
                 <Calendar height={24} width={24} />
                 <Text className="text-gray-500 font-bold text-lg">
-                  Day {day}
+                  {dayjs(day).format("D MMMM")}
                 </Text>
               </View>
               <TouchableOpacity
-                className={SwipeArrow({ disabled: day >= maxDays })}
-                disabled={day >= maxDays}
-                onPress={() => changeDay(day + 1)}
+                className={SwipeArrow({
+                  disabled: dayjs(day).isSame(dayjs(maxDay)),
+                })}
+                disabled={dayjs(day).isSame(dayjs(maxDay))}
+                onPress={() =>
+                  changeDay(
+                    dayjs(day).add(1, "day").format("YYYY-MM-DD").toString()
+                  )
+                }
               >
                 <ChevronRight
                   height={24}
