@@ -50,6 +50,8 @@ export type Database = {
       point: {
         Row: {
           category_id: number
+          created_at: string | null
+          date: string | null
           day: number
           id: number
           latitude: number
@@ -61,6 +63,8 @@ export type Database = {
         }
         Insert: {
           category_id: number
+          created_at?: string | null
+          date?: string | null
           day: number
           id?: number
           latitude: number
@@ -72,6 +76,8 @@ export type Database = {
         }
         Update: {
           category_id?: number
+          created_at?: string | null
+          date?: string | null
           day?: number
           id?: number
           latitude?: number
@@ -137,34 +143,40 @@ export type Database = {
         Row: {
           city: string | null
           created_at: string
-          days: number
+          days: number | null
+          end_date: string | null
           id: number
           latitude: number
           longitude: number
           name: string
           photo_url: string
+          start_date: string | null
           user_id: string | null
         }
         Insert: {
           city?: string | null
           created_at?: string
-          days: number
+          days?: number | null
+          end_date?: string | null
           id?: number
           latitude: number
           longitude: number
           name: string
           photo_url: string
+          start_date?: string | null
           user_id?: string | null
         }
         Update: {
           city?: string | null
           created_at?: string
-          days?: number
+          days?: number | null
+          end_date?: string | null
           id?: number
           latitude?: number
           longitude?: number
           name?: string
           photo_url?: string
+          start_date?: string | null
           user_id?: string | null
         }
         Relationships: []

@@ -6,6 +6,7 @@ import { CustomTextInput } from "@/components/ui/text-input";
 import { supabaseClient } from "@/lib/supabase";
 import { useAuth } from "@clerk/clerk-expo";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import dayjs from "dayjs";
 import { router, useNavigation } from "expo-router";
 import { CalendarDays, MapPin, Plane, X } from "lucide-react-native";
 import React, { useEffect, useRef } from "react";
@@ -26,7 +27,6 @@ type Photos = {
 
 const NewTrip = () => {
   const [name, setName] = React.useState("");
-  const [days, setDays] = React.useState("");
   const [city, setCity] = React.useState<
     | {
         name: string;
@@ -64,7 +64,9 @@ const NewTrip = () => {
         .insert([
           {
             name: newTrip.name,
-            days: parseInt(newTrip.days),
+            start_date: dayjs(newTrip.date.startDate).toString(),
+            end_date: dayjs(newTrip.date.endDate).toString(),
+            days: 1,
             user_id: userId,
             city: newTrip.city.name,
             latitude: newTrip.city.latitude,
@@ -78,7 +80,6 @@ const NewTrip = () => {
     onSuccess: ({ data }) => {
       if (data && data[0]?.id) {
         setCity(undefined);
-        setDays("");
         setName("");
         ref.current?.clear();
         setPhoto(undefined);
@@ -94,7 +95,7 @@ const NewTrip = () => {
   const onSubmit = () => {
     createTripMutation.mutate({
       name,
-      days,
+      date,
       city,
       photo,
     });
@@ -205,7 +206,12 @@ const NewTrip = () => {
       <View style={{ gap: 12 }} className="mt-auto pb-6">
         <Button
           disabled={
-            !name || !days || createTripMutation.isPending || !city || !photo
+            !name ||
+            date.startDate === undefined ||
+            date.endDate === undefined ||
+            createTripMutation.isPending ||
+            !city ||
+            !photo
           }
           title="Create"
           fullWidth

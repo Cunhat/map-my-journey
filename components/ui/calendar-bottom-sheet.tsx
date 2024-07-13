@@ -8,6 +8,7 @@ import { CalendarList, DateData } from "react-native-calendars";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { CalendarListPicker } from "./calendar-list";
 import dayjs from "dayjs";
+import { MoveRight, X } from "lucide-react-native";
 
 type CalendarBottomSheetProps = {
   inputIcon: React.ReactNode;
@@ -46,7 +47,7 @@ export const CalendarBottomSheet: React.FC<CalendarBottomSheetProps> = ({
         {date.startDate && date.endDate ? (
           <View className="flex-row items-center" style={{ gap: 8 }}>
             <Text className="text-gray-500 text-base">{startDate}</Text>
-            <Text className="text-gray-500 text-base">to</Text>
+            <MoveRight className="text-gray-500" height={14} width={14} />
             <Text className="text-gray-500 text-base">{endDate}</Text>
           </View>
         ) : (
@@ -71,12 +72,28 @@ export const CalendarBottomSheet: React.FC<CalendarBottomSheetProps> = ({
         )}
       >
         <BottomSheetView className="flex flex-col">
-          <View
-            style={{ gap: 6 }}
-            className="flex-row items-center justify-center"
-          >
-            {inputIcon}
-            <Text className="text-xl text-gray-700">{bottomSheetTitle}</Text>
+          <View style={{ gap: 6 }} className="flex-row items-center px-3">
+            <View className="flex-row items-center ml-auto" style={{ gap: 8 }}>
+              {date.startDate && (
+                <Text className="text-base text-gray-700">
+                  {dayjs(date.startDate).format("D MMM")}
+                </Text>
+              )}
+              {date.endDate && (
+                <MoveRight className="text-gray-500" height={14} width={14} />
+              )}
+              {date?.endDate && (
+                <Text className="text-base text-gray-700">
+                  {dayjs(date.endDate).format("D MMM")}
+                </Text>
+              )}
+            </View>
+            <TouchableOpacity
+              className=" rounded-full p-1 bg-gray-100 items-center justify-center ml-auto"
+              onPress={() => ref.current?.dismiss()}
+            >
+              <X className="text-gray-500" height={24} width={24}></X>
+            </TouchableOpacity>
           </View>
           <CalendarListPicker date={date} setDate={setDate} />
         </BottomSheetView>

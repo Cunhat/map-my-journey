@@ -316,6 +316,8 @@ const Trip = () => {
         categories={categories?.data ?? []}
         numberOfDays={trip?.data?.days ?? 0}
         closeModelAndClearCurrentMarker={closeModelAndClearCurrentMarker}
+        startDate={trip?.data?.start_date ?? ""}
+        endDate={trip?.data?.end_date ?? ""}
       />
       <FocusPoint
         ref={focusPointRef}

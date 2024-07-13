@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
 import { supabaseClient } from "@/lib/supabase";
 import { Database, Tables } from "@/lib/types/supabase";
-import { createDaysArray } from "@/lib/utils";
+import { createDaysArray, getDates } from "@/lib/utils";
 import { useAuth } from "@clerk/clerk-expo";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -14,6 +14,7 @@ import { DynamicBottomSheet } from "../ui/dynamic-bottom-sheet";
 import { LocationTitle } from "../ui/location-title";
 import { SelectBottomSheet, SelectDataType } from "../ui/select-bottom-sheet";
 import { CategoryIcon } from "../ui/category-icon";
+import Calendar from "@/assets/svg/calendar";
 
 type CreatePointProps = {
   addPointBottomSheet: boolean;
@@ -27,6 +28,8 @@ type CreatePointProps = {
   };
   tripId: string;
   closeModelAndClearCurrentMarker: () => void;
+  startDate: string;
+  endDate: string;
 };
 
 export const CreatePoint: React.FC<CreatePointProps> = ({
@@ -37,6 +40,8 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
   numberOfDays,
   tripId,
   closeModelAndClearCurrentMarker,
+  startDate,
+  endDate,
 }) => {
   const addPointRef = useRef<BottomSheet>(null);
   const [selectedCategory, setSelectedCategory] =
@@ -58,7 +63,8 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
         .from("point")
         .insert({
           name: point.name,
-          day: point.day,
+          date: point.date,
+          day: 1,
           user_id: userId!,
           latitude: point.latitude,
           longitude: point.longitude,
@@ -66,6 +72,8 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
           category_id: point.category_id,
         })
         .select();
+
+      console.log("resp", resp);
 
       return resp;
     },
@@ -90,9 +98,11 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
   if (!addPointBottomSheet || !isLoaded) return null;
 
   const handleSubmit = () => {
+    console.log("selectedDay", selectedDay);
     createTripPointMutation.mutate({
       name: point.name,
-      day: selectedDay?.value ?? 0,
+      // day: selectedDay?.value ?? 0,
+      date: selectedDay?.value ?? 0,
       category_id: selectedCategory?.id ?? 0,
       latitude: point?.latitude,
       longitude: point?.longitude,
@@ -136,11 +146,11 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
         />
         <SelectBottomSheet
           inputIcon={
-            <CalendarDays className="text-gray-500" height={20} width={20} />
+            <Calendar height={24} width={24} /> // <CalendarDays className="text-gray-500" height={20} width={20} />
           }
-          inputPlaceholder="Select the category..."
-          bottomSheetTitle="Select the category"
-          data={createDaysArray(numberOfDays)}
+          inputPlaceholder="Select date..."
+          bottomSheetTitle="Select date"
+          data={getDates(startDate, endDate)}
           onSelect={(value) => setSelectedDay(value)}
           value={selectedDay}
         />
