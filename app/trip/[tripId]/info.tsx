@@ -1,5 +1,6 @@
 import CountriesJson from "@/assets/data/countries.json";
 import { Button } from "@/components/ui/button";
+import { CalendarBottomSheet } from "@/components/ui/calendar-bottom-sheet";
 import { InfoField, InfoFieldSeparator } from "@/components/ui/info-field";
 import { FullPageLoading } from "@/components/ui/loading";
 import { supabaseClient } from "@/lib/supabase";
@@ -28,7 +29,14 @@ import {
 
 const Info = () => {
   const [name, setName] = React.useState("");
-  const [days, setDays] = React.useState<"" | number>(0);
+  // const [days, setDays] = React.useState<"" | number>(0);
+  const [date, setDate] = React.useState<{
+    startDate: string | undefined;
+    endDate: string | undefined;
+  }>({
+    startDate: undefined,
+    endDate: undefined,
+  });
   const { tripId } = useGlobalSearchParams<{ tripId: string }>();
   const { getToken, isLoaded } = useAuth();
   const queryClient = useQueryClient();
@@ -53,7 +61,7 @@ const Info = () => {
   useEffect(() => {
     if (isSuccess && data) {
       setName(data.name);
-      setDays(data.days);
+      setDate({ startDate: data.start_date!, endDate: data.end_date! });
     }
   }, [isSuccess]);
 
@@ -102,7 +110,7 @@ const Info = () => {
           .from("point")
           .delete()
           .eq("trip_id", tripId)
-          .gt("day", newTrip.days)
+          .gt("date", newTrip.end_date)
           .select();
       }
 
@@ -137,7 +145,11 @@ const Info = () => {
   if (isFetching) return <FullPageLoading />;
 
   const isDirty = () => {
-    return name === data?.name && days == data?.days;
+    return (
+      name === data?.name &&
+      date.startDate === data?.start_date &&
+      date.endDate === data?.end_date
+    );
   };
 
   return (
@@ -162,23 +174,20 @@ const Info = () => {
                 />
               </View>
               <View className="relative">
-                <CalendarDays
-                  className="text-gray-500 absolute z-10 left-1.5 top-3.5 "
-                  height={20}
-                  width={20}
+                <CalendarBottomSheet
+                  inputIcon={
+                    <CalendarDays
+                      className="text-gray-500"
+                      height={20}
+                      width={20}
+                    />
+                  }
+                  inputPlaceholder="How many days will you be there?"
+                  bottomSheetTitle="Calendar"
+                  date={date}
+                  setDate={setDate}
                 />
-                <TextInput
-                  placeholder={"How many days will you be there?"}
-                  placeholderTextColor={"#d1d5db"}
-                  value={days.toString()}
-                  style={{ paddingLeft: 35 }}
-                  keyboardType={"number-pad"}
-                  onChangeText={(text) => {
-                    setDays(text !== "" ? parseInt(text) : "");
-                  }}
-                  className="h-11 w-full text-base p-2 bg-gray-100 rounded-xl text-gray-600 "
-                />
-                {days !== "" && days < (data?.days ?? 999) && (
+                {/* {days !== "" && days < (data?.days ?? 999) && (
                   <View
                     style={{ gap: 8 }}
                     className="flex-row items-center justify-center px-4"
@@ -193,7 +202,7 @@ const Info = () => {
                       created points!
                     </Text>
                   </View>
-                )}
+                )} */}
               </View>
             </View>
             <View style={{ gap: 12 }}>
@@ -264,7 +273,11 @@ const Info = () => {
                 icon={<Save className="text-white" height={20} width={20} />}
                 fullWidth
                 onPress={() =>
-                  updateMutation.mutate({ name: name, days: days })
+                  updateMutation.mutate({
+                    name: name,
+                    start_date: date.startDate,
+                    end_date: date.endDate,
+                  })
                 }
               />
             )}

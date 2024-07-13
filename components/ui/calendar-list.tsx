@@ -57,7 +57,7 @@ export const CalendarListPicker: React.FC<CalendarProps> = ({
         [date.startDate]: {
           selected: true,
           startingDay: date?.endDate ? true : false,
-          disableTouchEvent: true,
+          // disableTouchEvent: true,
           selectedColor: "#0ea5e9",
           color: "#0ea5e9",
           textColor: "white",
@@ -71,7 +71,7 @@ export const CalendarListPicker: React.FC<CalendarProps> = ({
         [date.endDate]: {
           selected: true,
           endingDay: true,
-          disableTouchEvent: true,
+          // disableTouchEvent: true,
           selectedColor: "#0ea5e9",
           color: "#0ea5e9",
           textColor: "white",
