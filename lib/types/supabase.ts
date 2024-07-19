@@ -52,7 +52,6 @@ export type Database = {
           category_id: number
           created_at: string | null
           date: string | null
-          day: number
           id: number
           latitude: number
           longitude: number
@@ -65,7 +64,6 @@ export type Database = {
           category_id: number
           created_at?: string | null
           date?: string | null
-          day: number
           id?: number
           latitude: number
           longitude: number
@@ -78,7 +76,6 @@ export type Database = {
           category_id?: number
           created_at?: string | null
           date?: string | null
-          day?: number
           id?: number
           latitude?: number
           longitude?: number
@@ -143,7 +140,6 @@ export type Database = {
         Row: {
           city: string | null
           created_at: string
-          days: number | null
           end_date: string | null
           id: number
           latitude: number
@@ -156,7 +152,6 @@ export type Database = {
         Insert: {
           city?: string | null
           created_at?: string
-          days?: number | null
           end_date?: string | null
           id?: number
           latitude: number
@@ -169,7 +164,6 @@ export type Database = {
         Update: {
           city?: string | null
           created_at?: string
-          days?: number | null
           end_date?: string | null
           id?: number
           latitude?: number

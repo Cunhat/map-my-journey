@@ -1,6 +1,10 @@
 import { Platform, Dimensions } from 'react-native';
 import * as Device from 'expo-device';
 import dayjs from 'dayjs';
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
+
 
 
 export const getDeviceHeaderHeight = () => {
@@ -25,7 +29,7 @@ export const getDates = (startDate: string, endDate: string) => {
 
   while (start.isBefore(end) || start.isSame(end)) {
     dates.push({id: start.format("YYYY-MM-DD"), value: start.format("YYYY-MM-DD"), label: start.format("D MMM YYYY")});
-    start =start.add(1, "day");
+    start = start.add(1, "day");
   }
 
   return dates;

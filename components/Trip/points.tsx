@@ -12,13 +12,16 @@ import dayjs from "dayjs";
 import { ChevronDown } from "lucide-react-native";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
 
 type PointsProps = {
   points: Array<Tables<"point"> & { category: Tables<"category"> }>;
   focusPoint: (
     point: Tables<"point"> & { category: Tables<"category"> }
   ) => void;
-  onDayOpen?: (day: number) => void;
+  onDayOpen?: (day: string) => void;
   startDate: string;
   endDate: string;
 };
@@ -48,7 +51,7 @@ export const Points: React.FC<PointsProps> = ({
       <PointsList>
         {days.map((day) => {
           const filterPoints = [
-            ...points?.filter((point) => point.date === day.value),
+            ...points?.filter((point) => point?.date === day?.value),
           ];
 
           return (
@@ -75,7 +78,7 @@ const expandedStyles = cva("text-gray-500", {
   },
 });
 
-const Day: React.FC<Omit<PointsProps, "tripDays"> & { day: number }> = ({
+const Day: React.FC<Omit<PointsProps, "tripDays"> & { day: string }> = ({
   points,
   focusPoint,
   day,
@@ -93,7 +96,7 @@ const Day: React.FC<Omit<PointsProps, "tripDays"> & { day: number }> = ({
         >
           <Calendar height={24} width={24} />
           <Text className="text-gray-500 font-bold text-lg">
-            {dayjs(day).format("D MMMM")}
+            {dayjs(day).utc(true).format("D MMMM")}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity

@@ -90,7 +90,6 @@ export const CalendarListPicker: React.FC<CalendarProps> = ({
   }, [date]);
 
   const onDayPress = (day: DateData) => {
-    console.log("day", day);
     if (date?.startDate && date?.endDate) {
       setDate({ startDate: day.dateString, endDate: undefined });
     } else if (!date?.startDate) {

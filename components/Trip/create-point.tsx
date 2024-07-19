@@ -64,7 +64,6 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
         .insert({
           name: point.name,
           date: point.date,
-          day: 1,
           user_id: userId!,
           latitude: point.latitude,
           longitude: point.longitude,
@@ -101,7 +100,6 @@ export const CreatePoint: React.FC<CreatePointProps> = ({
     console.log("selectedDay", selectedDay);
     createTripPointMutation.mutate({
       name: point.name,
-      // day: selectedDay?.value ?? 0,
       date: selectedDay?.value ?? 0,
       category_id: selectedCategory?.id ?? 0,
       latitude: point?.latitude,

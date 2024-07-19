@@ -47,10 +47,6 @@ const NewTrip = () => {
     endDate: undefined,
   });
 
-  useEffect(() => {
-    console.log("date", date);
-  }, [date]);
-
   const queryClient = useQueryClient();
 
   const createTripMutation = useMutation({
@@ -64,9 +60,8 @@ const NewTrip = () => {
         .insert([
           {
             name: newTrip.name,
-            start_date: dayjs(newTrip.date.startDate).toString(),
-            end_date: dayjs(newTrip.date.endDate).toString(),
-            days: 1,
+            start_date: dayjs(newTrip.date.startDate).utc(true).toString(),
+            end_date: dayjs(newTrip.date.endDate).utc(true).toString(),
             user_id: userId,
             city: newTrip.city.name,
             latitude: newTrip.city.latitude,

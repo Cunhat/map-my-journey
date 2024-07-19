@@ -65,6 +65,8 @@ const Trip = () => {
     });
   }, []);
 
+  if (!tripId) return null;
+
   const closeModelAndClearCurrentMarker = () => {
     setAddPointBottomSheet(false);
     sheetRef.current?.expand();
@@ -76,7 +78,7 @@ const Trip = () => {
     queryFn: async () => {
       const token = await getToken({ template: "routes-app-supabase" });
 
-      const supabase = await supabaseClient(token);
+      const supabase = await supabaseClient(token!);
 
       const resp = await supabase
         .from("trip")
@@ -93,7 +95,7 @@ const Trip = () => {
     queryFn: async () => {
       const token = await getToken({ template: "routes-app-supabase" });
 
-      const supabase = await supabaseClient(token);
+      const supabase = await supabaseClient(token!);
 
       const resp = await supabase
         .from("category")
@@ -109,7 +111,7 @@ const Trip = () => {
     queryKey: ["getTripPoints", tripId],
     queryFn: async () => {
       const token = await getToken({ template: "routes-app-supabase" });
-      const supabase = await supabaseClient(token);
+      const supabase = await supabaseClient(token!);
 
       const resp = await supabase
         .from("point")
@@ -146,11 +148,11 @@ const Trip = () => {
   };
 
   const onModelClose = () => {
-    if (selectedDay === 0) sheetRef.current?.expand();
+    if (selectedDay === undefined) sheetRef.current?.expand();
     else daySheetRef.current?.expand();
   };
 
-  const onDayOpen = (day: number) => {
+  const onDayOpen = (day: string) => {
     setSelectedDay(day);
     sheetRef.current?.close();
     daySheetRef.current?.present();
@@ -159,12 +161,12 @@ const Trip = () => {
   const onDayClose = () => {
     daySheetRef.current?.close();
     sheetRef.current?.expand();
-    setSelectedDay(0);
+    setSelectedDay(undefined);
   };
 
   const filterMapPoints = () => {
-    if (selectedDay > 0)
-      return points.data?.filter((point) => point.day === selectedDay) ?? [];
+    if (selectedDay !== undefined)
+      return points.data?.filter((point) => point.date === selectedDay) ?? [];
     else return points.data ?? [];
   };
 
@@ -299,7 +301,7 @@ const Trip = () => {
       <DayView
         ref={daySheetRef}
         onDayClose={onDayClose}
-        day={selectedDay}
+        day={selectedDay!}
         maxDay={trip?.data?.end_date!}
         minDay={trip?.data?.start_date!}
         points={

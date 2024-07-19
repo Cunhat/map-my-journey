@@ -12,7 +12,7 @@ import dayjs from "dayjs";
 type DayViewProps = {
   onDayClose: () => void;
   points: Array<Tables<"point"> & { category: Tables<"category"> }> | [];
-  day: number;
+  day: string;
   maxDay: string;
   minDay: string;
   changeDay: React.Dispatch<React.SetStateAction<string>>;
