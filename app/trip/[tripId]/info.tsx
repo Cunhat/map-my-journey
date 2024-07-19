@@ -1,4 +1,5 @@
 import CountriesJson from "@/assets/data/countries.json";
+import { DeleteTrip } from "@/components/Trip/delete-trip";
 import { Button } from "@/components/ui/button";
 import { CalendarBottomSheet } from "@/components/ui/calendar-bottom-sheet";
 import { InfoField, InfoFieldSeparator } from "@/components/ui/info-field";
@@ -9,6 +10,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useGlobalSearchParams } from "expo-router";
 import {
   CalendarDays,
+  Delete,
   Map,
   MapPin,
   MapPinOff,
@@ -64,32 +66,6 @@ const Info = () => {
       setDate({ startDate: data.start_date!, endDate: data.end_date! });
     }
   }, [isSuccess]);
-
-  const deleteMutation = useMutation({
-    mutationFn: async () => {
-      const token = await getToken({ template: "routes-app-supabase" });
-
-      const supabase = await supabaseClient(token);
-
-      const resp = await supabase
-        .from("trip")
-        .delete()
-        .eq("id", tripId)
-        .select();
-
-      return resp;
-    },
-
-    onSuccess: ({ data }) => {
-      queryClient.invalidateQueries({
-        queryKey: ["getTrips"],
-      });
-      router.push("/(home)/");
-    },
-    onError: (err) => {
-      console.log("err", err);
-    },
-  });
 
   const updateMutation = useMutation({
     mutationFn: async (newTrip: any) => {
@@ -281,13 +257,7 @@ const Info = () => {
                 }
               />
             )}
-            <Button
-              title="Delete"
-              type="danger"
-              icon={<Trash2 className="text-white" height={20} width={20} />}
-              fullWidth
-              onPress={() => deleteMutation.mutate()}
-            />
+            <DeleteTrip tripId={tripId!} />
           </View>
         </View>
       </TouchableWithoutFeedback>

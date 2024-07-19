@@ -1,15 +1,15 @@
 import { cva } from "class-variance-authority";
 import React, { ReactNode } from "react";
-import { TouchableOpacity, Text } from "react-native";
+import { TouchableOpacity, Text, TouchableOpacityProps } from "react-native";
 
-type ButtonProps = {
+interface ButtonProps extends TouchableOpacityProps {
   title: string;
   type?: "primary" | "secondary" | "danger" | "success";
   fullWidth?: boolean;
   onPress?: () => void;
   disabled?: boolean;
   icon?: ReactNode;
-};
+}
 
 const buttonStyle = cva(
   "flex-row items-center justify-center h-12 px-4 py-2 rounded-2xl text-lg font-medium",
@@ -57,6 +57,8 @@ export const Button: React.FC<ButtonProps> = ({
   onPress,
   disabled,
   icon,
+  className,
+  ...props
 }) => {
   return (
     <TouchableOpacity
@@ -64,6 +66,7 @@ export const Button: React.FC<ButtonProps> = ({
       onPress={onPress}
       style={{ gap: 6 }}
       className={buttonStyle({ type, fullWidth, disabled })}
+      {...props}
     >
       {icon}
       <Text className={textStyles({ type })}>{title}</Text>
