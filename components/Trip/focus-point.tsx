@@ -29,7 +29,7 @@ export const FocusPoint = React.forwardRef<BottomSheetModal, FocusPointProps>(
         // sourceLatitude: -8.0870631, // optionally specify starting location for directions
         // sourceLongitude: -34.8941619, // not optional if sourceLatitude is specified
         title: "Open Directions", // optional
-        googleForceLatLon: false, // optionally force GoogleMaps to use the latlon for the query instead of the title
+        googleForceLatLon: true, // optionally force GoogleMaps to use the latlon for the query instead of the title
         // googlePlaceId: "ChIJGVtI4by3t4kRr51d_Qm_x58", // optionally specify the google-place-id
         alwaysIncludeGoogle: true, // optional, true will always add Google Maps to iOS and open in Safari, even if app is not installed (default: false)
         dialogTitle: "Navigate to your point", // optional (default: 'Open in Maps')

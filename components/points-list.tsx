@@ -86,6 +86,8 @@ export const PointsListItem: React.FC<PointsListItemProps> = ({
         .eq("id", mutationData.pointId)
         .select();
 
+      console.log("resp", resp);
+
       return resp;
     },
 
