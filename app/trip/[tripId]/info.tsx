@@ -7,22 +7,20 @@ import { FullPageLoading } from "@/components/ui/loading";
 import { supabaseClient } from "@/lib/supabase";
 import { useAuth } from "@clerk/clerk-expo";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { router, useGlobalSearchParams } from "expo-router";
+import { useGlobalSearchParams } from "expo-router";
 import {
   CalendarDays,
-  Delete,
   Map,
   MapPin,
   MapPinOff,
   Plane,
   Save,
-  Trash2,
-  TriangleAlert,
 } from "lucide-react-native";
 import React, { useEffect, useMemo } from "react";
 import {
   Keyboard,
   SafeAreaView,
+  ScrollView,
   Text,
   TextInput,
   TouchableWithoutFeedback,
@@ -208,13 +206,19 @@ const Info = () => {
                   )}
                 />
                 <InfoFieldSeparator />
-                <InfoField
+                {/* <InfoField
                   icon={
                     <Map className="text-yellow-500" height={20} width={20} />
                   }
                   label="Countries:"
                   value={
-                    <View className="flex flex-row" style={{ gap: 8 }}>
+                    <View
+                      className="flex flex-row "
+                      style={{ gap: 8 }}
+                      // showsHorizontalScrollIndicator={false}
+                      // horizontal={true}
+                      // showsVerticalScrollIndicator={false}
+                    >
                       {countries.map((country) => {
                         const ctr = CountriesJson.find(
                           (elem) => elem.name === country
@@ -237,7 +241,7 @@ const Info = () => {
                       })}
                     </View>
                   }
-                />
+                /> */}
                 <InfoFieldSeparator />
               </View>
             </View>

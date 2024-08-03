@@ -1,26 +1,9 @@
-import { Link } from "expo-router";
-import React from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Share,
-  Alert,
-} from "react-native";
-import {
-  LogOut,
-  Mail,
-  MapPin,
-  SquareUser,
-  Trash,
-  Trash2,
-  User as UserIcon,
-  UserRoundPlus,
-} from "lucide-react-native";
-import { HomeLayout } from "@/components/home-layout";
-import { useAuth, useUser } from "@clerk/clerk-expo";
+import { DeleteAccount } from "@/components/delete-account";
 import { Button } from "@/components/ui/button";
+import { useAuth, useUser } from "@clerk/clerk-expo";
+import { LogOut, Mail, SquareUser, Trash2 } from "lucide-react-native";
+import React from "react";
+import { ScrollView, Text, View } from "react-native";
 
 const User = () => {
   const { signOut } = useAuth();
@@ -58,12 +41,7 @@ const User = () => {
         </View>
       </ScrollView>
       <View style={{ gap: 12 }} className="pb-3 px-2">
-        <Button
-          icon={<Trash2 className="text-white" height={20} width={20} />}
-          title="Delete account"
-          type="danger"
-          onPress={() => user?.delete()}
-        />
+        <DeleteAccount />
         <Button
           icon={<LogOut className="text-white" height={20} width={20} />}
           title="Log out"
@@ -71,15 +49,6 @@ const User = () => {
           onPress={() => signOut()}
         />
       </View>
-      {/* <View className="flex flex-row gap-2 items-center">
-        <UserIcon
-          strokeWidth={1.2}
-          className="text-sky-500"
-          height={32}
-          width={32}
-        />
-        <Text className="font-bold text-sky-500 text-2xl">User</Text>
-      </View> */}
     </View>
   );
 };

@@ -1,31 +1,12 @@
-import {
-  Calendar,
-  CalendarDays,
-  Map,
-  MapPin,
-  Pin,
-  PinIcon,
-} from "lucide-react-native";
-import React, { useEffect } from "react";
-import {
-  ImageBackground,
-  SafeAreaView,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
-import { HomeLayout } from "../../components/home-layout";
-import { Link, router } from "expo-router";
-import { supabaseClient } from "@/lib/supabase";
-import { err } from "react-native-svg";
-import { useQuery } from "@tanstack/react-query";
-import { FullPageLoading } from "@/components/ui/loading";
-import { TripSchema } from "@/lib/types/trips";
-import { TripCard } from "@/components/trip-card";
 import NoTrips from "@/assets/svg/notrips";
+import { TripCard } from "@/components/trip-card";
+import { FullPageLoading } from "@/components/ui/loading";
+import { supabaseClient } from "@/lib/supabase";
 import { useAuth, useUser } from "@clerk/clerk-expo";
+import { useQuery } from "@tanstack/react-query";
+import React from "react";
+import { ScrollView, Text, View } from "react-native";
+import { HomeLayout } from "../../components/home-layout";
 
 const Home = () => {
   const { getToken, userId, isLoaded } = useAuth();
