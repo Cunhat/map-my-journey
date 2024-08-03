@@ -128,7 +128,6 @@ const NewTrip = () => {
           <CalendarDays className="text-gray-500" height={20} width={20} />
         }
         inputPlaceholder="How many days will you be there?"
-        bottomSheetTitle="Calendar"
         date={date}
         setDate={setDate}
       />

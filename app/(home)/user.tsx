@@ -1,7 +1,9 @@
+import Mail from "@/assets/svg/mail";
+import UserCard from "@/assets/svg/user";
 import { DeleteAccount } from "@/components/delete-account";
 import { Button } from "@/components/ui/button";
 import { useAuth, useUser } from "@clerk/clerk-expo";
-import { LogOut, Mail, SquareUser, Trash2 } from "lucide-react-native";
+import { LogOut } from "lucide-react-native";
 import React from "react";
 import { ScrollView, Text, View } from "react-native";
 
@@ -20,7 +22,7 @@ const User = () => {
           <View className="border-[0.5px] border-gray-300" />
           <View className="flex flex-row justify-between p-6">
             <View style={{ gap: 4 }} className="flex flex-row items-center">
-              <SquareUser className="text-gray-500" height={20} width={20} />
+              <UserCard height={24} width={24} />
               <Text className="text-gray-500 text-base">Name:</Text>
             </View>
             <Text className="text-gray-500 text-base">
@@ -30,7 +32,7 @@ const User = () => {
           <View className="border-[0.5px] border-gray-300" />
           <View className="flex flex-row justify-between p-6">
             <View style={{ gap: 4 }} className="flex flex-row items-center">
-              <Mail className="text-gray-500" height={20} width={20} />
+              <Mail height={24} width={24} />
               <Text className="text-gray-500 text-base">Email:</Text>
             </View>
             <Text className="text-gray-500 text-base">

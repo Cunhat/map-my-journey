@@ -3,19 +3,18 @@ import {
   BottomSheetModal,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
-import { useMemo, useRef } from "react";
-import { CalendarList, DateData } from "react-native-calendars";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
-import { CalendarListPicker } from "./calendar-list";
 import dayjs from "dayjs";
 import { MoveRight, X } from "lucide-react-native";
+import { useMemo, useRef } from "react";
+import { Text, TouchableOpacity, View } from "react-native";
+import { CalendarListPicker } from "./calendar-list";
+import { Button } from "./button";
 
 type CalendarBottomSheetProps = {
   inputIcon: React.ReactNode;
   inputPlaceholder: string;
   date: { startDate: string | undefined; endDate: string | undefined };
   setDate: React.Dispatch<React.SetStateAction<any>>;
-  bottomSheetTitle: string;
 };
 
 export const CalendarBottomSheet: React.FC<CalendarBottomSheetProps> = ({
@@ -23,7 +22,6 @@ export const CalendarBottomSheet: React.FC<CalendarBottomSheetProps> = ({
   inputPlaceholder,
   date,
   setDate,
-  bottomSheetTitle,
 }) => {
   const ref = useRef<BottomSheetModal>(null);
 
@@ -95,8 +93,14 @@ export const CalendarBottomSheet: React.FC<CalendarBottomSheetProps> = ({
               <X className="text-gray-500" height={24} width={24}></X>
             </TouchableOpacity>
           </View>
+
           <CalendarListPicker date={date} setDate={setDate} />
         </BottomSheetView>
+        {startDate && endDate && (
+          <View className="absolute bottom-10 w-full flex-row items-center justify-center">
+            <Button title="Set Dates" onPress={() => ref.current?.dismiss()} />
+          </View>
+        )}
       </BottomSheetModal>
     </>
   );
