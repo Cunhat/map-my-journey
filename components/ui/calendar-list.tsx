@@ -116,7 +116,13 @@ export const CalendarListPicker: React.FC<CalendarProps> = ({
       markedDates={marked}
       animateScroll={true}
       // current={date?.startDate}
-      markingType={date?.startDate && date?.endDate ? "period" : "dot"}
+      markingType={
+        date?.startDate === date?.endDate
+          ? "dot"
+          : date?.startDate && date?.endDate
+            ? "period"
+            : "dot"
+      }
     />
   );
 };
