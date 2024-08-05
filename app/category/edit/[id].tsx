@@ -233,13 +233,6 @@ const EditCategory = () => {
             onPress={() => setDeleteModalVisible(true)}
             icon={<Trash2 className="text-white" height={20} width={20} />}
           />
-          <Button
-            title="Cancel"
-            type="secondary"
-            fullWidth
-            onPress={() => router.back()}
-            icon={<CircleX className="text-sky-500" height={20} width={20} />}
-          />
         </View>
         <Modal
           animationType="fade"
@@ -265,10 +258,16 @@ const EditCategory = () => {
                   type="danger"
                   fullWidth
                   onPress={() => deleteCategory.mutate()}
+                  icon={
+                    <Trash2 className="text-white" height={20} width={20} />
+                  }
                 />
                 <Button
                   title="Cancel"
                   type="secondary"
+                  icon={
+                    <CircleX className="text-sky-500" height={20} width={20} />
+                  }
                   fullWidth
                   onPress={() => setDeleteModalVisible(false)}
                 />

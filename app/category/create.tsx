@@ -171,13 +171,6 @@ const Create = () => {
             disabled={!name || !color || !icon}
             icon={<Save className="text-white" height={20} width={20} />}
           />
-          <Button
-            title="Cancel"
-            type="secondary"
-            fullWidth
-            onPress={() => router.back()}
-            icon={<CircleX className="text-sky-500" height={20} width={20} />}
-          />
         </View>
       </View>
     </SafeAreaView>

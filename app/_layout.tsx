@@ -5,10 +5,11 @@ import { useFonts } from "expo-font";
 import { SplashScreen, Stack, useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import React, { useEffect } from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import { Appearance, useColorScheme } from "react-native";
+import { ArrowLeft, ChevronLeft, X } from "lucide-react-native";
 
 const queryClient = new QueryClient();
 
@@ -98,14 +99,26 @@ function RootLayoutNav() {
                 headerShadowVisible: false,
                 // presentation: "modal",
                 headerTitle: () => (
-                  <View className="flex-row items-center">
-                    <Text className="text-xl text-sky-500 ml-auto">
+                  <View className="flex-row">
+                    <Text className="text-xl text-sky-500 ">
                       Create a new trip
                     </Text>
                   </View>
                 ),
-                headerBackTitleVisible: false,
-                // headerBackVisible: false,
+                headerLeft: () => (
+                  <TouchableOpacity
+                    className="p-1 flex items-center justify-center"
+                    onPress={() => {
+                      router.push("/");
+                    }}
+                  >
+                    <ChevronLeft
+                      className="text-sky-500"
+                      height={24}
+                      width={24}
+                    ></ChevronLeft>
+                  </TouchableOpacity>
+                ),
               }}
             />
             <Stack.Screen
@@ -117,6 +130,16 @@ function RootLayoutNav() {
                 headerTitle: () => (
                   <Text className="text-xl text-sky-500">Create Category</Text>
                 ),
+                headerRight: () => (
+                  <TouchableOpacity
+                    className="p-1 flex items-center justify-center"
+                    onPress={() => {
+                      router.back();
+                    }}
+                  >
+                    <X className="text-gray-500" height={24} width={24}></X>
+                  </TouchableOpacity>
+                ),
               }}
             />
             <Stack.Screen
@@ -127,6 +150,16 @@ function RootLayoutNav() {
                 headerShadowVisible: false,
                 headerTitle: () => (
                   <Text className="text-xl text-sky-500">Edit Category</Text>
+                ),
+                headerRight: () => (
+                  <TouchableOpacity
+                    className="p-1 flex items-center justify-center"
+                    onPress={() => {
+                      router.back();
+                    }}
+                  >
+                    <X className="text-gray-500" height={24} width={24}></X>
+                  </TouchableOpacity>
                 ),
               }}
             />
