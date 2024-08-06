@@ -132,7 +132,7 @@ function RootLayoutNav() {
                 ),
                 headerRight: () => (
                   <TouchableOpacity
-                    className="p-1 flex items-center justify-center"
+                    className=" rounded-full p-1 bg-gray-100 items-center justify-center"
                     onPress={() => {
                       router.back();
                     }}
@@ -153,7 +153,7 @@ function RootLayoutNav() {
                 ),
                 headerRight: () => (
                   <TouchableOpacity
-                    className="p-1 flex items-center justify-center"
+                    className=" rounded-full p-1 bg-gray-100 items-center justify-center"
                     onPress={() => {
                       router.back();
                     }}
