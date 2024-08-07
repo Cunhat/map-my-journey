@@ -1,6 +1,8 @@
 import Apple from "@/assets/svg/apple";
 import Facebook from "@/assets/svg/facebook";
 import Google from "@/assets/svg/google";
+import Navigate from "@/assets/svg/navigate";
+import PlanTrip from "@/assets/svg/plan-trip";
 import { Button } from "@/components/ui/button";
 import { useWarmUpBrowser } from "@/hooks/useWarmUpBrowser";
 import { useOAuth } from "@clerk/clerk-expo";
@@ -53,19 +55,19 @@ const SignIn = () => {
     {
       title: "Create your journey",
       text: "Add destinations, the amount of days you want to travel, save your favorite spots, and start planning your trip!",
-      illustration: "",
+      illustration: <PlanTrip width={"100%"} height={"100%"} />,
       isAuth: false,
     },
     {
       title: "Visit your favorite spots",
       text: "Create your journey map and visit your spots using your favorite navigation app.",
-      illustration: "",
+      illustration: <Navigate width={"100%"} height={"100%"} />,
       isAuth: false,
     },
     {
       title: "Create your journey",
       text: "Add destinations, the amount of days you want to travel, save your favorite spots, and start planning your trip!",
-      illustration: "",
+      // illustration: "",
       isAuth: true,
     },
   ];
@@ -119,8 +121,21 @@ const SignIn = () => {
             );
 
           return (
-            <View className="flex-1 w-screen bg-white justify-center items-center">
-              <Text>{item.title}</Text>
+            <View className="flex-1 w-screen bg-white">
+              <View className="h-[70%] justify-center items-center ">
+                {item.illustration}
+              </View>
+              <View
+                style={{ gap: 12 }}
+                className="flex-1 px-6  items-center text-center "
+              >
+                <Text className="text-3xl text-sky-500 font-bold">
+                  {item.title}
+                </Text>
+                <Text className="text-xl text-black text-center">
+                  {item.text}
+                </Text>
+              </View>
             </View>
           );
         }}
