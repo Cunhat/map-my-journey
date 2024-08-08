@@ -7,14 +7,21 @@ import { Button } from "@/components/ui/button";
 import { useWarmUpBrowser } from "@/hooks/useWarmUpBrowser";
 import { useOAuth } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useRef } from "react";
 import {
+  Dimensions,
   FlatList,
   SafeAreaView,
   Text,
   TouchableOpacity,
   View,
+  ViewToken,
 } from "react-native";
+import Animated, {
+  Extrapolation,
+  interpolate,
+  useAnimatedStyle,
+} from "react-native-reanimated";
 
 enum Strategy {
   Google = "oauth_google",
@@ -31,6 +38,8 @@ const SignIn = () => {
   const { startOAuthFlow: facebookAuth } = useOAuth({
     strategy: "oauth_facebook",
   });
+
+  const [paginationIndex, setPaginationIndex] = React.useState(0);
 
   const onSelectAuth = async (strategy: Strategy) => {
     const selectedAuth = {
@@ -72,14 +81,37 @@ const SignIn = () => {
     },
   ];
 
+  const width = Dimensions.get("window").width;
+
+  const viewabilityConfig = {
+    itemVisiblePercentThreshold: 50,
+  };
+
+  const onViewableItemsChanged = ({
+    viewableItems,
+  }: {
+    viewableItems: ViewToken[];
+  }) => {
+    if (
+      viewableItems[0].index !== undefined &&
+      viewableItems[0].index !== null
+    ) {
+      setPaginationIndex(viewableItems[0].index);
+    }
+  };
+
+  const viewabilityConfigCallbackPairs = useRef([
+    { viewabilityConfig, onViewableItemsChanged },
+  ]);
+
   return (
     <SafeAreaView className="flex-1 bg-white">
       <FlatList
         data={data}
         horizontal
         showsHorizontalScrollIndicator={false}
-        // className="w-full"
         pagingEnabled
+        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         renderItem={({ item }) => {
           if (item.isAuth)
             return (
@@ -140,6 +172,36 @@ const SignIn = () => {
           );
         }}
       />
+      <View
+        style={{ gap: 4 }}
+        className="flex-row h-16 justify-center items-center"
+      >
+        {data.map((_, index) => {
+          // const pagAnimationStyle = useAnimatedStyle(() => {
+          //   const dotWidth = interpolate(
+          //     scrollX.valueOf,
+          //     [(index - 1) * width, index * width, (index + 1) * width],
+          //     [8, 20, 8],
+          //     Extrapolation.CLAMP
+          //   );
+          //   return {
+          //     width: dotWidth,
+          //   };)
+
+          // });
+
+          return (
+            <Animated.View
+              key={index}
+              className="bg-gray-300 h-2 w-2 rounded-lg"
+              style={{
+                backgroundColor:
+                  paginationIndex === index ? "#0ea5e9" : "#d1d5db",
+              }}
+            />
+          );
+        })}
+      </View>
     </SafeAreaView>
   );
 };
